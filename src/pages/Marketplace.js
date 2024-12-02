@@ -23,7 +23,7 @@ const Marketplace = () => {
               { image:'/cardImages/2.png', price: '1.32 ETH', title: 'Aurora Wave Dark Purple Magma Tone' },
               { image:'/cardImages/3.png', price: '1.86 ETH', title: "Ancient coins from China's past" },
               { image:'/cardImages/4.png', price: '1.93 ETH', title: 'Yellow sea coral preserved by me' },
-              { price: '1.40 ETH', title: 'Your Brain social media addiction' },
+              { image:'/cardImages/5.png', price: '1.40 ETH', title: 'Your Brain social media addiction' },
               { price: '1.50 ETH', title: 'Land damaged by me and nature' },
               { price: '1.32 ETH', title: 'Aurora Wave Dark Purple Magma Tone' },
               { price: '1.86 ETH', title: "Ancient coins from China's past" },
