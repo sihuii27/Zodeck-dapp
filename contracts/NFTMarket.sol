@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -68,7 +68,6 @@ contract NFTMarketplace is ReentrancyGuard{
         // Emit an event for the transfer
         emit CardTransferred(listing.seller, msg.sender, listing.tokenId);
     }
-    
     // remove card listing if user does not want to sell
     function cancelListing(uint cardItemId) public {
         // Retrieve listing using cardItemId
