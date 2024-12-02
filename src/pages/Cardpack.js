@@ -1,7 +1,9 @@
 import React from 'react';
 import './Cardpack.css';
 
-const CardPack = () => {
+// pass account address from App.js to Cardpack
+const CardPack = (props) => {
+  const { account , setAccount } = props;
   return (
     <div className="cardpack-container">
       <div className="cardpack-content">
@@ -12,6 +14,8 @@ const CardPack = () => {
         </div>
       </div>
       <button className="open-cardpack-btn">Open Card Pack 1000💰</button>
+      <br/>
+      {props.account}
     </div>
   );
 };

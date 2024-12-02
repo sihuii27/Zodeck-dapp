@@ -8,12 +8,11 @@ import Marketplace from './pages/Marketplace';
 import {useState, useEffect} from 'react';
 const ethers = require('ethers');
 
-function Header() {
+function Header({account,setAccount}) {
   
   const [provider, setProvider] = useState(null);
   const [walletConnected, setwalletConnected] = useState(null);
-  const [account, setAccount] = useState(null);
-
+  
   //when application refreshes
   useEffect( ()=>{
     // if metamask is available
@@ -41,6 +40,7 @@ function Header() {
 
   
   async function connectMetamask(){
+    console.log(window.ethereum);
     if (window.ethereum !=null){
       try{
         //Web3Provider wraps the standard Web3 provider, MetaMask injects as window.ethereum into each page
@@ -79,8 +79,7 @@ function Header() {
     <div className="header">
       <img src="/logo512.png" alt="Zodeck Logo" className="logo" />
       <div className="user-info">
-      {/* if wallet is connected, display the metamask wallet address */}
-      {walletConnected ? (<p>Login To: {account}</p>):(<p></p>)} 
+      {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
       <div className="spacing"></div>
       <button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>
       </div>
@@ -89,20 +88,20 @@ function Header() {
 }
 
 function App() {
-
+  const [account, setAccount] = useState(null);
   return (
     <Router>
       <div className="App">
-      <Header />
+      <Header account={account} setAccount={setAccount}/>
         <Routes>
           {/* Route for Login Page */}
           <Route path="/" element={<Login />} />
           {/* Route for Landing Page */}
           <Route path="/landing" element={<Landing />} />
           {/* Route for Cardpack page */}
-          <Route path="/cardpack" element={<Cardpack />} />
+          <Route path="/cardpack" element={<Cardpack account={account}/>} />
           {/* Route for Marketplace page */}
-          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace" element={<Marketplace account={account}/>} />
         </Routes>
       </div>
     </Router>
