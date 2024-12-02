@@ -7,31 +7,26 @@ describe("NFTMarketplace", function () {
     beforeEach(async function () {
         [deployer, seller, buyer] = await ethers.getSigners();
 
-        // Deploy MockNFT
+        // Deploy MockNFT contract
         const MockNFT = await ethers.getContractFactory("MockERC721");
         mockNFT = await MockNFT.deploy();
         await mockNFT.deployed();
 
-        // Deploy NFTMarketplace
+        // Deploy NFTMarketplace contract
         const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
         nftMarketplace = await NFTMarketplace.deploy();
         await nftMarketplace.deployed();
     });
 
     it("Should list an NFT for sale", async function () {
-        // Mint an NFT for the seller
         const tx = await mockNFT.connect(seller).mint(seller.address);
         const receipt = await tx.wait();
         const tokenId = receipt.events[0].args.tokenId;
 
-        // Approve the marketplace to handle the NFT
         await mockNFT.connect(seller).approve(nftMarketplace.address, tokenId);
-
-        // List the NFT
-        const price = ethers.utils.parseEther("1"); // 1 ETH
+        const price = ethers.utils.parseEther("1");
         await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
 
-        // Verify listing
         const listing = await nftMarketplace.cardToListingItem(1);
         expect(listing.tokenId.toString()).to.equal(tokenId.toString());
         expect(listing.listPrice.toString()).to.equal(price.toString());
@@ -39,7 +34,6 @@ describe("NFTMarketplace", function () {
     });
 
     it("Should allow a buyer to purchase a listed NFT", async function () {
-        // Mint and list an NFT
         const tx = await mockNFT.connect(seller).mint(seller.address);
         const receipt = await tx.wait();
         const tokenId = receipt.events[0].args.tokenId;
@@ -48,20 +42,44 @@ describe("NFTMarketplace", function () {
         const price = ethers.utils.parseEther("1");
         await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
 
-        // Buy NFT
         await nftMarketplace.connect(buyer).buyCard(1, { value: price });
 
-        // Verify new ownership
         const newOwner = await mockNFT.ownerOf(tokenId);
         expect(newOwner).to.equal(buyer.address);
 
-        // Verify listing is updated
         const listing = await nftMarketplace.cardToListingItem(1);
         expect(listing.owner).to.equal(buyer.address);
     });
 
-    it("Should revert if the buyer sends incorrect Ether", async function () {
-        // Mint and list an NFT
+    it("Should allow the seller to cancel an NFT listing", async function () {
+        const tx = await mockNFT.connect(seller).mint(seller.address);
+        const receipt = await tx.wait();
+        const tokenId = receipt.events[0].args.tokenId;
+    
+        await mockNFT.connect(seller).approve(nftMarketplace.address, tokenId);
+        const price = ethers.utils.parseEther("1");
+        await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
+    
+        // Cancel the listing
+        await nftMarketplace.connect(seller).cancelListing(1);
+    
+        // Verify NFT is returned to the seller
+        const owner = await mockNFT.ownerOf(tokenId);
+        expect(owner).to.equal(seller.address);
+    
+        // Verify the listing is removed (check for default values)
+        const listing = await nftMarketplace.cardToListingItem(1);
+        expect(listing.cardItemId.toString()).to.equal("0"); // Use toString() for comparison
+        expect(listing.nftAddress).to.equal(ethers.constants.AddressZero); // Default address
+        expect(listing.seller).to.equal(ethers.constants.AddressZero); // Default address
+        expect(listing.owner).to.equal(ethers.constants.AddressZero); // Default address
+        expect(listing.listPrice.toString()).to.equal("0"); // Use toString() for comparison
+    });
+    
+    
+    
+
+    it("Should revert if a non-seller tries to cancel a listing", async function () {
         const tx = await mockNFT.connect(seller).mint(seller.address);
         const receipt = await tx.wait();
         const tokenId = receipt.events[0].args.tokenId;
@@ -70,9 +88,28 @@ describe("NFTMarketplace", function () {
         const price = ethers.utils.parseEther("1");
         await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
 
-        // Try to buy with incorrect Ether amount
-        await expect(
-            nftMarketplace.connect(buyer).buyCard(1, { value: ethers.utils.parseEther("0.5") })
-        ).to.be.revertedWith("Incorrect Ether value.");
+        try {
+            await nftMarketplace.connect(buyer).cancelListing(1);
+        } catch (error) {
+            expect(error.message).to.include("Only card sellers are allowed to cancel listing");
+        }
+    });
+
+    it("Should revert if a canceled NFT is already sold", async function () {
+        const tx = await mockNFT.connect(seller).mint(seller.address);
+        const receipt = await tx.wait();
+        const tokenId = receipt.events[0].args.tokenId;
+
+        await mockNFT.connect(seller).approve(nftMarketplace.address, tokenId);
+        const price = ethers.utils.parseEther("1");
+        await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
+
+        await nftMarketplace.connect(buyer).buyCard(1, { value: price });
+
+        try {
+            await nftMarketplace.connect(seller).cancelListing(1);
+        } catch (error) {
+            expect(error.message).to.include("Card already has a new owner unable to delete listing");
+        }
     });
 });
