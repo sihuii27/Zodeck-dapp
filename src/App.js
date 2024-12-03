@@ -4,6 +4,7 @@ import './App.css';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Cardpack from './pages/Cardpack';
+import Marketplace from './pages/Marketplace';
 import CardpackResults from './pages/CardpackResults';
 import Collection from './pages/Collection';
 import ViewCard from './pages/ViewCard';
@@ -102,6 +103,8 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           {/* Route for Cardpack page */}
           <Route path="/cardpack" element={<Cardpack account={account}/>} />
+          {/* Route for Marketplace page */}
+          <Route path="/marketplace" element={<Marketplace />} />
           {/* Route for Cardpack Results page */}
           <Route path="/cardpackresults" element={<CardpackResults />} />
           {/* Route for Collections page */}
