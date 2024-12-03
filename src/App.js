@@ -1,11 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
 import './App.css';
-import Login from './pages/Login';
 import Landing from './pages/Landing';
 import CardpackResults from './pages/CardpackResults';
 import Marketplace from './pages/Marketplace';
-import CardpackResults from './pages/CardpackResults';
 import Collection from './pages/Collection';
 import ViewCard from './pages/ViewCard';
 import {useState, useEffect} from 'react';
@@ -97,8 +95,6 @@ function App() {
       <div className="App">
       <Header account={account} setAccount={setAccount}/>
         <Routes>
-          {/* Route for Login Page */}
-          <Route path="/" element={<Login />} />
           {/* Route for Landing Page */}
           <Route path="/landing" element={<Landing />} />
           {/* Route for Marketplace page */}

@@ -6,7 +6,7 @@ const CardpackResults = () => {
     const navigate = useNavigate();
 
     const handleOpenAnotherPack = () => {
-        navigate('/cardpack');
+        navigate('/cardpackresults');
     }
 
     const handleViewCollection = () => {

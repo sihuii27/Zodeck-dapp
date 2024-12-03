@@ -6,7 +6,7 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const handleBuyCardPacks = () => {
-    navigate('/cardpack');
+    navigate('/cardpackresults');
   };
 
   const handleListToMarketplace = (cardId) => {
