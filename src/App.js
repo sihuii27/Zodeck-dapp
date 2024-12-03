@@ -22,6 +22,17 @@ function Header({account,setAccount}) {
   };
   
   //when application refreshes
+  useEffect(() => {
+    //retrieve and use data from local storage
+    const storedAcc = localStorage.getItem('Accounts');
+    //if there is account in storedAcc then setAccount will be assigned to storedAcc and setwalletConnected to true
+    if (storedAcc) {
+      setAccount(storedAcc);
+      setwalletConnected(true);
+    }
+  }, [setAccount]);
+
+  //when application refreshes
   useEffect( ()=>{
     // if metamask is available
     if (window.ethereum){
@@ -34,18 +45,19 @@ function Header({account,setAccount}) {
         window.ethereum.removeListener('Changed of accounts', handleAccounts);
       }
     }
-  });
+  },[setAccount]);
 
   function handleAccounts(accounts){
     // if the new account of metamask, it should not be equal to the address stored in the account previously and its length should be more than 0
     if (accounts.length>=1 && account !== account[0]){
       setAccount(account[0]);
+      localStorage.setItem('Accounts', accounts[0]);
+      setwalletConnected(true);
     }else{
+      setAccount(null);      
       setwalletConnected(false);
-      setAccount(null);
     }
   }
-
   
   async function connectMetamask(){
     console.log(window.ethereum);
@@ -55,6 +67,12 @@ function Header({account,setAccount}) {
         const provider = new ethers.BrowserProvider(window.ethereum); 
         //update the provider state
         setProvider(provider);
+        const storedAcc = localStorage.getItem("Accounts")
+        if (storedAcc) {
+          setAccount(storedAcc);
+          setwalletConnected(true);
+          console.log('Hi'+storedAcc);
+        }
         // give all the accounts
         await provider.send("eth_requestAccounts", []); 
         //current metamask account
@@ -62,22 +80,24 @@ function Header({account,setAccount}) {
         //retrieve address of account, signer is the account
         const address = await signer.getAddress();
         setAccount(address);
-        console.log("My address is",address);
+        localStorage.setItem('Accounts', address);
+        console.log("My address is", address);
         //when wallet is connected it will be set to true
         setwalletConnected(true); 
+        
       }
       catch (err){
         console.error(err);
       }
     } else{
-      console.error("Metamask not detected.")
+      console.error("Metamask wallet not detected.")
+      setwalletConnected(false); 
     }
   }
 
   const location = useLocation();
   console.log(location.pathname);
-  // Add routes where you want to hide the header
-  const hideHeaderRoutes = ['/cardpackresults','/marketplace','/collection']; 
+  const hideHeaderRoutes = ['/cardpackresults','/marketplace','/collection','/cardpack']; 
 
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
@@ -91,11 +111,10 @@ function Header({account,setAccount}) {
       <button className="go-marketplace-btn" onClick={handleMarketplace}>
           Go to marketplace
       </button>
-      <button className="view-collection" onClick={handleMarketplace}>
+      <button className="view-collection" onClick={handleCollection}>
           View my collection
       </button>
-      {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
-      <button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>
+      {walletConnected ? (<>Connected to: {account} <button className="connectWallet" onClick={connectMetamask}>Connected</button></>):(<button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>)} 
       </div>
     </div>
   );
@@ -109,7 +128,7 @@ function App() {
       <Header account={account} setAccount={setAccount}/>
         <Routes>
           {/* Route for Landing Page */}
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Landing account={account}/>} />
           {/* Route for Marketplace page */}
           <Route path="/marketplace" element={<Marketplace account={account} />} />
           {/* Route for Cardpack page */}

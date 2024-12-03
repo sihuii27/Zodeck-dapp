@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
 
-const Landing = () => {
+const Landing = (props) => {
   const navigate = useNavigate();
 
   const handleBuyCardPacks = () => {
@@ -63,12 +63,13 @@ const Landing = () => {
       <div className="listings-title-container">
         <h3 className="section-title">Listings you may be interested in</h3>
       </div>
-      <div className="marketplace-listings">
+
+      <div className="marketplace-landing-listings">
         {[...Array(5)].map((_, index) => (
-          <div className="marketplace-card" key={index}>
-            <div className="card-image"></div>
-            <p className="card-price">{`Price: ${1 + index * 0.1} ETH`}</p>
-            <p className="card-title">{`Card Title ${index + 1}`}</p>
+          <div className="marketplace-landing-card" key={index}>
+            <div className="marketplace-landing-card-image"></div>
+            <p className="marketplace-landing-card-price">{`Price: ${1 + index * 0.1} ETH`}</p>
+            <p className="marketplace-landing-card-title">{`Card Title ${index + 1}`}</p>
             <button className="place-bid-btn">Place Your Bid</button>
           </div>
         ))}
