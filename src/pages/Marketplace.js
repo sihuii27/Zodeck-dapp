@@ -2,20 +2,12 @@ import React from 'react';
 import './Marketplace.css';
 
 const Marketplace = (props) => {
-  const {account , setAccount} = props;
   return (
     <>
       <div className="marketplace-container">
         <div className="title-container">
           <h1 className="main-title">Marketplace</h1>
-          <div className="filter-container">
-            <span className="filter-item active">All</span>
-            <span className="filter-item">Abstract</span>
-            <span className="filter-item">Avatar</span>
-            <span className="filter-item">Games</span>
-            <span className="filter-item">Memes</span>
-          </div>
-          {props.account}
+          {/* if want to get the address of account {props.account} */}
         </div>
         <div className="marketplace-listings">
             {[

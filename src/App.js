@@ -45,13 +45,13 @@ function Header({account,setAccount}) {
     if (window.ethereum !=null){
       try{
         //Web3Provider wraps the standard Web3 provider, MetaMask injects as window.ethereum into each page
-        const provider = new ethers.providers.Web3Provider(window.ethereum); 
+        const provider = new ethers.BrowserProvider(window.ethereum); 
         //update the provider state
         setProvider(provider);
         // give all the accounts
         await provider.send("eth_requestAccounts", []); 
         //current metamask account
-        const signer = provider.getSigner(); 
+        const signer = await provider.getSigner(); 
         //retrieve address of account, signer is the account
         const address = await signer.getAddress();
         setAccount(address);
@@ -70,7 +70,7 @@ function Header({account,setAccount}) {
   const location = useLocation();
   console.log(location.pathname);
   // Add routes where you want to hide the header
-  const hideHeaderRoutes = ['/', '/cardpack']; 
+  const hideHeaderRoutes = ['/cardpackresults','/marketplace','/collection']; 
 
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
@@ -96,14 +96,14 @@ function App() {
       <Header account={account} setAccount={setAccount}/>
         <Routes>
           {/* Route for Landing Page */}
-          <Route path="/landing" element={<Landing />} />
+          <Route path="/" element={<Landing />} />
           {/* Route for Marketplace page */}
-          <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace" element={<Marketplace account={account} />} />
           {/* Route for Cardpack Results page */}
           <Route path="/cardpackresults" element={<CardpackResults account={account}/>} />
           {/* Route for Collections page */}
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/collection/card/:id" element={<ViewCard />} />
+          <Route path="/collection" element={<Collection account={account}/>} />
+          <Route path="/collection/card/:id" element={<ViewCard account={account}/>} />
         </Routes>
       </div>
     </Router>

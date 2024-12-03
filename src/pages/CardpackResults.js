@@ -2,7 +2,7 @@ import React from 'react';
 import './CardpackResults.css';
 import { useNavigate } from 'react-router-dom';
 
-const CardpackResults = () => {
+const CardpackResults = (props) => {
     const navigate = useNavigate();
 
     const handleOpenAnotherPack = () => {
@@ -46,6 +46,7 @@ const CardpackResults = () => {
                 >
                     View Collection
                 </button>
+                {/* get account address {props.account} */}
             </div>
             
         </div>
