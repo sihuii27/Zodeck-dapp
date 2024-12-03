@@ -20,6 +20,7 @@ contract PackMarket is Ownable{
         require(msg.value == packPrice, "Incorrect payment amount");
 
         totalPacksSold = totalPacksSold.add(1);
+        packsAvailable = packsAvailable.sub(1);
 
         emit PackPurchased(msg.sender, totalPacksSold);
     }
@@ -31,7 +32,7 @@ contract PackMarket is Ownable{
 
     function updatePacksAvailable(uint256 newQty) external onlyOwner {
         // reset the number of packs available
-        packPrice = newQty;
+        packsAvailable = newQty;
     }    
     
     function updatePackPrice(uint256 newPrice) external onlyOwner {
