@@ -1,8 +1,8 @@
 import React from 'react';
 import './Marketplace.css';
 
-const Marketplace = () => {
-
+const Marketplace = (props) => {
+  const {account , setAccount} = props;
   return (
     <>
       <div className="marketplace-container">
@@ -15,6 +15,7 @@ const Marketplace = () => {
             <span className="filter-item">Games</span>
             <span className="filter-item">Memes</span>
           </div>
+          {props.account}
         </div>
         <div className="marketplace-listings">
             {[

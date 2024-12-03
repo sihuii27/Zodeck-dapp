@@ -1,19 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
 import './App.css';
-import Login from './pages/Login';
 import Landing from './pages/Landing';
-import Cardpack from './pages/Cardpack';
+import CardpackResults from './pages/CardpackResults';
 import Marketplace from './pages/Marketplace';
+import Collection from './pages/Collection';
+import ViewCard from './pages/ViewCard';
 import {useState, useEffect} from 'react';
 const ethers = require('ethers');
 
-function Header() {
+function Header({account,setAccount}) {
   
   const [provider, setProvider] = useState(null);
   const [walletConnected, setwalletConnected] = useState(null);
-  const [account, setAccount] = useState(null);
-
+  
   //when application refreshes
   useEffect( ()=>{
     // if metamask is available
@@ -41,6 +41,7 @@ function Header() {
 
   
   async function connectMetamask(){
+    console.log(window.ethereum);
     if (window.ethereum !=null){
       try{
         //Web3Provider wraps the standard Web3 provider, MetaMask injects as window.ethereum into each page
@@ -79,8 +80,7 @@ function Header() {
     <div className="header">
       <img src="/logo512.png" alt="Zodeck Logo" className="logo" />
       <div className="user-info">
-      {/* if wallet is connected, display the metamask wallet address */}
-      {walletConnected ? (<p>Login To: {account}</p>):(<p></p>)} 
+      {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
       <div className="spacing"></div>
       <button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>
       </div>
@@ -89,20 +89,21 @@ function Header() {
 }
 
 function App() {
-
+  const [account, setAccount] = useState(null);
   return (
     <Router>
       <div className="App">
-      <Header />
+      <Header account={account} setAccount={setAccount}/>
         <Routes>
-          {/* Route for Login Page */}
-          <Route path="/" element={<Login />} />
           {/* Route for Landing Page */}
           <Route path="/landing" element={<Landing />} />
-          {/* Route for Cardpack page */}
-          <Route path="/cardpack" element={<Cardpack />} />
           {/* Route for Marketplace page */}
           <Route path="/marketplace" element={<Marketplace />} />
+          {/* Route for Cardpack Results page */}
+          <Route path="/cardpackresults" element={<CardpackResults account={account}/>} />
+          {/* Route for Collections page */}
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/collection/card/:id" element={<ViewCard />} />
         </Routes>
       </div>
     </Router>
