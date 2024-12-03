@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
 
-const Landing = () => {
+const Landing = (props) => {
   const navigate = useNavigate();
 
   const handleBuyCardPacks = () => {

@@ -27,7 +27,6 @@ describe("NFTMarketplace", function () {
 
         await mockNFT.connect(seller).approve(nftMarketplace.address, tokenId);
         const price = ethers.utils.parseEther("1");
-        const price = ethers.utils.parseEther("1");
         await nftMarketplace.connect(seller).listCard(mockNFT.address, tokenId, price);
 
         const listing = await nftMarketplace.cardToListingItem(1);
