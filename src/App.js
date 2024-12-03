@@ -4,7 +4,6 @@ import './App.css';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Cardpack from './pages/Cardpack';
-import Marketplace from './pages/Marketplace';
 import CardpackResults from './pages/CardpackResults';
 import Collection from './pages/Collection';
 import ViewCard from './pages/ViewCard';
