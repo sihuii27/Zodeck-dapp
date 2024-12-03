@@ -38,4 +38,12 @@ contract PackMarket is Ownable{
         // newPrice in wei
         packPrice = newPrice;
     }
+
+    function getPacksAvailable() external view returns (uint) {
+        return packsAvailable;
+    }
+
+    function getTotalPacksSold() external view returns (uint) {
+        return totalPacksSold;
+    }
 }
