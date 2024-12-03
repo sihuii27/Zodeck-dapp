@@ -31,12 +31,6 @@ const Collection = (props) => {
         <div className='collections-container'>
             <div className='title-container'>
                 <h1 className="main-title">Collections</h1>
-                <div className="filter-container">
-                    <span className="filter-item active">All</span>
-                    <span className="filter-item">Favourites</span>
-                    <span className="filter-item">Shiny</span>
-                    <span className="filter-item">Animal</span>
-                </div>
             </div>
             <div className='collections-content'>
                 {collectionCards.map((listing) => (
@@ -53,7 +47,7 @@ const Collection = (props) => {
                     </div>
                 ))}
             </div>
-            {/* {props.account} */}
+            {props.account}
         </div>
 
 

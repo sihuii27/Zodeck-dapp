@@ -89,3 +89,13 @@
 .spacing{
   padding: 10px 50px;
 }
+
+.go-marketplace-btn,.view-collection {
+  padding: 20px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap; /* Prevent the text from wrapping */
+  margin-right: 100px;
+}

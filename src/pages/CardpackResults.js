@@ -46,7 +46,7 @@ const CardpackResults = (props) => {
                 >
                     View Collection
                 </button>
-                {/* get account address {props.account} */}
+                {props.account}
             </div>
             
         </div>

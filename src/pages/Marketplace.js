@@ -8,6 +8,7 @@ const Marketplace = (props) => {
         <div className="title-container">
           <h1 className="main-title">Marketplace</h1>
           {/* if want to get the address of account {props.account} */}
+          {props.account}
         </div>
         <div className="marketplace-listings">
             {[

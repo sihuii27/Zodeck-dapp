@@ -1,7 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Link, useNavigate } from 'react-router-dom';
 import './App.css';
 import Landing from './pages/Landing';
+import Cardpack from './pages/Cardpack';
 import CardpackResults from './pages/CardpackResults';
 import Marketplace from './pages/Marketplace';
 import Collection from './pages/Collection';
@@ -10,9 +11,15 @@ import {useState, useEffect} from 'react';
 const ethers = require('ethers');
 
 function Header({account,setAccount}) {
-  
+  const navigate = useNavigate();
   const [provider, setProvider] = useState(null);
   const [walletConnected, setwalletConnected] = useState(null);
+  const handleMarketplace = () => {
+    navigate('/marketplace');
+  };
+  const handleCollection = () => {
+    navigate('/collection');
+  };
   
   //when application refreshes
   useEffect( ()=>{
@@ -80,8 +87,14 @@ function Header({account,setAccount}) {
     <div className="header">
       <img src="/logo512.png" alt="Zodeck Logo" className="logo" />
       <div className="user-info">
-      {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
       <div className="spacing"></div>
+      <button className="go-marketplace-btn" onClick={handleMarketplace}>
+          Go to marketplace
+      </button>
+      <button className="view-collection" onClick={handleMarketplace}>
+          View my collection
+      </button>
+      {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
       <button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>
       </div>
     </div>
@@ -99,6 +112,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           {/* Route for Marketplace page */}
           <Route path="/marketplace" element={<Marketplace account={account} />} />
+          {/* Route for Cardpack page */}
+          <Route path="/cardpack" element={<Cardpack account={account}/>} />
           {/* Route for Cardpack Results page */}
           <Route path="/cardpackresults" element={<CardpackResults account={account}/>} />
           {/* Route for Collections page */}

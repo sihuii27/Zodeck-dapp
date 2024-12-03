@@ -6,7 +6,11 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const handleBuyCardPacks = () => {
-    navigate('/cardpackresults');
+    navigate('/cardpack');
+  };
+  
+  const handleMarketplace = () => {
+    navigate('/marketplace');
   };
 
   const handleListToMarketplace = (cardId) => {
@@ -32,9 +36,12 @@ const Landing = () => {
       </div>
       <div className='listings-title-container'>
         <h2 className="section-title">Your Collection</h2>
-        <a href="/collection" className="go-to-collection">
+        {/* <button className="buy-card-packs-btn" onClick={handleMarketplace}>
+          View my collection
+        </button> */}
+        {/* <a href="/collection" className="go-to-collection">
             View my collection &gt;&gt;
-        </a>
+        </a> */}
       </div>
       <div className="card-listing">
         {collectionCards.map((card) => (
@@ -55,11 +62,7 @@ const Landing = () => {
 
       <div className="listings-title-container">
         <h3 className="section-title">Listings you may be interested in</h3>
-        <a href="/marketplace" className="go-to-marketplace">
-          Go to Marketplace &gt;&gt;
-        </a>
       </div>
-
       <div className="marketplace-listings">
         {[...Array(5)].map((_, index) => (
           <div className="marketplace-card" key={index}>
