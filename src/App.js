@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation, Link } from 'react
 import './App.css';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
-import Cardpack from './pages/Cardpack';
+import CardpackResults from './pages/CardpackResults';
 import Marketplace from './pages/Marketplace';
 import CardpackResults from './pages/CardpackResults';
 import Collection from './pages/Collection';
