@@ -91,7 +91,7 @@ function Header({account,setAccount}) {
       <button className="go-marketplace-btn" onClick={handleMarketplace}>
           Go to marketplace
       </button>
-      <button className="view-collection" onClick={handleMarketplace}>
+      <button className="view-collection" onClick={handleCollection}>
           View my collection
       </button>
       {walletConnected ? (<>Login To: {account} </>):(<p></p>)} 
