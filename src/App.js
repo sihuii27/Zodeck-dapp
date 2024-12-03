@@ -101,12 +101,10 @@ function App() {
           <Route path="/" element={<Login />} />
           {/* Route for Landing Page */}
           <Route path="/landing" element={<Landing />} />
-          {/* Route for Cardpack page */}
-          <Route path="/cardpack" element={<Cardpack account={account}/>} />
           {/* Route for Marketplace page */}
           <Route path="/marketplace" element={<Marketplace />} />
           {/* Route for Cardpack Results page */}
-          <Route path="/cardpackresults" element={<CardpackResults />} />
+          <Route path="/cardpackresults" element={<CardpackResults account={account}/>} />
           {/* Route for Collections page */}
           <Route path="/collection" element={<Collection />} />
           <Route path="/collection/card/:id" element={<ViewCard />} />
