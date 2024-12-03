@@ -1,9 +1,10 @@
 import React from 'react';
 import './Cardpack.css';
+import BuyPackButton from './buyPackButton';
 import { useNavigate } from 'react-router-dom';
 
 
-const CardPack = (props) => {
+const CardPack = () => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -15,8 +16,6 @@ const CardPack = (props) => {
   };
 
   return (
-    <>
-    <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
     <div className="cardpack-container">
       <div className="cardpack-content">
         <img src="/logo512.png" alt="Card Pack" className="cardpack-image" />
@@ -32,15 +31,15 @@ const CardPack = (props) => {
         >
           Back
         </button>
-        <button 
+        {/* <button 
           className="open-cardpack-btn"
           onClick={handleOpenCardPacks}
         >
           Open Card Pack 1000💰
-        </button>
+        </button> */}
+        <BuyPackButton />
       </div>
     </div>
-    </>
   );
 };
 

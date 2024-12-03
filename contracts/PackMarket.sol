@@ -15,7 +15,7 @@ contract PackMarket is Ownable{
 
     event PackPurchased(address indexed buyer, uint256 packId);
 
-    function purchasePack() external payable {
+    function purchasePack() public payable {
         require(packsAvailable > 0, "All card packs are currently sold out");
         require(msg.value == packPrice, "Incorrect payment amount");
 
@@ -23,6 +23,10 @@ contract PackMarket is Ownable{
         packsAvailable = packsAvailable.sub(1);
 
         emit PackPurchased(msg.sender, totalPacksSold);
+    }
+
+    receive() external payable {
+        purchasePack();
     }
 
     function withdraw() external onlyOwner {
