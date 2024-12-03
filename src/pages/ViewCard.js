@@ -17,6 +17,8 @@ const ViewCard = (props) => {
     };
 
     return (
+        <>
+        <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
         <div className="view-card-container">
             <div className="view-card-content">
                 <img className='view-card-image' src={card.image} alt={card.title} />
@@ -38,6 +40,7 @@ const ViewCard = (props) => {
             </div>
              {/* {props.account} */}
         </div>
+        </>
     );
 };
 

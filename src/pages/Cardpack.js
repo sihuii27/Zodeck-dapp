@@ -3,7 +3,7 @@ import './Cardpack.css';
 import { useNavigate } from 'react-router-dom';
 
 
-const CardPack = () => {
+const CardPack = (props) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -15,6 +15,8 @@ const CardPack = () => {
   };
 
   return (
+    <>
+    <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
     <div className="cardpack-container">
       <div className="cardpack-content">
         <img src="/logo512.png" alt="Card Pack" className="cardpack-image" />
@@ -38,6 +40,7 @@ const CardPack = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 

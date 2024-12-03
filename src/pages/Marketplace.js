@@ -4,11 +4,12 @@ import './Marketplace.css';
 const Marketplace = (props) => {
   return (
     <>
+      {/* if want to get the address of account {props.account} */}
+      <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
       <div className="marketplace-container">
         <div className="title-container">
           <h1 className="main-title">Marketplace</h1>
-          {/* if want to get the address of account {props.account} */}
-          {props.account}
+          
         </div>
         <div className="marketplace-listings">
             {[

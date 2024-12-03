@@ -13,6 +13,8 @@ const CardpackResults = (props) => {
         navigate('/collection');
     }
     return (
+        <>
+        <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
         <div className="cardpack-results-container">
             <div className="cardpack-results-content">
                 {[
@@ -46,10 +48,10 @@ const CardpackResults = (props) => {
                 >
                     View Collection
                 </button>
-                {props.account}
             </div>
             
         </div>
+        </>
     );
 };
 
