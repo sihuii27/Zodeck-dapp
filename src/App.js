@@ -102,6 +102,11 @@ function App() {
           <Route path="/cardpack" element={<Cardpack account={account}/>} />
           {/* Route for Marketplace page */}
           <Route path="/marketplace" element={<Marketplace account={account}/>} />
+          {/* Route for Cardpack Results page */}
+          <Route path="/cardpackresults" element={<CardpackResults />} />
+          {/* Route for Collections page */}
+          <Route path="/collection" element={<Collection />} />
+          <Route path="/collection/card/:id" element={<ViewCard />} />
         </Routes>
       </div>
     </Router>
