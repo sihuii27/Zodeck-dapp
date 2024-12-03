@@ -2,7 +2,7 @@ import React from 'react';
 import './ViewCard.css';
 import { useLocation } from 'react-router-dom';
 
-const ViewCard = () => {
+const ViewCard = (props) => {
     const location = useLocation();
     const { card } = location.state;
 
@@ -36,6 +36,7 @@ const ViewCard = () => {
                     Add to Favourites
                 </button>
             </div>
+             {/* {props.account} */}
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Collection.css';
 import { useNavigate } from 'react-router-dom';
 
-const Collection = () => {
+const Collection = (props) => {
     const navigate = useNavigate();
     const [selectedCard, setSelectedCard] = useState(null);
 
@@ -53,6 +53,7 @@ const Collection = () => {
                     </div>
                 ))}
             </div>
+            {/* {props.account} */}
         </div>
 
 
