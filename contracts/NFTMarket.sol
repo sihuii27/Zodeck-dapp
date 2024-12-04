@@ -42,7 +42,7 @@ contract NFTMarketplace is ReentrancyGuard{
         });
 
         // Transfer the NFT to the contract for safekeeping
-        IERC721(nftAddress).transferFrom(msg.sender, address(this), tokenId);
+        ERC721(nftAddress).transferFrom(msg.sender, address(this), tokenId);
 
         // Emit an event that a card has been listed for sale
         emit CardTransferred(msg.sender, address(0), tokenId);
@@ -60,7 +60,7 @@ contract NFTMarketplace is ReentrancyGuard{
         listing.seller.transfer(msg.value);
 
         // Transfer the card to the buyer
-        IERC721(listing.nftAddress).transferFrom(address(this), msg.sender, listing.tokenId);
+        ERC721(listing.nftAddress).transferFrom(address(this), msg.sender, listing.tokenId);
 
         // Update the card ownership
         listing.owner = payable(msg.sender);
@@ -80,7 +80,7 @@ contract NFTMarketplace is ReentrancyGuard{
         require(listing.owner == address(0), "Card already has a new owner unable to delete listing");
 
         // Transfer the card back to the card owner == msg.sender
-        IERC721(listing.nftAddress).transferFrom(address(this), msg.sender, listing.tokenId);
+        ERC721(listing.nftAddress).transferFrom(address(this), msg.sender, listing.tokenId);
 
         //remove listing from Marketplace
         delete cardToListingItem[cardItemId];
