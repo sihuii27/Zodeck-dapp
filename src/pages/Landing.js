@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
-// import nftMarketplace from './nftMarketplace';
+import NftMarketPlace from './ListCard';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const Landing = (props) => {
             <p className="marketplace-landing-card-title">{`Card Title ${index + 1}`}</p>
             <div className='landing-listing-btn-container'>
               {/* <button className="place-bid-btn">View Listing</button> */}
-              {/* <nftMarketplace /> */}
+              <NftMarketPlace />
               <button className="delete-listing-btn">Delete Listing</button>
             </div>
           </div>

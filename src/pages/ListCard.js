@@ -1,5 +1,6 @@
 const ethers = require('ethers');
 require("dotenv").config();
+const cardcss = require('./Landing.css'); 
 
 const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
 
@@ -19,8 +20,8 @@ const priceTag = "0.0005" ;
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-const nftMarketplace = () => {
-    const purchaseCard = async () => {
+const NftMarketPlace = () => {
+    const listCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
             return;
@@ -40,7 +41,6 @@ const nftMarketplace = () => {
             console.log("The market owner is: " + marketowner);
 
             const tx = await nftMarketplaceContract.createToken(uri, ethers.parseUnits(priceTag,'ether'), {
-                to: CONTRACT_ADDRESS,
                 value: cost, // cost to put listing
                 gasLimit: 500000,
             });
@@ -50,8 +50,14 @@ const nftMarketplace = () => {
             alert("Transaction failed: " + error.message);
         }
     };
-    // const listings = await nftMarketplaceContract.fetchListingMarketplace();
-    // console.log("Lisitings: " + listings)
+    // const listings = async () => {
+    //     // Create a provider and signer
+    //     const provider = new ethers.BrowserProvider(window.ethereum);
+    //     const signer = await provider.getSigner();
+    //     const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+    //     const listings = await nftMarketplaceContract.fetchListingMarketplace();
+    //     console.log("Lisitings: " + listings)
+    // }
     // // const purchase = await nftMarketplaceContract.purchaseCard(1, {
     // //         value: ethers.parseUnits(priceTag,'ether'), // cost to put listing
     // //     });
@@ -60,7 +66,7 @@ const nftMarketplace = () => {
     // console.log("My NFT" + mynft)
     // const myListings = await nftMarketplaceContract.fetchItemsListed();
     // console.log("My Listings" + myListings)
-    return <button className="open-cardpack-btn" onClick={purchaseCard}>List Item</button>;
+    return <button className="place-bid-btn" onClick={listCard}>List Item</button>;
 };
 
-export default nftMarketplace;
+export default NftMarketPlace;
