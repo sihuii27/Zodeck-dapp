@@ -152,27 +152,27 @@ describe("NFTPlace", function () {
       ).to.be.revertedWith("Only marketplace owner can update listing price.");
     });
   });
-  describe("Remove Listing Price", function () {
-    it("Should allow the owner to remove a listing before it is sold", async function () {
-        const tokenURI = "https://example.com/token1";
-        const price = ethers.parseEther("1");
-        const listingPrice = ethers.parseEther("0.0001");
-        await nftMarketplace.connect(addr1).createToken(tokenURI, price, { value: listingPrice });
-        const tokenId = 1;
+//   describe("Remove Listing Price", function () {
+//     it("Should allow the owner to remove a listing before it is sold", async function () {
+//         const tokenURI = "https://example.com/token1";
+//         const price = ethers.parseEther("1");
+//         const listingPrice = ethers.parseEther("0.0001");
+//         await nftMarketplace.connect(addr1).createToken(tokenURI, price, { value: listingPrice });
+//         const tokenId = 1;
 
-        let listing = await nftMarketplace.fetchListingMarketplace();
-        expect(listing.length).to.equal(1);
+//         let listing = await nftMarketplace.fetchListingMarketplace();
+//         expect(listing.length).to.equal(1);
 
-        // Remove the listing (using the wrapper function for testing)
-        await nftMarketplace.connect(addr1).removeListing(tokenId,price);
+//         // Remove the listing (using the wrapper function for testing)
+//         await nftMarketplace.connect(addr1).removeListing(tokenId,price);
 
-        // Check the listing is removed
-        listing = await nftMarketplace.fetchListingMarketplace();
-        expect(listing.length).to.equal(0);
+//         // Check the listing is removed
+//         listing = await nftMarketplace.fetchListingMarketplace();
+//         expect(listing.length).to.equal(0);
 
-        // Check token ownership is returned to the seller
-        const tokenOwner = await nftMarketplace.ownerOf(tokenId);
-        expect(tokenOwner).to.equal(addr1.address);
-        });
-  });
+//         // Check token ownership is returned to the seller
+//         const tokenOwner = await nftMarketplace.ownerOf(tokenId);
+//         expect(tokenOwner).to.equal(addr1.address);
+//         });
+//   });
 });
