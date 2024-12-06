@@ -4,8 +4,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "hardhat/console.sol";
 import "./safemath.sol";
+import "./ownable.sol";
 
-contract NFTplace is ERC721URIStorage {
+contract NFTplace is ERC721URIStorage, Ownable {
     uint256 private _tokenIds;
     uint256 private _itemsSold;
     uint256 listingPrice = 0.0001 ether;
@@ -52,7 +53,7 @@ contract NFTplace is ERC721URIStorage {
     }
 
     //Marketplace
-    function createListing(uint256 tokenId, uint256 price) private {
+    function createListing(uint256 tokenId, uint256 price) private onlyOwner {
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Ether sent must be equal to listing price");
         cardToListingItem[tokenId] =  Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
