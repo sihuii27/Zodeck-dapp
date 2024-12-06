@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
 import NftMarketPlace from './ListCard';
+import FetchMyListing from './FetchMyListings';
 
 const Landing = (props) => {
   const navigate = useNavigate();
+
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [etherAmount, setEtherAmount] = useState('');
 
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
@@ -16,7 +21,18 @@ const Landing = (props) => {
 
   const handleListToMarketplace = (cardId) => {
     console.log(`Listing card with ID ${cardId} to marketplace.`);
-    // Add your marketplace listing logic here
+    setSelectedCardId(cardId);
+    setPopupVisible(true);
+  };
+
+  const handlePopupClose = () => {
+    setPopupVisible(false); 
+    setEtherAmount(''); 
+  };
+
+  const handleListSubmit = () => {
+    console.log(`Listing card with ID ${selectedCardId} for ${etherAmount} ETH.`);
+    handlePopupClose();
   };
 
   const collectionCards = [
@@ -60,12 +76,36 @@ const Landing = (props) => {
           </div>
         ))}
       </div>
+      
+      {/* Popup */}
+      {isPopupVisible && (
+        <div className="popup-overlay">
+          <div className="popup-container">
+            <h3>List Card to Marketplace</h3>
+            <p>Card ID: {selectedCardId}</p>
+            {/* <input
+              type="number"
+              placeholder="Enter Ether amount"
+              value={etherAmount}
+              onChange={(e) => setEtherAmount(e.target.value)}
+              className="popup-input"
+            /> */}
+            <div className="popup-buttons">
+              <NftMarketPlace />
+              <button className="popup-cancel-btn" onClick={handlePopupClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="listings-title-container">
         <h3 className="section-title">Your Listings</h3>
       </div>
 
       <div className="marketplace-landing-listings">
+        <FetchMyListing />
         {[...Array(5)].map((_, index) => (
           <div className="marketplace-landing-card" key={index}>
             <div className="marketplace-landing-card-image"></div>
@@ -73,7 +113,6 @@ const Landing = (props) => {
             <p className="marketplace-landing-card-title">{`Card Title ${index + 1}`}</p>
             <div className='landing-listing-btn-container'>
               {/* <button className="place-bid-btn">View Listing</button> */}
-              <NftMarketPlace />
               <button className="delete-listing-btn">Delete Listing</button>
             </div>
           </div>

@@ -66,7 +66,7 @@ const NftMarketPlace = () => {
     // console.log("My NFT" + mynft)
     // const myListings = await nftMarketplaceContract.fetchItemsListed();
     // console.log("My Listings" + myListings)
-    return <button className="place-bid-btn" onClick={listCard}>List Item</button>;
+    return <button className="hover-link" onClick={listCard}>List NFT </button>;
 };
 
 export default NftMarketPlace;
