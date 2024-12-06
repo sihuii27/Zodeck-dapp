@@ -199,11 +199,24 @@ html, body {
   margin-bottom: 10px;
 }
 
-.place-bid-btn {
+.landing-listing-btn-container{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+  flex-direction: row;
+}
+
+.place-bid-btn, .delete-listing-btn{
+  width: 120px;
+  height:40px;
   padding: 10px 15px;
   background-color: #6200ee;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
 }

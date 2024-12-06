@@ -61,7 +61,7 @@ const Landing = (props) => {
       </div>
 
       <div className="listings-title-container">
-        <h3 className="section-title">Listings you may be interested in</h3>
+        <h3 className="section-title">Your Listings</h3>
       </div>
 
       <div className="marketplace-landing-listings">
@@ -70,7 +70,10 @@ const Landing = (props) => {
             <div className="marketplace-landing-card-image"></div>
             <p className="marketplace-landing-card-price">{`Price: ${1 + index * 0.1} ETH`}</p>
             <p className="marketplace-landing-card-title">{`Card Title ${index + 1}`}</p>
-            <button className="place-bid-btn">Place Your Bid</button>
+            <div className='landing-listing-btn-container'>
+              <button className="place-bid-btn">View Listing</button>
+              <button className="delete-listing-btn">Delete Listing</button>
+            </div>
           </div>
         ))}
       </div>
