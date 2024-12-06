@@ -1,6 +1,6 @@
 const ethers = require('ethers');
 require("dotenv").config();
-const cardcss = require('./Landing.css'); 
+require('./Landing.css'); 
 
 const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
 
@@ -22,7 +22,10 @@ const priceTag = "0.0005" ;
 
 const FetchMyListing = () => {
     const listings = async () => {
-        const myListings = await nftMarketplaceContract.fetchItemsListed();
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+        const myListings = await nftMarketplaceContract.fetchItems(false);
     };
     // const listings = async () => {
     //     // Create a provider and signer
@@ -43,4 +46,4 @@ const FetchMyListing = () => {
     return listings;
 };
 
-export default NftMarketPlace;
+export default FetchMyListing;

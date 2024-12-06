@@ -22,15 +22,15 @@ function Header({account,setAccount}) {
   };
   
   //when application refreshes
-  useEffect(() => {
-    //retrieve and use data from local storage
-    const storedAcc = localStorage.getItem('Accounts');
-    //if there is account in storedAcc then setAccount will be assigned to storedAcc and setwalletConnected to true
-    if (storedAcc) {
-      setAccount(storedAcc);
-      setwalletConnected(true);
-    }
-  }, [setAccount]);
+  // useEffect(() => {
+  //   //retrieve and use data from local storage
+  //   const storedAcc = localStorage.getItem('Accounts');
+  //   //if there is account in storedAcc then setAccount will be assigned to storedAcc and setwalletConnected to true
+  //   if (storedAcc) {
+  //     setAccount(storedAcc);
+  //     setwalletConnected(true);
+  //   }
+  // }, [setAccount]);
 
   //when application refreshes
   useEffect( ()=>{
@@ -51,7 +51,7 @@ function Header({account,setAccount}) {
     // if the new account of metamask, it should not be equal to the address stored in the account previously and its length should be more than 0
     if (accounts.length>=1 && account !== account[0]){
       setAccount(account[0]);
-      localStorage.setItem('Accounts', accounts[0]);
+      //localStorage.setItem('Accounts', accounts[0]);
       setwalletConnected(true);
     }else{
       setAccount(null);      
@@ -67,12 +67,12 @@ function Header({account,setAccount}) {
         const provider = new ethers.BrowserProvider(window.ethereum); 
         //update the provider state
         setProvider(provider);
-        const storedAcc = localStorage.getItem("Accounts")
-        if (storedAcc) {
-          setAccount(storedAcc);
-          setwalletConnected(true);
-          console.log('Hi'+storedAcc);
-        }
+        //const storedAcc = localStorage.getItem("Accounts")
+        // if (storedAcc) {
+        //   setAccount(storedAcc);
+        //   setwalletConnected(true);
+        //   console.log('Hi'+storedAcc);
+        // }
         // give all the accounts
         await provider.send("eth_requestAccounts", []); 
         //current metamask account
@@ -80,8 +80,8 @@ function Header({account,setAccount}) {
         //retrieve address of account, signer is the account
         const address = await signer.getAddress();
         setAccount(address);
-        localStorage.setItem('Accounts', address);
-        console.log("My address is", address);
+        //localStorage.setItem('Accounts', address);
+        //console.log("My address is", address);
         //when wallet is connected it will be set to true
         setwalletConnected(true); 
         
