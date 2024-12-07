@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './Landing.js';
 import config from '../abi/config.json';
+import nfts from '../abi/NFTs.json';
 const ethers = require('ethers');
 require("dotenv").config();
 //require('./Landing.css'); 
@@ -14,6 +15,16 @@ const contract = require("../abi/NFTplace.json");
 const uri = "https://localhost:3000/Images/Images/"
 
 const priceTag = "0.0005" ;
+
+
+const images = nfts.image;
+const cards = nfts.cards;
+
+cards.map((cardNumber) => {
+  const imageUrl = `${images}Card${cardNumber}.png`;
+  console.log(imageUrl); 
+});
+
 
 //console.log(JSON.stringify(contract.abi));
 
