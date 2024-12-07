@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ethers } from 'ethers';
 import './Landing.css';
 import NftMarketPlace from './ListCard';
 import FetchMyListing from './FetchMyListings';
+import FetchMyNFT from './FetchMyNFT';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -10,6 +12,8 @@ const Landing = (props) => {
   const [isPopupVisible, setPopupVisible] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
   const [etherAmount, setEtherAmount] = useState('');
+  const [listings, setListings] = useState([]);
+  const [myNFT, setMyNFT] = useState([]);
 
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
@@ -51,16 +55,49 @@ const Landing = (props) => {
           Buy Card Packs
         </button>
       </div>
-      <div className='listings-title-container'>
-        <h2 className="section-title">Your Collection</h2>
-        {/* <button className="buy-card-packs-btn" onClick={handleMarketplace}>
-          View my collection
-        </button> */}
-        {/* <a href="/collection" className="go-to-collection">
-            View my collection &gt;&gt;
-        </a> */}
-      </div>
-      <div className="card-listing">
+      
+      {/* <button className="buy-card-packs-btn" onClick={handleMarketplace}>
+        View my collection
+      </button> */}
+      {/* <a href="/collection" className="go-to-collection">
+          View my collection &gt;&gt;
+      </a> */}
+
+      {/* Display if account is not null */}
+      {props.account ? (
+        <>
+          {/* Pass account and setListings to FetchMyListings */}
+          <FetchMyNFT setMyNFT={setMyNFT} />
+
+          <div className="listings-title-container">
+            <h3 className="section-title">Your Collection</h3>
+          </div>
+
+          <div className="card-listing">
+            {myNFT.length > 0 ? (
+              myNFT.map((nft, index) => (
+                <div className="card-container" key={index}>
+                  <img className="card-image"></img>
+                  
+                  <p className="card-title">{`Card Title ${index + 1}`}</p>
+                  <button
+                    className="hover-link"
+                    onClick={() => handleListToMarketplace(index)}
+                  >
+                    List to Marketplace
+                  </button>
+               
+                </div>
+              ))
+            ) : (
+              <p>No collection available</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <p>Please connect your wallet to view collection.</p>
+      )}
+      {/* <div className="card-listing">
         {collectionCards.map((card) => (
           <div className="card-container" key={card.id}>
             <img src={card.image} alt={card.title} className="card-image" />
@@ -75,7 +112,7 @@ const Landing = (props) => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       
       {/* Popup */}
       {isPopupVisible && (
@@ -99,25 +136,40 @@ const Landing = (props) => {
           </div>
         </div>
       )}
+      {/* Display if account is not null */}
+      {props.account ? (
+        <>
+          {/* Pass account and setListings to FetchMyListings */}
+          <FetchMyListing setListings={setListings} />
 
-      <div className="listings-title-container">
-        <h3 className="section-title">Your Listings</h3>
-      </div>
-
-      <div className="marketplace-landing-listings">
-        <FetchMyListing />
-        {[...Array(5)].map((_, index) => (
-          <div className="marketplace-landing-card" key={index}>
-            <div className="marketplace-landing-card-image"></div>
-            <p className="marketplace-landing-card-price">{`Price: ${1 + index * 0.1} ETH`}</p>
-            <p className="marketplace-landing-card-title">{`Card Title ${index + 1}`}</p>
-            <div className='landing-listing-btn-container'>
-              {/* <button className="place-bid-btn">View Listing</button> */}
-              <button className="delete-listing-btn">Delete Listing</button>
-            </div>
+          <div className="listings-title-container">
+            <h3 className="section-title">Your Listings</h3>
           </div>
-        ))}
-      </div>
+
+          <div className="marketplace-landing-listings">
+            {listings.length > 0 ? (
+              listings.map((listing, index) => (
+                <div className="marketplace-landing-card" key={index}>
+                  <div className="marketplace-landing-card-image"></div>
+                  <p className="marketplace-landing-card-price">
+                    {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
+                  </p>
+                  <p className="marketplace-landing-card-title">
+                    {`Card Title ${index + 1}`}
+                  </p>
+                  <div className="landing-listing-btn-container">
+                    <button className="delete-listing-btn">Delete Listing</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No listings available</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <p>Please connect your wallet to view listings.</p>
+      )}
     </div>
   );
 };

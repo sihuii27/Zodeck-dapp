@@ -4,9 +4,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "hardhat/console.sol";
 import "./safemath.sol";
-import "./ownable.sol";
 
-contract NFTplace is ERC721URIStorage, Ownable {
+contract NFTplace is ERC721URIStorage {
     uint256 private _tokenIds;
     uint256 private _itemsSold;
     uint256 listingPrice = 0.0001 ether;
@@ -53,7 +52,7 @@ contract NFTplace is ERC721URIStorage, Ownable {
     }
 
     //Marketplace
-    function createListing(uint256 tokenId, uint256 price) private onlyOwner {
+    function createListing(uint256 tokenId, uint256 price) private {
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Ether sent must be equal to listing price");
         cardToListingItem[tokenId] =  Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
@@ -112,65 +111,94 @@ contract NFTplace is ERC721URIStorage, Ownable {
         }
         return items;
     }
-    //collection of NFTs (Collection)
-    function fetchItems(bool myNFT) public view returns (Listing[] memory) {
+   
+    //msg.sender who call this function eg lister of card (Marketplace)
+    function fetchItemsListed() public view returns (Listing[] memory) {
         uint totalItemCount = _tokenIds;
         uint itemCount = 0;
         uint currentIndex = 0;
         for (uint i = 0; i < totalItemCount; i++) {
-            if (myNFT){
-                // check if nft is mine
-                if (cardToListingItem[i + 1].owner == msg.sender) {
-                    itemCount += 1;
-                }
-            } else {
-                //msg.sender who call this function eg lister of card (Marketplace)
-                if (cardToListingItem[i + 1].seller == msg.sender) {
-                    itemCount += 1;
-                }
+            if (cardToListingItem[i + 1].seller == msg.sender) {
+            itemCount += 1;
             }
         }
         Listing[] memory items = new Listing[](itemCount);
         for (uint i = 0; i < totalItemCount; i++) {
-            if (myNFT){
-                // check if nft is mine
-                if (cardToListingItem[i + 1].owner == msg.sender) {
-                    uint currentId = i + 1;
-                    Listing storage currentItem = cardToListingItem[currentId];
-                    items[currentIndex] = currentItem;
-                    currentIndex += 1;
-                }
-            } else {
-                //msg.sender who call this function eg lister of card (Marketplace)
-                if (cardToListingItem[i + 1].seller == msg.sender) {
-                    uint currentId = i + 1;
-                    Listing storage currentItem = cardToListingItem[currentId];
-                    items[currentIndex] = currentItem;
-                    currentIndex += 1;
-                }
+            if (cardToListingItem[i + 1].seller == msg.sender) {
+                uint currentId = i + 1;
+                Listing storage currentItem = cardToListingItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
             }
         }
         return items;
     }
+
+    //collection of NFTs (Collection)
+    function fetchMyNFTs() public view returns (Listing[] memory) {
+        uint totalItemCount = _tokenIds;
+        uint itemCount = 0;
+        uint currentIndex = 0;
+        for (uint i = 0; i < totalItemCount; i++) {
+        // check if nft is mine
+            if (cardToListingItem[i + 1].owner == msg.sender) {
+                itemCount += 1;
+            }
+        }
+        Listing[] memory items = new Listing[](itemCount);
+        for (uint i = 0; i < totalItemCount; i++) {
+            if (cardToListingItem[i + 1].owner == msg.sender) {
+                uint currentId = i + 1;
+                Listing storage currentItem = cardToListingItem[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+    
+
 }
-    //msg.sender who call this function eg lister of card (Marketplace)
-    // function fetchItemsListed() public view returns (Listing[] memory) {
+
+
+
+//collection of NFTs (Collection)
+    // function fetchItems(bool myNFT) public view returns (Listing[] memory) {
     //     uint totalItemCount = _tokenIds;
     //     uint itemCount = 0;
     //     uint currentIndex = 0;
     //     for (uint i = 0; i < totalItemCount; i++) {
-    //         if (cardToListingItem[i + 1].seller == msg.sender) {
-    //         itemCount += 1;
+    //         if (myNFT){
+    //             // check if nft is mine
+    //             if (cardToListingItem[i + 1].owner == msg.sender) {
+    //                 itemCount += 1;
+    //             }
+    //         } else {
+    //             //msg.sender who call this function eg lister of card (Marketplace)
+    //             if (cardToListingItem[i + 1].seller == msg.sender) {
+    //                 itemCount += 1;
+    //             }
     //         }
     //     }
     //     Listing[] memory items = new Listing[](itemCount);
     //     for (uint i = 0; i < totalItemCount; i++) {
-    //         if (cardToListingItem[i + 1].seller == msg.sender) {
-    //             uint currentId = i + 1;
-    //             Listing storage currentItem = cardToListingItem[currentId];
-    //             items[currentIndex] = currentItem;
-    //             currentIndex += 1;
+    //         if (myNFT){
+    //             // check if nft is mine
+    //             if (cardToListingItem[i + 1].owner == msg.sender) {
+    //                 uint currentId = i + 1;
+    //                 Listing storage currentItem = cardToListingItem[currentId];
+    //                 items[currentIndex] = currentItem;
+    //                 currentIndex += 1;
+    //             }
+    //         } else {
+    //             //msg.sender who call this function eg lister of card (Marketplace)
+    //             if (cardToListingItem[i + 1].seller == msg.sender) {
+    //                 uint currentId = i + 1;
+    //                 Listing storage currentItem = cardToListingItem[currentId];
+    //                 items[currentIndex] = currentItem;
+    //                 currentIndex += 1;
+    //             }
     //         }
     //     }
     //     return items;
-//}
+    // }
