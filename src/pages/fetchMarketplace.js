@@ -3,17 +3,31 @@ const ethers = require('ethers');
 require("dotenv").config();
 
 const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
-const contract = require("../abi/NFTplace.json"); // Assuming the ABI is properly imported
 
-const FetchMyListing = ({ setListings }) => {
+// For Hardhat 
+const contract = require("../abi/NFTplace.json");
+
+const uri = "https://localhost:3000/Images/Images/"
+
+const priceTag = "0.0005" ;
+
+//console.log(JSON.stringify(contract.abi));
+
+// Provider
+// const provider = new ethers.JsonRpcProvider(process.env.API_URL);
+// Signer
+// const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+// Contract
+//const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+const FetchAllListing = ({ setAllListings }) => {
     useEffect(() => {
-        const fetchListings = async () => {
+        const fetchAllList = async () => {
           try {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const myListings = await nftMarketplaceContract.fetchItemsListed(); 
-            setListings(myListings); 
+            const allListings = await nftMarketplaceContract.fetchListingMarketplace(); 
+            setAllListings(allListings); 
           } catch (error) {
             console.error("Error fetching listings", error);
           }
@@ -28,12 +42,12 @@ const FetchMyListing = ({ setListings }) => {
             nftMarketplaceContract.on('ListingCreated', async (tokenId, seller, price) => {
                 console.log(`New listing created: TokenId ${tokenId}, Seller ${seller}, Price ${price}`);
                 // Refresh the listings when a new one is created
-                fetchListings();
+                fetchAllList();
             });
         };
 
-        // Fetch initial listings
-        fetchListings();
+        // Fetch initial listings 
+        fetchAllList();
 
         // Setup the event listener for new listings
         setupEventListener();
@@ -46,9 +60,9 @@ const FetchMyListing = ({ setListings }) => {
             nftMarketplaceContract.removeAllListeners('ListingCreated');
         };
         
-    }, [setListings]);
+    }, [setAllListings]);
 
     return null; // No UI rendering
 };
 
-export default FetchMyListing;
+export default FetchAllListing;

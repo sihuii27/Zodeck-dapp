@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Marketplace.css';
+import { ethers } from 'ethers';
+import FetchAllListing from './fetchMarketplace';
 
 const Marketplace = (props) => {
+  const [alllistings, setAllListings] = useState([]);
   return (
     <>
       {/* if want to get the address of account {props.account} */}
@@ -11,8 +14,26 @@ const Marketplace = (props) => {
           <h1 className="main-title">Marketplace</h1>
           
         </div>
+        
         <div className="marketplace-listings">
-            {[
+          <FetchAllListing setAllListings={setAllListings} />
+            {alllistings.length > 0 ? (
+              alllistings.map((listing, index) => (
+                <div className="marketplace-card" key={index}>
+                  <div className="marketplace-landing-card-image"></div>
+                  <p className="card-title">
+                    {`Card Title ${index + 1}`}
+                  </p>
+                  <p className="card-price">
+                    {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
+                  </p>
+                  <button className="place-bid-btn">Place Your Bid</button>
+                </div>
+              ))
+            ) : (
+              <p>No listings available</p>
+            )}
+            {/* {[
               { image:'/cardImages/0.png', price: '1.40 ETH', title: 'Your Brain social media addiction' },
               { image:'/cardImages/1.png', price: '1.50 ETH', title: 'Land damaged by me and nature' },
               { image:'/cardImages/2.png', price: '1.32 ETH', title: 'Aurora Wave Dark Purple Magma Tone' },
@@ -30,7 +51,7 @@ const Marketplace = (props) => {
                 <p className="card-title">{listing.title}</p>
                 <button className="place-bid-btn">Place Your Bid</button>
               </div>
-            ))}
+            ))} */}
           </div>
       </div>
     </>
