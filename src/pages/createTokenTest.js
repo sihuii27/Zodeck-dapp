@@ -2,8 +2,9 @@ const ethers = require('ethers');
 require("dotenv").config();
 //require('./Landing.css'); 
 
-// const CONTRACT_ADDRESS = process.env.NFTPLACE_CONTRACT_ADDRESS;
-const CONTRACT_ADDRESS = "0x76E79e0fbfa0C3811f88111aE3169E59793010a2";
+import config from '../abi/config.json';
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;;
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
@@ -23,13 +24,16 @@ const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.ab
 
 async function main() {
   const cost = await nftMarketplaceContract.getListingPrice();
-  const tx = await nftMarketplaceContract.createToken(uri, {
-    value: cost, // cost to put listing
-    gasLimit: 500000,
-  });
-  const myitems = await nftMarketplaceContract.fetchMyNFTs();
-  console.log(myitems);
+  // const tx = await nftMarketplaceContract.createToken(uri, {
+  //   value: cost, // cost to put listing
+  //   gasLimit: 500000,
+  // });
+  // const myitems = await nftMarketplaceContract.listCard(2,ethers.parseEther(priceTag), {
+  //     value: cost, // cost to put listing
+  //     gasLimit: 500000,
+  //   });
+  // console.log(myitems);
   // const itemlist = await nftMarketplaceContract.fetchItemsListed();
-  // console.log(itemlist);
+  console.log(cost);
 }
 main();

@@ -44,7 +44,7 @@ contract NFTplace is ERC721URIStorage {
         uint256 newTokenId = _tokenIds;
         _mint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(msg.sender),0,false);
+        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(msg.sender),0,true);
         return newTokenId;
     }
     function getListingPrice() public view returns (uint256){

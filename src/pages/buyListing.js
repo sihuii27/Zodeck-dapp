@@ -1,10 +1,11 @@
 import React from 'react';
 import './Marketplace.css';
+import config from '../abi/config.json';
 const ethers = require('ethers');
 require("dotenv").config();
 
-// const CONTRACT_ADDRESS = process.env.NFTPLACE_CONTRACT_ADDRESS;
-const CONTRACT_ADDRESS = "0x76E79e0fbfa0C3811f88111aE3169E59793010a2";
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;;
 
 
 // For Hardhat 
