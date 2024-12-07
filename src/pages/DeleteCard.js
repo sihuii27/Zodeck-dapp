@@ -1,9 +1,11 @@
+import React from 'react';
+import './Marketplace.css';
 const ethers = require('ethers');
 require("dotenv").config();
-const cardcss = require('./Landing.css'); 
 
 // const CONTRACT_ADDRESS = process.env.NFTPLACE_CONTRACT_ADDRESS;
 const CONTRACT_ADDRESS = "0x76E79e0fbfa0C3811f88111aE3169E59793010a2";
+
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
@@ -20,9 +22,8 @@ const priceTag = "0.0005" ;
 // const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-
-const NftMarketPlace = ({tokenId}) => {
-    const listCard = async () => {
+const DeleteCard = ({ tokenId }) => {
+    const deleteCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
             return;
@@ -41,8 +42,8 @@ const NftMarketPlace = ({tokenId}) => {
             const marketowner = await nftMarketplaceContract.getContractOwner();
             console.log("The market owner is: " + marketowner);
 
-            const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag,'ether'), {
-                value: cost, // cost to put listing
+            const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
+                value: ethers.parseEther(priceTag), // cost to put listing
                 gasLimit: 500000,
             });
             console.log(tx);
@@ -51,23 +52,8 @@ const NftMarketPlace = ({tokenId}) => {
             alert("Transaction failed: " + error.message);
         }
     };
-    // const listings = async () => {
-    //     // Create a provider and signer
-    //     const provider = new ethers.BrowserProvider(window.ethereum);
-    //     const signer = await provider.getSigner();
-    //     const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-    //     const listings = await nftMarketplaceContract.fetchListingMarketplace();
-    //     console.log("Lisitings: " + listings)
-    // }
-    // // const purchase = await nftMarketplaceContract.purchaseCard(1, {
-    // //         value: ethers.parseUnits(priceTag,'ether'), // cost to put listing
-    // //     });
-    // // console.log("The transaction is: " + purchase);
-    // const mynft = await nftMarketplaceContract.fetchMyNFTs();
-    // console.log("My NFT" + mynft)
-    // const myListings = await nftMarketplaceContract.fetchItemsListed();
-    // console.log("My Listings" + myListings)
-    return <button className="hover-link" onClick={listCard}>List NFT </button>;
+    return <button className="hover-link" onClick={deleteCard}>Delete Listing</button>;
 };
 
-export default NftMarketPlace;
+
+export default DeleteCard;

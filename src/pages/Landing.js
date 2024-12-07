@@ -5,12 +5,13 @@ import './Landing.css';
 import NftMarketPlace from './ListCard';
 import FetchMyListing from './FetchMyListings';
 import FetchMyNFT from './FetchMyNFT';
+import DeleteCard from './DeleteCard';
 
 const Landing = (props) => {
   const navigate = useNavigate();
 
   const [isPopupVisible, setPopupVisible] = useState(false);
-  const [selectedCardId, setSelectedCardId] = useState(null);
+  const [selectedCardId, setSelectedCardId] = useState([null]);
   const [etherAmount, setEtherAmount] = useState('');
   const [listings, setListings] = useState([]);
   const [myNFT, setMyNFT] = useState([]);
@@ -79,14 +80,14 @@ const Landing = (props) => {
                 <div className="card-container" key={index}>
                   <img className="card-image"></img>
                   
-                  <p className="card-title">{`Card Title ${index + 1}`}</p>
+                  <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
                   <button
                     className="hover-link"
-                    onClick={() => handleListToMarketplace(index)}
+                    onClick={() => handleListToMarketplace(nft.tokenId)}
                   >
                     List to Marketplace
                   </button>
-               
+                
                 </div>
               ))
             ) : (
@@ -128,7 +129,7 @@ const Landing = (props) => {
               className="popup-input"
             /> */}
             <div className="popup-buttons">
-              <NftMarketPlace />
+              <NftMarketPlace/>
               <button className="popup-cancel-btn" onClick={handlePopupClose}>
                 Cancel
               </button>
@@ -150,15 +151,16 @@ const Landing = (props) => {
             {listings.length > 0 ? (
               listings.map((listing, index) => (
                 <div className="marketplace-landing-card" key={index}>
-                  <div className="marketplace-landing-card-image"></div>
+                  <div className="marketplace-landing-card-image"><img src={listing.uri} alt="Description" />
+                  </div>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
                   <p className="marketplace-landing-card-title">
-                    {`Card Title ${index + 1}`}
+                    {`Card Title ${listing.tokenId}`}
                   </p>
                   <div className="landing-listing-btn-container">
-                    <button className="delete-listing-btn">Delete Listing</button>
+                    <DeleteCard tokenId={listing.tokenId} />
                   </div>
                 </div>
               ))

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './Marketplace.css';
 import { ethers } from 'ethers';
 import FetchAllListing from './fetchMarketplace';
+import PurchaseCard from './buyListing';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
+  
   return (
     <>
       {/* if want to get the address of account {props.account} */}
@@ -16,18 +18,19 @@ const Marketplace = (props) => {
         </div>
         
         <div className="marketplace-listings">
-          <FetchAllListing setAllListings={setAllListings} />
+        <FetchAllListing setAllListings={setAllListings} />
             {alllistings.length > 0 ? (
               alllistings.map((listing, index) => (
                 <div className="marketplace-card" key={index}>
                   <div className="marketplace-landing-card-image"></div>
                   <p className="card-title">
-                    {`Card Title ${index + 1}`}
+                    {`Card Title ${listing.tokenId}`}
                   </p>
                   <p className="card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
+                    {listing.tokenId}
                   </p>
-                  <button className="place-bid-btn">Place Your Bid</button>
+                  <PurchaseCard tokenId={listing.tokenId} />
                 </div>
               ))
             ) : (

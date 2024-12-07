@@ -5,7 +5,8 @@ require("dotenv").config();
 //require('./Landing.css'); 
  
 
-const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
+// const CONTRACT_ADDRESS = process.env.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = "0x76E79e0fbfa0C3811f88111aE3169E59793010a2";
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
@@ -47,7 +48,7 @@ export default FetchMyNFT;
 
 // async function main() {
 //   const cost = await nftMarketplaceContract.getListingPrice();
-//   const tx = await nftMarketplaceContract.createToken(uri, ethers.parseUnits(priceTag,'ether'), {
+//   const tx = await nftMarketplaceContract.createToken(uri), {
 //     value: cost, // cost to put listing
 //     gasLimit: 500000,
 // });

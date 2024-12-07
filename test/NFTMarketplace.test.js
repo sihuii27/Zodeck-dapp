@@ -28,7 +28,7 @@ describe("NFTPlace", function () {
       const tokenURI = "https://example.com/token1";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI, {
         value: ethers.parseEther("0.0001"),
       });
 
@@ -45,7 +45,7 @@ describe("NFTPlace", function () {
       const price = ethers.parseEther("1");
 
       await expect(
-        nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+        nftMarketplace.connect(addr1).createToken(tokenURI, {
           value: ethers.parseEther("0.0002"), // Incorrect listing price
         })
       ).to.be.revertedWith("Ether sent must be equal to listing price");
@@ -57,7 +57,7 @@ describe("NFTPlace", function () {
       const tokenURI = "https://example.com/token1";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI, {
         value: ethers.parseEther("0.0001"),
       });
 
@@ -77,7 +77,7 @@ describe("NFTPlace", function () {
       const tokenURI = "https://example.com/token1";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI, {
         value: ethers.parseEther("0.0001"),
       });
 
@@ -95,10 +95,10 @@ describe("NFTPlace", function () {
       const tokenURI2 = "https://example.com/token2";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI1, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI1, {
         value: ethers.parseEther("0.0001"),
       });
-      await nftMarketplace.connect(addr1).createToken(tokenURI2, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI2, {
         value: ethers.parseEther("0.0001"),
       });
 
@@ -110,7 +110,7 @@ describe("NFTPlace", function () {
       const tokenURI = "https://example.com/token1";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI, {
         value: ethers.parseEther("0.0001"),
       });
       await nftMarketplace.connect(addr2).purchaseCard(1, {
@@ -126,7 +126,7 @@ describe("NFTPlace", function () {
       const tokenURI = "https://example.com/token1";
       const price = ethers.parseEther("1");
 
-      await nftMarketplace.connect(addr1).createToken(tokenURI, price, {
+      await nftMarketplace.connect(addr1).createToken(tokenURI, {
         value: ethers.parseEther("0.0001"),
       });
 
@@ -157,7 +157,7 @@ describe("NFTPlace", function () {
 //         const tokenURI = "https://example.com/token1";
 //         const price = ethers.parseEther("1");
 //         const listingPrice = ethers.parseEther("0.0001");
-//         await nftMarketplace.connect(addr1).createToken(tokenURI, price, { value: listingPrice });
+//         await nftMarketplace.connect(addr1).createToken(tokenURI, { value: listingPrice });
 //         const tokenId = 1;
 
 //         let listing = await nftMarketplace.fetchListingMarketplace();

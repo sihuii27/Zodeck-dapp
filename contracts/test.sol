@@ -9,7 +9,7 @@ contract NFTplace is ERC721URIStorage {
     uint256 private _tokenIds;
     uint256 private _itemsSold;
     uint256 listingPrice = 0.0001 ether;
-    address payable owner;
+    address payable contract_owner;
     using SafeMath for uint256;
 
     mapping(uint256 => Listing) private cardToListingItem;
@@ -33,29 +33,32 @@ contract NFTplace is ERC721URIStorage {
         address seller
     );
     
-    constructor() ERC721("Metaverse Tokens", "METT") {
-        owner = payable(msg.sender);
+    constructor() ERC721("Zodeck Cards", "ZDK") {
+        contract_owner = payable(msg.sender);
     }
-    function getOwner() public view returns (address) {
-        return owner;
+    function getContractOwner() public view returns (address) {
+        return contract_owner;
     }
-    function createToken(string memory tokenURI, uint256 price) public payable returns (uint) {
+    function createToken(string memory tokenURI) public payable returns (uint) {
         _tokenIds = _tokenIds.add(1);
         uint256 newTokenId = _tokenIds;
         _mint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        createListing(newTokenId, price);
+        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(msg.sender),0,false);
         return newTokenId;
     }
     function getListingPrice() public view returns (uint256){
         return listingPrice;
+    }
+    function listCard(uint256 tokenId, uint256 price) public payable  {
+        createListing(tokenId, price);
     }
 
     //Marketplace
     function createListing(uint256 tokenId, uint256 price) private {
         require(price > 0, "Price must be at least 1 wei");
         require(msg.value == listingPrice, "Ether sent must be equal to listing price");
-        cardToListingItem[tokenId] =  Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
+        cardToListingItem[tokenId] = Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
         _transfer(msg.sender, address(this), tokenId);
         emit ListingCreated(tokenId,msg.sender,address(this),price,false);
     }
@@ -90,7 +93,7 @@ contract NFTplace is ERC721URIStorage {
         _transfer(address(this), msg.sender, tokenId);
         //collect money from buyer
         //owner is NFT marketplace
-        payable(owner).transfer(listingPrice);
+        payable(contract_owner).transfer(listingPrice);
         //creator is lister of card == seller
         payable(creator).transfer(msg.value);
     }
@@ -106,12 +109,12 @@ contract NFTplace is ERC721URIStorage {
                 uint currentId = i + 1;
                 Listing storage currentItem = cardToListingItem[currentId];
                 items[currentIndex] = currentItem;
-                currentIndex.add(1);
+                currentIndex = currentIndex.add(1);
             }
         }
         return items;
     }
-   
+
     //msg.sender who call this function eg lister of card (Marketplace)
     function fetchItemsListed() public view returns (Listing[] memory) {
         uint totalItemCount = _tokenIds;
@@ -119,7 +122,7 @@ contract NFTplace is ERC721URIStorage {
         uint currentIndex = 0;
         for (uint i = 0; i < totalItemCount; i++) {
             if (cardToListingItem[i + 1].seller == msg.sender) {
-            itemCount += 1;
+                itemCount = itemCount.add(1);
             }
         }
         Listing[] memory items = new Listing[](itemCount);
@@ -128,7 +131,7 @@ contract NFTplace is ERC721URIStorage {
                 uint currentId = i + 1;
                 Listing storage currentItem = cardToListingItem[currentId];
                 items[currentIndex] = currentItem;
-                currentIndex += 1;
+                currentIndex = currentIndex.add(1);
             }
         }
         return items;
@@ -142,7 +145,7 @@ contract NFTplace is ERC721URIStorage {
         for (uint i = 0; i < totalItemCount; i++) {
         // check if nft is mine
             if (cardToListingItem[i + 1].owner == msg.sender) {
-                itemCount += 1;
+                itemCount = itemCount.add(1);
             }
         }
         Listing[] memory items = new Listing[](itemCount);
@@ -151,7 +154,7 @@ contract NFTplace is ERC721URIStorage {
                 uint currentId = i + 1;
                 Listing storage currentItem = cardToListingItem[currentId];
                 items[currentIndex] = currentItem;
-                currentIndex += 1;
+                currentIndex = currentIndex.add(1);
             }
         }
         return items;

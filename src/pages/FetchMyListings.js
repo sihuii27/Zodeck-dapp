@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 const ethers = require('ethers');
 require("dotenv").config();
 
-const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
+// const CONTRACT_ADDRESS = process.env.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = "0x76E79e0fbfa0C3811f88111aE3169E59793010a2";
 const contract = require("../abi/NFTplace.json"); // Assuming the ABI is properly imported
 
 const FetchMyListing = ({ setListings }) => {

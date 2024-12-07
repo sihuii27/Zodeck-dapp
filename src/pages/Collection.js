@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Collection.css';
 import { useNavigate } from 'react-router-dom';
+import FetchMyNFT from './FetchMyNFT';
 
 const Collection = (props) => {
     const navigate = useNavigate();
@@ -34,8 +35,9 @@ const Collection = (props) => {
             <div className='title-container'>
                 <h1 className="main-title">Collections</h1>
             </div>
+            {/* <FetchMyNFT setMyNFT={setMyNFT} /> */}
             <div className='collections-content'>
-                {collectionCards.map((listing) => (
+                {collectionCards.map((listing, index) => (
                     <div 
                         className="collections-card" 
                         key={listing.id}
