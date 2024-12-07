@@ -23,31 +23,34 @@ const priceTag = "0.0005" ;
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-const FetchMyListing = ({ setListings }) => {
+const FetchMyNFT = ({ setMyNFT }) => {
     useEffect(() => {
-        const fetchListings = async () => {
+        const fetchmyNFT = async () => {
           try {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const myListings = await nftMarketplaceContract.fetchItemsListed(); 
+            const nft = await nftMarketplaceContract.fetchMyNFTs(); 
             // Store the fetched listings in state
-            setListings(myListings); 
+            setMyNFT(nft); 
           } catch (error) {
             console.error("Error in fetch listing", error);
           }
     };
-        fetchListings();
-        
-    }, [setListings]);
+      fetchmyNFT();
+    }, [setMyNFT]);
     //no need display the logic, just the ui
     return ( null );
 };
 
-export default FetchMyListing;
+export default FetchMyNFT;
 
 // async function main() {
-//     const myListings = await nftMarketplaceContract.fetchItemsListed(); 
-//     console.log(myListings)
+//   const cost = await nftMarketplaceContract.getListingPrice();
+//   const tx = await nftMarketplaceContract.createToken(uri, ethers.parseUnits(priceTag,'ether'), {
+//     value: cost, // cost to put listing
+//     gasLimit: 500000,
+// });
+// console.log(tx);
 // }
 // main();
