@@ -4,7 +4,7 @@ require("dotenv").config();
 
 import config from '../abi/config.json';
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;;
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");

@@ -3,7 +3,7 @@ import './Cardpack.css';
 
 import config from '../abi/config.json';
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;;
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 const AMOUNT_IN_ETHER = "0.0001"; // Amount to send
 
 const BuyPackButton = () => {

@@ -5,7 +5,7 @@ const ethers = require('ethers');
 require("dotenv").config();
 
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;;
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 
 // For Hardhat 
