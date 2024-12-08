@@ -39,12 +39,12 @@ contract NFTplace is ERC721URIStorage {
     function getContractOwner() public view returns (address) {
         return contract_owner;
     }
-    function createToken(string memory tokenURI) public payable returns (uint) {
+    function createToken(string memory tokenURI, address recipient) public payable returns (uint) {
         _tokenIds = _tokenIds.add(1);
         uint256 newTokenId = _tokenIds;
-        _mint(msg.sender, newTokenId);
+        _mint(recipient, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(msg.sender),0,true);
+        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(recipient),0,true);
         return newTokenId;
     }
     function getListingPrice() public view returns (uint256){

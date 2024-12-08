@@ -25,20 +25,21 @@ const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.ab
 async function main() {
   const cost = await nftMarketplaceContract.getListingPrice();
   console.log(cost);
-  // const tx = await nftMarketplaceContract.createToken(uri, {
-  //   value: cost, // cost to put listing
-  //   gasLimit: 500000,
-  // });
+  const tx = await nftMarketplaceContract.createToken(uri, {
+    // value: cost, // cost to put listing
+    gasLimit: 500000,
+  });
+
   // const myitems = await nftMarketplaceContract.listCard(2,ethers.parseEther(priceTag), {
   //     value: cost, // cost to put listing
   //     gasLimit: 500000,
   //   });
   // console.log(myitems);
   // const itemlist = await nftMarketplaceContract.fetchItemsListed();
-  const listings = await nftMarketplaceContract.fetchListingMarketplace();
+  // const listings = await nftMarketplaceContract.fetchListingMarketplace();
   // const tokenId = 7n;
   // const thisListing = listings.find(result => result[0] === tokenId);
-  console.log(listings);
+  // console.log(listings);
   // const priceTag = thisListing[3];
   // console.log(priceTag);
   // console.log("The priceTag is: " + priceTag);
