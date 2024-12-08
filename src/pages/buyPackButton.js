@@ -1,10 +1,14 @@
 import { ethers } from "ethers";
+import { useNavigate } from "react-router-dom";
+import { mintNewCards } from './fetchMintedCards';
 import './Cardpack.css';
 
 const CONTRACT_ADDRESS = "0xBCbD8BEb7f025451C53e2E040D60A9dD0b1788aD";
 const AMOUNT_IN_ETHER = "0.0001"; // Amount to send
 
 const BuyPackButton = () => {
+    const navigate = useNavigate();
+
     const sendEtherToContract = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -34,6 +38,11 @@ const BuyPackButton = () => {
             const receipt = await transactionResponse.wait();
             console.log("Transaction mined:", receipt);
             alert("Transaction successful!");
+
+            // Mint new cards
+            await mintNewCards();
+            navigate("/cardpackresults");
+            
         } catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);
