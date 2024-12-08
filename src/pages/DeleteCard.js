@@ -12,7 +12,7 @@ const contract = require("../abi/NFTplace.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
-const priceTag = "0.0005" ;
+// const priceTag = "0.0005" ;
 
 //console.log(JSON.stringify(contract.abi));
 
@@ -37,13 +37,15 @@ const DeleteCard = ({ tokenId }) => {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const cost = await nftMarketplaceContract.getListingPrice();
-            console.log("The cost is: " + cost);
-            const marketowner = await nftMarketplaceContract.getContractOwner();
-            console.log("The market owner is: " + marketowner);
+            
+            // fetch all listings in marketplace
+            const listings = await nftMarketplaceContract.fetchListingMarketplace();
+            // find listing that matches the selected tokenId
+            const thisListing = listings.find(result => result[0] === tokenId);
+            const priceTag = thisListing[3]; // price tag for buying the card in wei
 
             const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
-                value: ethers.parseEther(priceTag), // cost to put listing
+                value: priceTag, // pay price tag 
                 gasLimit: 500000,
             });
             console.log(tx);

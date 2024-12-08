@@ -37,10 +37,10 @@ const NftMarketPlace = ({ tokenId, priceTag, closePopup }) => {
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
             const marketowner = await nftMarketplaceContract.getContractOwner();
             console.log("The market owner is: " + marketowner);
-            const priceInWei = ethers.parseUnits(priceTag, 'ether');            
+            const cost = await nftMarketplaceContract.getListingPrice();        
 
             const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag, 'ether'), {
-                value: priceInWei, // cost to put listing
+                value: cost, // cost to put listing
                 gasLimit: 500000,
             });
             console.log(tx);
