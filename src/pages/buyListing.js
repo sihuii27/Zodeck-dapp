@@ -24,38 +24,38 @@ const priceTag = "0.0005" ;
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 const PurchaseCard = ({ tokenId }) => {
-    const buyCard = async () => {
-        if (!window.ethereum) {
-            alert("Please install MetaMask to interact with the dApp.");
-            return;
-        }
+  const buyCard = async () => {
+      if (!window.ethereum) {
+          alert("Please install MetaMask to interact with the dApp.");
+          return;
+      }
 
-        try {
-            // Request account access if needed
-            await window.ethereum.request({ method: "eth_requestAccounts" });
+      try {
+          // Request account access if needed
+          await window.ethereum.request({ method: "eth_requestAccounts" });
 
-            // Create a provider and signer
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const cost = await nftMarketplaceContract.getListingPrice();
-            console.log("The cost is: " + cost);
-            const marketowner = await nftMarketplaceContract.getContractOwner();
-            console.log("The market owner is: " + marketowner);
+          // Create a provider and signer
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const signer = await provider.getSigner();
+          const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+          
+          // fetch all listings in marketplace
+          const listings = await nftMarketplaceContract.fetchListingMarketplace();
+          // find listing that matches the selected tokenId
+          const thisListing = listings.find(result => result[0] === tokenId);
+          const priceTag = thisListing[3]; // price tag for buying the card in wei
 
-            const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
-                value: ethers.parseEther(priceTag), // cost to put listing
-                gasLimit: 500000,
-            });
-            console.log(tx);
-            alert("Transaction successful!");
-            
-        }catch (error) {
-            console.error("Error sending Ether:", error);
-            alert("Transaction failed: " + error.message);
-        }
-    };
-    return <button className="hover-link" onClick={buyCard}>Purchase NFT</button>;
+          const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
+              value: priceTag, // pay price tag 
+              gasLimit: 500000,
+          });
+          console.log(tx);
+      }catch (error) {
+          console.error("Error sending Ether:", error);
+          alert("Transaction failed: " + error.message);
+      }
+  };
+  return <button className="hover-link" onClick={buyCard}>Purchase Card</button>;
 };
 
 
