@@ -57,7 +57,6 @@ contract NFTplace is ERC721URIStorage {
     //Marketplace
     function createListing(uint256 tokenId, uint256 price) private {
         require(price > 0, "Price must be at least 1 wei");
-        require(msg.value == listingPrice, "Ether sent must be equal to listing price");
         cardToListingItem[tokenId] = Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
         _transfer(msg.sender, address(this), tokenId);
         emit ListingCreated(tokenId,msg.sender,address(this),price,false);
