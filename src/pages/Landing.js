@@ -35,16 +35,9 @@ const Landing = (props) => {
     handlePopupClose();
   };
 
-  const collectionCards = [
-    { id: 1, title: 'Card 1', image: '/logo512.png' },
-    { id: 2, title: 'Card 2', image: 'https://via.placeholder.com/150' },
-    { id: 3, title: 'Card 3', image: 'https://via.placeholder.com/150' },
-    { id: 4, title: 'Card 4', image: 'https://via.placeholder.com/150' },
-    { id: 5, title: 'Card 5', image: 'https://via.placeholder.com/150' },
-  ];
-
   return (
     <div className="landing-container">
+      {/* {loading && <div className="loading-indicator">Loading...</div>} */}
       <div className="title-container">
         <h1 className="main-title">Zodeck, satisfy your card collecting itch here</h1>
         <button className="buy-card-packs-btn" onClick={handleBuyCardPacks}>
@@ -52,30 +45,23 @@ const Landing = (props) => {
         </button>
       </div>
       <div className="title-container">
-        <h4 className="account">Connected to: {props.account}</h4>
+        {props.account ? (<h4 className="account">Connected to: {props.account}</h4>):(<p></p>)}
       </div>
-      {/* <button className="buy-card-packs-btn" onClick={handleMarketplace}>
-        View my collection
-      </button> */}
-      {/* <a href="/collection" className="go-to-collection">
-          View my collection &gt;&gt;
-      </a> */}
-
-      {/* Display if account is not null */}
+      
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyNFT setMyNFT={setMyNFT} />
+          <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading}/>
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
           </div>
 
-          <div className="card-listing">
+          <div className="landing-listings">
             {myNFT.length > 0 ? (
               myNFT.map((nft, index) => (
-                <div className="card-container" key={index}>
-                  <img className="card-image"></img>
+                <div className="landing-card" key={index}>
+                  <img className="landing-card-image "></img>
                   
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
                   <button
@@ -92,12 +78,12 @@ const Landing = (props) => {
                 </div>
               ))
             ) : (
-              <p>No collection available</p>
+              <p className="section-text">No collection available</p>
             )}
           </div>
         </>
       ) : (
-        <p>Please connect your wallet to view collection.</p>
+        <p className="section-no-connect">Please connect your wallet to view collection.</p>
       )}
       
       {/* Popup */}
@@ -114,10 +100,7 @@ const Landing = (props) => {
               onChange={(e) => setEtherAmount(e.target.value)}
               className="popup-input"
             />
-            <div className="popup-buttons">
-            {console.log("Selected Card ID:", selectedCardId)}
-            {console.log("Price Tag (Ether):", etherAmount)}
-        
+            <div className="popup-buttons">        
               <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount} closePopup={handlePopupClose}/>
               <button className="popup-cancel-btn" onClick={handlePopupClose}>
                 Cancel
@@ -130,17 +113,17 @@ const Landing = (props) => {
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyListing setListings={setListings} />
+          <FetchMyListing setListings={setListings} setloading={setloading}/>
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Listings</h3>
           </div>
 
-          <div className="marketplace-landing-listings">
+          <div className="landing-listings">
             {listings.length > 0 ? (
               listings.map((listing, index) => (
-                <div className="marketplace-landing-card" key={index}>
-                  <div className="marketplace-landing-card-image"><img src={listing.uri} alt="Description" />
+                <div className="landing-card" key={index}>
+                  <div className="landing-card-image "><img src={listing.uri} alt="Description" />
                   </div>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
@@ -154,12 +137,12 @@ const Landing = (props) => {
                 </div>
               ))
             ) : (
-              <p>No listings available</p>
+              <p className="section-text">No listings available</p>
             )}
           </div>
         </>
       ) : (
-        <p>Please connect your wallet to view listings.</p>
+        <p className="section-no-connect">Please connect your wallet to view listings.</p>
       )}
     </div>
   );

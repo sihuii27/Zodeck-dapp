@@ -6,19 +6,19 @@ import PurchaseCard from './buyListing';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
+  const [loading, setloading] = useState(false);
   
   return (
     <>
       {/* if want to get the address of account {props.account} */}
-      <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
       <div className="marketplace-container">
+        <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
         <div className="title-container">
-          <h1 className="main-title">Marketplace</h1>
-          
+          <h1 className="main-title">Marketplace</h1>          
         </div>
         
         <div className="marketplace-listings">
-        <FetchAllListing setAllListings={setAllListings} />
+        <FetchAllListing setAllListings={setAllListings} setloading={setloading} />
             {alllistings.length > 0 ? (
               alllistings.map((listing, index) => (
                 <div className="marketplace-card" key={index}>

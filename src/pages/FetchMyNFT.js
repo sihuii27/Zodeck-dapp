@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Landing.js';
 import config from '../abi/config.json';
 
@@ -12,49 +12,52 @@ const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
 
-const priceTag = "0.0005" ;
-
+const priceTag = "0.0005";
 
 const baseURI = "ipfs://bafybeict2kq6gt4ikgulypt7h7nwj4hmfi2kevrqvnx2osibfulyy5x3hu/";
 
+const FetchMyNFT = ({ setMyNFT, setloading }) => {
+  const fetchmyNFT = useCallback(async () => {
+    try {
+      //start loading when fetching
+      setloading(true); 
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+      
+      const nft = await nftMarketplaceContract.fetchMyNFTs();
+      // Store the fetched listings in state
+      setMyNFT(nft);
+    } catch (error) {
+      console.error("Error in fetch listing", error);
+    }
+    finally {
+      setloading(false); // Ensure loading is false after fetch
+    }
+  }, [setMyNFT, setloading]);
 
-//console.log(JSON.stringify(contract.abi));
+  useEffect(() => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, provider);
 
-// Provider
-//const provider = new ethers.JsonRpcProvider(process.env.API_URL);
-// Signer
-//const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-// Contract
-//const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+    // fetch NFTs
+    fetchmyNFT();
 
-const FetchMyNFT = ({ setMyNFT }) => {
-    useEffect(() => {
-        const fetchmyNFT = async () => {
-          try {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const nft = await nftMarketplaceContract.fetchMyNFTs(); 
-            // Store the fetched listings in state
-            setMyNFT(nft); 
-          } catch (error) {
-            console.error("Error in fetch listing", error);
-          }
-    };
+    // when transfer event is triggered by nft contract, fetch my nfts
+    const handleNFTUpdate = async () => {
+      console.log("NFT data changed, refreshing...");
       fetchmyNFT();
-    }, [setMyNFT]);
-    //no need display the logic, just the ui
-    return ( null );
+    };
+    nftMarketplaceContract.on("Transfer", handleNFTUpdate);
+
+    // remove event listeners so that previous listeners will not persist
+    return () => {
+      nftMarketplaceContract.off("Transfer", handleNFTUpdate);
+    };
+  }, [fetchmyNFT]);
+
+  //no need display the logic, just the ui
+  return (null);
 };
 
 export default FetchMyNFT;
-
-// async function main() {
-//   const cost = await nftMarketplaceContract.getListingPrice();
-//   const tx = await nftMarketplaceContract.createToken(uri), {
-//     value: cost, // cost to put listing
-//     gasLimit: 500000,
-// });
-// console.log(tx);
-// }
-// main();

@@ -112,6 +112,19 @@ html, body {
   margin-bottom: 20px;
 }
 
+.section-text {
+  text-align: left;
+  color: #333;
+  margin: 0;
+  margin-left: 40px;
+  margin-bottom: 20px;
+}
+
+.section-no-connect {
+  text-align: center;
+  color: #333;
+}
+
 .go-to-marketplace {
   font-weight: bold;
   color: #6200ee;
@@ -142,7 +155,7 @@ html, body {
 }
 
 /* Marketplace Listings */
-.marketplace-landing-listings, .card-listing {
+.landing-listings {
   display: flex;
   gap: 20px;
   overflow-x: auto;
@@ -150,7 +163,7 @@ html, body {
   margin-left: 40px;
 }
 
-.marketplace-landing-card, .card-container {
+.landing-card {
   background-color: #fff;
   padding: 10px;
   border-radius: 0px;
@@ -163,7 +176,7 @@ html, body {
   display: flex;
 }
 
-.marketplace-landing-card-image, .card-image {
+.landing-card-image {
   width: 100%;
   height: 50%;
   background-color: #e0e0e0;
