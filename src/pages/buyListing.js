@@ -48,6 +48,8 @@ const PurchaseCard = ({ tokenId }) => {
                 gasLimit: 500000,
             });
             console.log(tx);
+            alert("Transaction successful!");
+            
         }catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);

@@ -99,22 +99,6 @@ const Landing = (props) => {
       ) : (
         <p>Please connect your wallet to view collection.</p>
       )}
-      {/* <div className="card-listing">
-        {collectionCards.map((card) => (
-          <div className="card-container" key={card.id}>
-            <img src={card.image} alt={card.title} className="card-image" />
-            <div className="card-overlay">
-              <p className="card-title">{card.title}</p>
-              <button
-                className="hover-link"
-                onClick={() => handleListToMarketplace(card.id)}
-              >
-                List to Marketplace
-              </button>
-            </div>
-          </div>
-        ))}
-      </div> */}
       
       {/* Popup */}
       {isPopupVisible && (
@@ -133,8 +117,8 @@ const Landing = (props) => {
             <div className="popup-buttons">
             {console.log("Selected Card ID:", selectedCardId)}
             {console.log("Price Tag (Ether):", etherAmount)}
-
-              <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount}/>
+        
+              <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount} closePopup={handlePopupClose}/>
               <button className="popup-cancel-btn" onClick={handlePopupClose}>
                 Cancel
               </button>

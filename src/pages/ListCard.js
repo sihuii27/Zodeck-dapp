@@ -20,7 +20,7 @@ const uri = "https://localhost:3000/Images/Images/"
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-const NftMarketPlace = ({ tokenId, priceTag }) => {
+const NftMarketPlace = ({ tokenId, priceTag, closePopup }) => {
     const listCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -37,20 +37,22 @@ const NftMarketPlace = ({ tokenId, priceTag }) => {
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
             const marketowner = await nftMarketplaceContract.getContractOwner();
             console.log("The market owner is: " + marketowner);
+            const priceInWei = ethers.parseUnits(priceTag, 'ether');            
 
             const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag, 'ether'), {
-                value: priceTag, // cost to put listing
+                value: priceInWei, // cost to put listing
                 gasLimit: 500000,
             });
             console.log(tx);
 
             // Send the transaction
-            const transactionResponse = await signer.sendTransaction(tx);
-            console.log("Transaction sent:", transactionResponse);
+            // const transactionResponse = await signer.sendTransaction(tx);
+            // console.log("Transaction sent:", transactionResponse);
 
-            // Wait for the transaction to be mined
-            const receipt = await transactionResponse.wait();
-            console.log("Transaction mined:", receipt);
+            // // Wait for the transaction to be mined
+            // const receipt = await transactionResponse.wait();
+            // console.log("Transaction mined:", receipt);
+            closePopup();
             alert("Transaction successful!");
 
         } catch (error) {
