@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';
 import './Landing.css';
@@ -16,6 +16,7 @@ const Landing = (props) => {
   const [listings, setListings] = useState([]);
   const [myNFT, setMyNFT] = useState([]);
   const [loading, setloading] = useState(false);
+  const [account, setAccount] = useState(props.account);
 
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
@@ -30,11 +31,19 @@ const Landing = (props) => {
     setEtherAmount(''); 
   };
 
-  const handleListSubmit = () => {
-    console.log(`Listing card with ID ${selectedCardId} for ${etherAmount} ETH.`);
-    handlePopupClose();
-  };
-
+  // Fetch NFTs and listings when the account changes
+  useEffect(() => {
+    if (props.account) {
+      setAccount(props.account); 
+      console.log('Fetching data...');
+      //set it to be empty
+      setMyNFT([]); 
+      //set it to be empty
+      setListings([]); 
+      setloading(true); 
+    }
+  }, [props.account]);
+  
   return (
     <div className="landing-container">
       {/* {loading && <div className="loading-indicator">Loading...</div>} */}
@@ -51,7 +60,7 @@ const Landing = (props) => {
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading}/>
+          <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} account={account}/>
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
@@ -113,7 +122,7 @@ const Landing = (props) => {
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyListing setListings={setListings} setloading={setloading}/>
+          <FetchMyListing setListings={setListings} setloading={setloading} account={account}/>
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Listings</h3>

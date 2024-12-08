@@ -268,3 +268,7 @@ html, body {
 .popup-cancel-btn:hover {
   background-color: #bbb;
 }
+
+.loading-spinner{
+  text-align: right;
+}

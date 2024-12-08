@@ -8,6 +8,7 @@ const Collection = (props) => {
     const navigate = useNavigate();
     const [selectedCard, setSelectedCard] = useState(null);
     const [myNFT, setMyNFT] = useState([]);
+    const [loading, setloading] = useState(false);
 
     // const collectionCards = [
     //     { id: 1, title: 'Card Title 1', image: '/cardImages/0.png' },
@@ -38,7 +39,7 @@ const Collection = (props) => {
                 <div className='title-container'>
                     <h1 className="main-title">Collections</h1>
                 </div>
-                <FetchMyNFT setMyNFT={setMyNFT} />
+                <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} />
                 <div className='collections-content'>
                     {myNFT.length > 0 ? (
                         myNFT.map((nft, index) => (

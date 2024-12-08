@@ -16,7 +16,7 @@ const priceTag = "0.0005";
 
 const baseURI = "ipfs://bafybeict2kq6gt4ikgulypt7h7nwj4hmfi2kevrqvnx2osibfulyy5x3hu/";
 
-const FetchMyNFT = ({ setMyNFT, setloading }) => {
+const FetchMyNFT = ({ setMyNFT, setloading, account }) => {
   const fetchmyNFT = useCallback(async () => {
     try {
       //start loading when fetching
@@ -34,7 +34,7 @@ const FetchMyNFT = ({ setMyNFT, setloading }) => {
     finally {
       setloading(false); // Ensure loading is false after fetch
     }
-  }, [setMyNFT, setloading]);
+  }, [setMyNFT, setloading, account]);
 
   useEffect(() => {
     const provider = new ethers.BrowserProvider(window.ethereum);

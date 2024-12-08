@@ -7,7 +7,7 @@ require("dotenv").config();
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 const contract = require("../abi/NFTplace.json"); // Assuming the ABI is properly imported
 
-const FetchMyListing = ({ setListings, setloading }) => {
+const FetchMyListing = ({ setListings, setloading, account }) => {
   const fetchListings = useCallback(async () => {
     try {
       setloading(true);
@@ -25,7 +25,7 @@ const FetchMyListing = ({ setListings, setloading }) => {
     finally {
       setloading(false); // Ensure loading is false after fetch
     }
-  }, [setListings,setloading]);
+  }, [setListings,setloading, account]);
 
   useEffect(() => {
     const provider = new ethers.BrowserProvider(window.ethereum);
