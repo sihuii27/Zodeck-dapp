@@ -2,7 +2,7 @@ const ethers = require('ethers');
 require("dotenv").config();
 //require('./Landing.css'); 
 
-import config from '../abi/config.json';
+const config = require('../abi/config.json');
 
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
@@ -24,16 +24,15 @@ const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.ab
 
 async function main() {
   const cost = await nftMarketplaceContract.getListingPrice();
-  // const tx = await nftMarketplaceContract.createToken(uri, {
-  //   value: cost, // cost to put listing
-  //   gasLimit: 500000,
-  // });
+  const tx = await nftMarketplaceContract.createToken(uri, {
+    value: cost, // cost to put listing
+    gasLimit: 500000,
+  });
   // const myitems = await nftMarketplaceContract.listCard(2,ethers.parseEther(priceTag), {
   //     value: cost, // cost to put listing
   //     gasLimit: 500000,
   //   });
   // console.log(myitems);
   // const itemlist = await nftMarketplaceContract.fetchItemsListed();
-  console.log(cost);
 }
 main();

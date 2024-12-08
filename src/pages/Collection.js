@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Collection.css';
 import { useNavigate } from 'react-router-dom';
 import FetchMyNFT from './FetchMyNFT';
+import PurchaseCard from './buyListing';
 
 const Collection = (props) => {
     const navigate = useNavigate();
@@ -24,10 +25,10 @@ const Collection = (props) => {
     //     { id: 13, title: 'Card Title 13', image: '/cardImages/0.png' },
     // ];
 
-    const handleViewCard = (listing) => {
-        setSelectedCard(listing);
-        navigate(`/collection/card/${listing.id}`, { state: { card: listing } });
-    };
+    // const handleViewCard = (listing) => {
+    //     setSelectedCard(listing);
+    //     navigate(`/collection/card/${listing.id}`, { state: { card: listing } });
+    // };
 
     return (
         <>
@@ -41,12 +42,10 @@ const Collection = (props) => {
                 <div className='collections-content'>
                     {myNFT.length > 0 ? (
                         myNFT.map((nft, index) => (
-                            <div
-                                className="collections-card"
-                                key={index}
-                                onClick={() => handleViewCard(nft.tokenId)}
-                            >
+                            <div className="collections-card" key={index}>
+                                <img className="card-image"></img>
                                 <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
+                                <PurchaseCard tokenId={nft.tokenId} />
                             </div>
                         ))
                     ) : (

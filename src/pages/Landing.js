@@ -15,6 +15,7 @@ const Landing = (props) => {
   const [etherAmount, setEtherAmount] = useState('');
   const [listings, setListings] = useState([]);
   const [myNFT, setMyNFT] = useState([]);
+  const [loading, setloading] = useState(false);
 
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
@@ -22,12 +23,6 @@ const Landing = (props) => {
   
   const handleMarketplace = () => {
     navigate('/marketplace');
-  };
-
-  const handleListToMarketplace = (cardId) => {
-    console.log(`Listing card with ID ${cardId} to marketplace.`);
-    setSelectedCardId(cardId);
-    setPopupVisible(true);
   };
 
   const handlePopupClose = () => {
@@ -56,7 +51,9 @@ const Landing = (props) => {
           Buy Card Packs
         </button>
       </div>
-      
+      <div className="title-container">
+        <h4 className="account">Connected to: {props.account}</h4>
+      </div>
       {/* <button className="buy-card-packs-btn" onClick={handleMarketplace}>
         View my collection
       </button> */}
@@ -83,7 +80,11 @@ const Landing = (props) => {
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
                   <button
                     className="hover-link"
-                    onClick={() => handleListToMarketplace(nft.tokenId)}
+                    onClick={() => {
+                      console.log("Selected tokenId:", nft.tokenId);
+                      setSelectedCardId(nft.tokenId);
+                      setPopupVisible(true);
+                    }}
                   >
                     List to Marketplace
                   </button>
@@ -120,16 +121,20 @@ const Landing = (props) => {
         <div className="popup-overlay">
           <div className="popup-container">
             <h3>List Card to Marketplace</h3>
-            <p>Card ID: {selectedCardId}</p>
-            {/* <input
+            <p>Card ID: {selectedCardId.toString()}</p>
+            <input
               type="number"
+              min="0"
               placeholder="Enter Ether amount"
               value={etherAmount}
               onChange={(e) => setEtherAmount(e.target.value)}
               className="popup-input"
-            /> */}
+            />
             <div className="popup-buttons">
-              <NftMarketPlace/>
+            {console.log("Selected Card ID:", selectedCardId)}
+            {console.log("Price Tag (Ether):", etherAmount)}
+
+              <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount}/>
               <button className="popup-cancel-btn" onClick={handlePopupClose}>
                 Cancel
               </button>

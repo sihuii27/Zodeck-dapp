@@ -31,7 +31,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     uint32 public callbackGasLimit = 1000000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 10;
-    string public baseURI="ipfs://bafybeict2kq6gt4ikgulypt7h7nwj4hmfi2kevrqvnx2osibfulyy5x3hu/";
+    string public baseURI;
 
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
     mapping(uint256 => uint256[]) public s_requestToRandomNumbers; // Maps requestId to random numbers
@@ -43,13 +43,13 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     event CardMinted(uint256 tokenId, address owner, string metadataURI);
 
     constructor(
-        uint256 subscriptionId
+        uint256 subscriptionId, string memory _baseURI
     )
         ERC721("CardCollectingNFT", "CCNFT")
         VRFConsumerBaseV2Plus(0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B) // Sepolia VRF Coordinator
     {
         s_subscriptionId = subscriptionId;
-        
+        baseURI = _baseURI;
     }
 
     // Request random numbers

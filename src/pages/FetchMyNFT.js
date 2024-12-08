@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './Landing.js';
 import config from '../abi/config.json';
+
 const ethers = require('ethers');
 require("dotenv").config();
 //require('./Landing.css'); 

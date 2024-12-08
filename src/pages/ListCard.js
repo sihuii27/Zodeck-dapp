@@ -2,7 +2,7 @@ import config from '../abi/config.json';
 
 const ethers = require('ethers');
 require("dotenv").config();
-const cardcss = require('./Landing.css'); 
+const cardcss = require('./Landing.css');
 
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
@@ -10,8 +10,6 @@ const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 const contract = require("../abi/NFTplace.json");
 
 const uri = "https://localhost:3000/Images/Images/"
-
-const priceTag = "0.0005" ;
 
 //console.log(JSON.stringify(contract.abi));
 
@@ -22,7 +20,7 @@ const priceTag = "0.0005" ;
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-const NftMarketPlace = ({tokenId}) => {
+const NftMarketPlace = ({ tokenId, priceTag }) => {
     const listCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -37,37 +35,30 @@ const NftMarketPlace = ({tokenId}) => {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const cost = await nftMarketplaceContract.getListingPrice();
-            console.log("The cost is: " + cost);
             const marketowner = await nftMarketplaceContract.getContractOwner();
             console.log("The market owner is: " + marketowner);
 
-            const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag,'ether'), {
-                value: cost, // cost to put listing
+            const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag, 'ether'), {
+                value: priceTag, // cost to put listing
                 gasLimit: 500000,
             });
             console.log(tx);
-        }catch (error) {
+
+            // Send the transaction
+            const transactionResponse = await signer.sendTransaction(tx);
+            console.log("Transaction sent:", transactionResponse);
+
+            // Wait for the transaction to be mined
+            const receipt = await transactionResponse.wait();
+            console.log("Transaction mined:", receipt);
+            alert("Transaction successful!");
+
+        } catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);
         }
     };
-    // const listings = async () => {
-    //     // Create a provider and signer
-    //     const provider = new ethers.BrowserProvider(window.ethereum);
-    //     const signer = await provider.getSigner();
-    //     const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-    //     const listings = await nftMarketplaceContract.fetchListingMarketplace();
-    //     console.log("Lisitings: " + listings)
-    // }
-    // // const purchase = await nftMarketplaceContract.purchaseCard(1, {
-    // //         value: ethers.parseUnits(priceTag,'ether'), // cost to put listing
-    // //     });
-    // // console.log("The transaction is: " + purchase);
-    // const mynft = await nftMarketplaceContract.fetchMyNFTs();
-    // console.log("My NFT" + mynft)
-    // const myListings = await nftMarketplaceContract.fetchItemsListed();
-    // console.log("My Listings" + myListings)
+
     return <button className="hover-link" onClick={listCard}>List NFT </button>;
 };
 
