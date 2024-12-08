@@ -35,10 +35,10 @@ async function main() {
   //   });
   // console.log(myitems);
   // const itemlist = await nftMarketplaceContract.fetchItemsListed();
-  // const listings = await nftMarketplaceContract.fetchListingMarketplace();
+  const listings = await nftMarketplaceContract.fetchListingMarketplace();
   // const tokenId = 7n;
   // const thisListing = listings.find(result => result[0] === tokenId);
-  // // console.log(thisListing);
+  console.log(listings);
   // const priceTag = thisListing[3];
   // console.log(priceTag);
   // console.log("The priceTag is: " + priceTag);

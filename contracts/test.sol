@@ -7,7 +7,7 @@ import "./safemath.sol";
 
 contract NFTplace is ERC721URIStorage {
     uint256 private _tokenIds;
-    uint256 private _itemsSold;
+    uint256 private _unsoldItemCount;
     uint256 listingPrice = 0.0001 ether;
     address payable contract_owner;
     using SafeMath for uint256;
@@ -57,6 +57,7 @@ contract NFTplace is ERC721URIStorage {
     //Marketplace
     function createListing(uint256 tokenId, uint256 price) private {
         require(price > 0, "Price must be at least 1 wei");
+        _unsoldItemCount = _unsoldItemCount.add(1);
         cardToListingItem[tokenId] = Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
         _transfer(msg.sender, address(this), tokenId);
         emit ListingCreated(tokenId,msg.sender,address(this),price,false);
@@ -87,7 +88,7 @@ contract NFTplace is ERC721URIStorage {
         cardToListingItem[tokenId].sold = true;
         //assign listing seller to null address
         cardToListingItem[tokenId].seller = payable(address(0));
-        _itemsSold = _itemsSold.add(1);
+        _unsoldItemCount = _unsoldItemCount.sub(1);
         //transfer of NFT from this contract to buyer (Card ownership transfer)
         _transfer(address(this), msg.sender, tokenId);
         //collect money from buyer
@@ -99,9 +100,9 @@ contract NFTplace is ERC721URIStorage {
     //all listing in this NFT marketplace (Marketplace)
     function fetchListingMarketplace() public view returns (Listing[] memory) {
         uint itemCount = _tokenIds;
-        uint unsoldItemCount = _tokenIds - _itemsSold;
+        // uint unsoldItemCount = _tokenIds - _itemsSold;
         uint currentIndex = 0;
-        Listing[] memory items = new Listing[](unsoldItemCount);
+        Listing[] memory items = new Listing[](_unsoldItemCount);
         for (uint i = 0; i < itemCount; i++) {
             //address(this) address belonging to this contract
             if (cardToListingItem[i + 1].owner == address(this)) {
