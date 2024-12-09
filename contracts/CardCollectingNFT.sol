@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+
 import "contracts/ownable.sol";
 import "contracts/safemath.sol";
 
@@ -25,12 +26,14 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
         public s_requests; /* requestId --> requestStatus */
 
     // Chainlink VRF variables
+
     uint256 public s_subscriptionId = 20219316782057294748120828016829935644550368644651516612011930964418228722702;
     bytes32 public s_keyHash =
         0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
     uint32 public callbackGasLimit = 1000000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 10;
+
     string public baseURI = "ipfs://bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/";
 
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
@@ -44,6 +47,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     event CardMinted(uint256 tokenId, address owner, string metadataURI);
 
     constructor(
+
     )
         ERC721("CardCollectingNFT", "CCNFT")
         VRFConsumerBaseV2Plus(0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B) // Sepolia VRF Coordinator
@@ -86,6 +90,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
         emit RandomnessFulfilled(_requestId, _randomWords);
     }
 
+
     function batchMint(
         uint256 _requestId
     ) public {
@@ -100,6 +105,8 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
 
         for (uint256 i = 0; i < _randomWords.length; i++) {
             uint256 cardIndex = _randomWords[i] % 20; // Determine card index
+
+
             uint256 tokenId = nextTokenId;
 
             // Track the minted token and increment the token ID

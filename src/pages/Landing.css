@@ -12,18 +12,6 @@ html, body {
   overflow-y: auto;
 }
 
-.card-container {
-  position: relative;
-  flex: 1; /* Ensures the card takes up equal space with others */
-  height: 100%; /* Takes full height of the parent container */
-  margin: 10px;
-  cursor: pointer;
-  overflow: hidden;
-  transition: transform 0.3s;
-  display: flex; /* Allows content inside to align properly */
-  flex-direction: column;
-}
-
 .card-container:hover {
   transform: scale(1.1);
 }
@@ -89,6 +77,13 @@ html, body {
   margin-left: 30px;
 }
 
+.account {
+  color: #333;
+  margin: 0;
+  text-align: left; /* Align the title to the left */
+  margin-left: 30px;
+}
+
 .buy-card-packs-btn {
   padding: 20px 60px;
   background-color: #ccc;
@@ -117,6 +112,19 @@ html, body {
   margin-bottom: 20px;
 }
 
+.section-text {
+  text-align: left;
+  color: #333;
+  margin: 0;
+  margin-left: 40px;
+  margin-bottom: 20px;
+}
+
+.section-no-connect {
+  text-align: center;
+  color: #333;
+}
+
 .go-to-marketplace {
   font-weight: bold;
   color: #6200ee;
@@ -139,18 +147,6 @@ html, body {
   text-decoration: underline;
 }
 
-/* Card Listing */
-.card-listing {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 60px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-left: 40px;
-  margin-right: 40px;
-}
-
 .card-placeholder {
   flex: 1;
   height: 300px;
@@ -159,15 +155,17 @@ html, body {
 }
 
 /* Marketplace Listings */
-.marketplace-landing-listings {
+.landing-listings {
   display: flex;
   gap: 20px;
-  overflow-x: auto;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
   margin-bottom: 40px;
   margin-left: 40px;
 }
 
-.marketplace-landing-card {
+.landing-card {
   background-color: #fff;
   padding: 10px;
   border-radius: 0px;
@@ -180,7 +178,7 @@ html, body {
   display: flex;
 }
 
-.marketplace-landing-card-image {
+.landing-card-image {
   width: 100%;
   height: 50%;
   background-color: #e0e0e0;
@@ -271,4 +269,8 @@ html, body {
 
 .popup-cancel-btn:hover {
   background-color: #bbb;
+}
+
+.loading-spinner{
+  text-align: right;
 }

@@ -1,16 +1,17 @@
 const ethers = require('ethers');
 require("dotenv").config();
 //require('./Landing.css'); 
- 
 
-const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
+const config = require('../abi/config.json');
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
 
-const uri = "https://localhost:3000/Images/Images/"
+const uri = "https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeicgkoz5at4c2tdu7odbytswwqw4wdgmkt6h6sdocmwfatydyq4o3e/Card1.png"
 
-const priceTag = "0.0005" ;
+// const priceTag = "0.0005" ;
 
 //console.log(JSON.stringify(contract.abi));
 
@@ -23,10 +24,31 @@ const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.ab
 
 async function main() {
   const cost = await nftMarketplaceContract.getListingPrice();
-  const tx = await nftMarketplaceContract.createToken(uri, ethers.parseUnits(priceTag,'ether'), {
-    value: cost, // cost to put listing
+  console.log(cost);
+  const tx = await nftMarketplaceContract.createToken(uri, {
+    // value: cost, // cost to put listing
     gasLimit: 500000,
-});
-console.log(tx);
+  });
+
+  // const myitems = await nftMarketplaceContract.listCard(2,ethers.parseEther(priceTag), {
+  //     value: cost, // cost to put listing
+  //     gasLimit: 500000,
+  //   });
+  // console.log(myitems);
+  // const itemlist = await nftMarketplaceContract.fetchItemsListed();
+  // const listings = await nftMarketplaceContract.fetchListingMarketplace();
+  // const tokenId = 7n;
+  // const thisListing = listings.find(result => result[0] === tokenId);
+  // console.log(listings);
+  // const priceTag = thisListing[3];
+  // console.log(priceTag);
+  // console.log("The priceTag is: " + priceTag);
+  // const marketowner = await nftMarketplaceContract.getContractOwner();
+  // console.log("The market owner is: " + marketowner);
+
+  // const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
+  //     value: ethers.parseEther(priceTag, "ether"), // price tag for buying the card
+  //     gasLimit: 500000,
+  // });
 }
 main();

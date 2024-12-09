@@ -114,7 +114,7 @@ function Header({account,setAccount}) {
       <button className="view-collection" onClick={handleCollection}>
           View my collection
       </button>
-      {walletConnected ? (<>Connected to: {account} <button className="connectWallet" onClick={connectMetamask}>Connected</button></>):(<button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>)} 
+      {walletConnected ? (<><button className="connectWallet" onClick={connectMetamask}>Connected</button></>):(<button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>)} 
       </div>
     </div>
   );

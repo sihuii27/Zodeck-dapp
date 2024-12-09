@@ -2,9 +2,12 @@ import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 import { mintNewCards } from './fetchMintedCards';
 import './Cardpack.css';
+import Swal from 'sweetalert2';
 
-const CONTRACT_ADDRESS = "0xBCbD8BEb7f025451C53e2E040D60A9dD0b1788aD";
-const AMOUNT_IN_ETHER = "0.0001"; // Amount to send
+import config from '../abi/config.json';
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
+const AMOUNT_IN_ETHER = "0.001"; // Amount to send
 
 const BuyPackButton = () => {
     const navigate = useNavigate();
@@ -34,14 +37,25 @@ const BuyPackButton = () => {
             const transactionResponse = await signer.sendTransaction(tx);
             console.log("Transaction sent:", transactionResponse);
 
+            Swal.fire({
+                title: "Please wait for transaction to be confirmed...",
+                text: "You clicked the button!",
+                icon: "info",
+                html: `
+                <a href="https://sepolia.etherscan.io/tx/${transactionResponse.hash}" target="_blank">
+                View your Transaction Id: ${transactionResponse.hash}
+                </a>
+            `,
+            });
+
             // Wait for the transaction to be mined
             const receipt = await transactionResponse.wait();
             console.log("Transaction mined:", receipt);
-            alert("Transaction successful!");
+            Swal.fire({
+                title: "Transaction Confirmed",
+                icon: "success",
+            });
 
-            // Mint new cards
-            const requestId = await mintNewCards();
-            navigate("/cardpackresults", { state: { requestId } });
             
         } catch (error) {
             console.error("Error sending Ether:", error);
