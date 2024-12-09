@@ -65,7 +65,7 @@ const Landing = (props) => {
             <h3 className="section-title">Your Collection</h3>
           </div>
 
-          <div className="landing-listings">
+          <div className="landing-collections">
             {myNFT.length > 0 ? (
               myNFT.map((nft, index) => (
                 <div className="landing-card" key={index}>
@@ -138,15 +138,11 @@ const Landing = (props) => {
                     src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${listing.cardIndex}.png`}
                     alt={`Card ${listing.tokenId}`}
                   />
+                  <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
-                  <p className="marketplace-landing-card-title">
-                  <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
-                  </p>
-                  <div className="landing-listing-btn-container">
                     <DeleteCard tokenId={listing.tokenId} />
-                  </div>
                 </div>
               ))
             ) : (

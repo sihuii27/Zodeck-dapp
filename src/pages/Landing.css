@@ -163,23 +163,35 @@ html, body {
   border-radius: 10px;
 }
 
-/* Marketplace Listings */
-.landing-listings {
-  display: flex;
+.landing-collections {
+  display: grid;
   gap: 20px;
-  overflow-x: hidden;
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: clip;
-  margin-bottom: 40px;
-  margin-left: 40px;
+  margin: 20px 40px 40px 40px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  max-height: 400px;  /* Adjust based on card height */
+}
+
+/* Marketplace Listings */
+.landing-listings {
+  display: grid;
+  gap: 20px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  white-space: nowrap;
+  text-overflow: clip;
+  margin: 20px 40px 40px 40px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  max-height: 420px;  /* Adjust based on card height */
 }
 
 .landing-card {
   background-color: #fff;
   padding: 10px;
-  border-radius: 0px;
   width: 200px;
-  height: 300px;
+  /* height: 300px; */
   flex-shrink: 0;
   border-radius: 10px;
   position: relative;
@@ -188,8 +200,8 @@ html, body {
 }
 
 .landing-card-image {
-  width: 100%;
-  height: 50%;
+  width: 200px;
+  height: 275px;
   background-color: #e0e0e0;
   margin-bottom: 10px;
   border-radius: 0px;
