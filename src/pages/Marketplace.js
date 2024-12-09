@@ -22,7 +22,11 @@ const Marketplace = (props) => {
             {alllistings.length > 0 ? (
               alllistings.map((listing, index) => (
                 <div className="marketplace-card" key={index}>
-                  <div className="marketplace-landing-card-image"></div>
+                  <img
+                    className="marketplace-landing-card-image"
+                    src={`https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${listing.tokenId}.png`}
+                    alt={`Card ${listing.tokenId}`}
+                  />
                   <p className="card-title">
                     {`Card Title ${listing.tokenId}`}
                   </p>

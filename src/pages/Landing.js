@@ -71,8 +71,11 @@ const Landing = (props) => {
             {myNFT.length > 0 ? (
               myNFT.map((nft, index) => (
                 <div className="landing-card" key={index}>
-                  <img className="landing-card-image "></img>
-
+                  <img
+                    className="landing-card-image"
+                    src={`https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${nft.tokenId}.png`}
+                    alt={`Card ${nft.tokenId}`}
+                  />
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
                   <button
                     className="hover-link"
@@ -133,8 +136,11 @@ const Landing = (props) => {
             {listings.length > 0 ? (
               listings.map((listing, index) => (
                 <div className="landing-card" key={index}>
-                  <div className="landing-card-image "><img src={listing.uri} alt="Description" />
-                  </div>
+                  <img
+                    className="landing-card-image"
+                    src={`https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${listing.tokenId}.png`}
+                    alt={`Card ${listing.tokenId}`}
+                  />
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
