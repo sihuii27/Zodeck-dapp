@@ -22,6 +22,10 @@ const Landing = (props) => {
     navigate('/cardpack');
   };
 
+  const handleCollection = () => {
+    navigate('/collection');
+  };
+
   const handleMarketplace = () => {
     navigate('/marketplace');
   };
@@ -63,6 +67,9 @@ const Landing = (props) => {
       </div>
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
+            <button className="go-marketplace-btn" onClick={handleCollection}>
+              View more...
+            </button>
           </div>
 
           <div className="landing-listings">
@@ -127,6 +134,9 @@ const Landing = (props) => {
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Listings</h3>
+            <button className="go-marketplace-btn" onClick={handleMarketplace}>
+              View more...
+            </button>
           </div>
 
           <div className="landing-listings">
@@ -142,7 +152,7 @@ const Landing = (props) => {
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
                   <p className="marketplace-landing-card-title">
-                  <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
+                    <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
                   </p>
                   <div className="landing-listing-btn-container">
                     <DeleteCard tokenId={listing.tokenId} />
