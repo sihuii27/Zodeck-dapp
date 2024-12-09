@@ -101,7 +101,7 @@ function batchMint(
             string memory uri = string(abi.encodePacked(baseURI, "Card ", Strings.toString(cardIndex), ".png"));
 
             // Track the minted token and increment the token ID
-            uint256 tokenId = createToken(uri, recipient);
+            uint256 tokenId = createToken(uri, recipient, cardIndex);
             mintedTokenIds[i] = tokenId;
             cardIndexes[tokenId] = cardIndex;
 
