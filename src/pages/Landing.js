@@ -36,7 +36,6 @@ const Landing = (props) => {
     if (props.account) {
       setAccount(props.account);
       console.log('Fetching data...');
-      //<Audio height="80" width="80" radius="9" color="green" ariaLabel="loading" wrapperStyle wrapperClass/>
       //set it to be empty
       setMyNFT([]);
       //set it to be empty
@@ -48,13 +47,7 @@ const Landing = (props) => {
   return (
     <div className="landing-container">
       {/* {loading && <div className="loading-indicator">Loading...</div>} */}
-      <div className="title-container">
-        <h1 className="main-title">Zodeck, satisfy your card collecting itch here</h1>
-        <button className="buy-card-packs-btn" onClick={handleBuyCardPacks}>
-          Buy Card Packs
-        </button>
-      </div>
-      <div className="title-container">
+      <div className="header-container">
         {props.account ? (<h4 className="account">Connected to: {props.account}</h4>) : (<p></p>)}
       </div>
 
@@ -62,7 +55,12 @@ const Landing = (props) => {
         <>
           {/* Pass account and setListings to FetchMyListings */}
           <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} account={account} />
-
+          <div className="pack-container">
+          <p className="main-title">Zodeck, satisfy your card collecting itch here</p>
+        <button className="buy-card-packs-btn" onClick={handleBuyCardPacks}>
+          Buy Card Packs
+        </button>
+      </div>
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
           </div>
@@ -84,7 +82,6 @@ const Landing = (props) => {
                   >
                     List to Marketplace
                   </button>
-
                 </div>
               ))
             ) : (
