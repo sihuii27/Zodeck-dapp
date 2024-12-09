@@ -91,7 +91,7 @@ contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
 function batchMint(
         uint256[] memory _randomWords, address recipient, uint256 requestId
     ) public {
-        require(_randomWords.length == numWords, "Expected X random numbers");
+        require(_randomWords.length == numWords, "Expected 5 random numbers");
         require(recipient != address(0), "Recipient address is invalid");
 
         uint256[] memory mintedTokenIds = new uint256[](_randomWords.length);
