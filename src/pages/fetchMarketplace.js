@@ -1,68 +1,61 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import config from '../abi/config.json';
 const ethers = require('ethers');
 require("dotenv").config();
 
-const CONTRACT_ADDRESS = "0x617D607f74b5F17D50a2356521a1b25574Cf667c";
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
 const contract = require("../abi/NFTplace.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
-const priceTag = "0.0005" ;
+const priceTag = "0.0005";
 
-//console.log(JSON.stringify(contract.abi));
+const FetchAllListing = ({ setAllListings, setloading }) => {
+    const fetchAllList = useCallback(async () => {
+        try {
+            setloading(true);
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-// Provider
-// const provider = new ethers.JsonRpcProvider(process.env.API_URL);
-// Signer
-// const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-// Contract
-//const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-const FetchAllListing = ({ setAllListings }) => {
+            const myListings = await nftMarketplaceContract.fetchListingMarketplace();
+            setAllListings(myListings);
+
+        } catch (error) {
+            console.error("Error fetching all listings", error);
+
+        }
+        finally {
+            // Ensure loading is false after fetch
+            setloading(false); 
+        }
+    }, [setAllListings, setloading]);
+
     useEffect(() => {
-        const fetchAllList = async () => {
-          try {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            const allListings = await nftMarketplaceContract.fetchListingMarketplace(); 
-            setAllListings(allListings); 
-          } catch (error) {
-            console.error("Error fetching listings", error);
-          }
-        };
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, provider);
 
-        const setupEventListener = async () => {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-
-            // Listen for the ListingCreated event
-            nftMarketplaceContract.on('ListingCreated', async (tokenId, seller, price) => {
-                console.log(`New listing created: TokenId ${tokenId}, Seller ${seller}, Price ${price}`);
-                // Refresh the listings when a new one is created
-                fetchAllList();
-            });
-        };
-
-        // Fetch initial listings 
+        // fetch all listings
         fetchAllList();
 
-        // Setup the event listener for new listings
-        setupEventListener();
-
-        // Removing the event listener
-        return () => {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = provider.getSigner();
-            const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            nftMarketplaceContract.removeAllListeners('ListingCreated');
+        // when transfer event is triggered by nft contract, fetch my listings
+        const handleListingsUpdate = async () => {
+            console.log("Listing data changed, refreshing...");
+            fetchAllList();
         };
-        
-    }, [setAllListings]);
+        nftMarketplaceContract.on("Transfer", handleListingsUpdate);
 
-    return null; // No UI rendering
+        // remove event listeners so that previous listeners will not persist
+        return () => {
+            nftMarketplaceContract.off("Transfer", handleListingsUpdate);
+        };
+    }, [fetchAllList]);
+
+    // No UI rendering
+    return null; 
 };
 
 export default FetchAllListing;

@@ -2,32 +2,35 @@ import React, { useState } from 'react';
 import './Marketplace.css';
 import { ethers } from 'ethers';
 import FetchAllListing from './fetchMarketplace';
+import PurchaseCard from './buyListing';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
+  const [loading, setloading] = useState(false);
+  
   return (
     <>
       {/* if want to get the address of account {props.account} */}
-      <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
       <div className="marketplace-container">
+        <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
         <div className="title-container">
-          <h1 className="main-title">Marketplace</h1>
-          
+          <h1 className="main-title">Marketplace</h1>          
         </div>
         
         <div className="marketplace-listings">
-          <FetchAllListing setAllListings={setAllListings} />
+        <FetchAllListing setAllListings={setAllListings} setloading={setloading} />
             {alllistings.length > 0 ? (
               alllistings.map((listing, index) => (
                 <div className="marketplace-card" key={index}>
                   <div className="marketplace-landing-card-image"></div>
                   <p className="card-title">
-                    {`Card Title ${index + 1}`}
+                    {`Card Title ${listing.tokenId}`}
                   </p>
                   <p className="card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
+                    {listing.tokenId}
                   </p>
-                  <button className="place-bid-btn">Place Your Bid</button>
+                  <PurchaseCard tokenId={listing.tokenId} />
                 </div>
               ))
             ) : (

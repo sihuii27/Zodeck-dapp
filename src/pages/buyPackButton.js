@@ -1,7 +1,9 @@
 import { ethers } from "ethers";
 import './Cardpack.css';
 
-const CONTRACT_ADDRESS = "0xBCbD8BEb7f025451C53e2E040D60A9dD0b1788aD";
+import config from '../abi/config.json';
+
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 const AMOUNT_IN_ETHER = "0.0001"; // Amount to send
 
 const BuyPackButton = () => {

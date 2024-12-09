@@ -29,6 +29,10 @@ text-align: left;
 margin-left: 30px;
 }
 
+.login-title{
+  text-align:center;
+}
+
 /* filter container and buttons */
 .filter-container {
 display: flex;
