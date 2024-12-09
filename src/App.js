@@ -14,6 +14,7 @@ function Header({account,setAccount}) {
   const navigate = useNavigate();
   const [provider, setProvider] = useState(null);
   const [walletConnected, setwalletConnected] = useState(null);
+
   const handleMarketplace = () => {
     navigate('/marketplace');
   };
@@ -104,17 +105,20 @@ function Header({account,setAccount}) {
   }
 
   return (
-    <div className="header">
-      <img src="/logo512.png" alt="Zodeck Logo" className="logo" />
-      <div className="user-info">
-      <div className="spacing"></div>
-      <button className="go-marketplace-btn" onClick={handleMarketplace}>
-          Go to marketplace
-      </button>
-      <button className="view-collection" onClick={handleCollection}>
-          View my collection
-      </button>
-      {walletConnected ? (<><button className="connectWallet" onClick={connectMetamask}>Connected</button></>):(<button className="connectWallet" onClick={connectMetamask}>Connect Wallet</button>)} 
+    <div className="navbar">
+      <div className="navbar-left">
+        <img src="/zodeck_image.png" alt="Zodeck Logo" className="logo" />
+        <span className="navbar-title">Zodeck NFT Marketplace</span>
+      </div>
+      <div className="navbar-right">
+        <button className="go-marketplace-btn" onClick= {handleMarketplace}>Marketplace</button>
+        <button className="view-collection" onClick={handleCollection}>Collection</button>
+        <button
+          className={`connect-btn ${walletConnected ? "connected" : ""}`}
+          onClick={connectMetamask}
+        >
+          {walletConnected ? "Connected" : "Connect Wallet"}
+        </button>
       </div>
     </div>
   );
