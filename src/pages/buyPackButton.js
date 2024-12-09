@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
-import { mintNewCards } from './fetchMintedCards';
+import { fetchMintedCards } from './fetchMintedCards';
 import './Cardpack.css';
 import Swal from 'sweetalert2';
 
@@ -56,7 +56,24 @@ const BuyPackButton = () => {
                 icon: "success",
             });
 
-            
+            // Fetch minted cards
+            const mintedCards = await fetchMintedCards(); 
+            // console.log("Minted Cards:", mintedCards);
+
+            Swal.fire({
+                title: "Your minted cards are ready for viewing!",
+                text: "View now?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes please!"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/cardpackresults', { state: { mintedCards } });
+                }
+              });
+           
         } catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);

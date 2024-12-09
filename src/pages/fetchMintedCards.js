@@ -1,106 +1,54 @@
-import { ContractMissingDeployDataError } from "web3";
-import cardCollectingNFT from "../abi/cardCollectionNFT.json";
-import bigInt from "big-integer"
+import cardMintPack from "../abi/CardMintPack.json";
+import config from '../abi/config.json';
 require("dotenv").config();
 const ethers = require('ethers');
 
-const CONTRACT_ADDRESS = "0x3114dA680D054DCEF25486598a0d609aBD0C33BD";
-const CONTRACT_ABI = cardCollectingNFT.abi;
+const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ABI = cardMintPack.abi;
 
-const MAX_RETRIES = 2;  // Maximum retries
-const RETRY_INTERVAL_MS = 150000;  // Time between retries
-
-// Function to poll the fulfillment status
-const checkRequestFulfillment = async (contract, requestId) => {
-  for (let i = 0; i < MAX_RETRIES; i++) {
-    console.log(`Checking fulfillment attempt ${i + 1}...`);
-    const { fulfilled } = await contract.getRequestStatus(requestId);
-    if (fulfilled) {
-      console.log("Randomness request fulfilled.");
-      return true;
-    }
-    await new Promise((resolve) => setTimeout(resolve, RETRY_INTERVAL_MS)); // Wait before next check
-  }
-  return false;
-};
-
-export const mintNewCards = async () => {
-  if (!window.ethereum) {
-    alert("Please install MetaMask to interact with the dApp.");
-    return;
-  }
-
-  try {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-
-    // Request randomness from Chainlink VRF
-    const tx = await contract.requestRandomWords();
-    const receipt = await tx.wait();
-
-    const iface = new ethers.Interface(CONTRACT_ABI);
-    const eventTopic = iface.getEvent("RandomnessRequested").topicHash;
-
-    // Find the log with the matching topic
-    const log = receipt.logs.find((log) =>
-      log.topics.includes(eventTopic)
-    );
-
-    if (!log) {
-      throw new Error("Randomness request event not found.");
-    }
-
-    // Decode the log
-    const decodedLog = iface.decodeEventLog("RandomnessRequested", log.data, log.topics);
-
-    const requestId = decodedLog.requestId.toString();
-    // console.log("Randomness request ID:", requestId);
-
-    // Retry checking fulfillment
-    const isFulfilled = await checkRequestFulfillment(contract, requestId);
-    if (!isFulfilled) {
-      throw new Error("Randomness request not fulfilled.");
-    }
-
-    // Batch mint the cards
-    const mintTx = await contract.batchMint(requestId);
-    await mintTx.wait();
-    console.log("Minted new cards successfully!");
-
-    // Return the account that minted the cards
-    // const account = await signer.getAddress();
-    return requestId;
-
-  } catch (error) {
-    console.error("Error minting cards:", error);
-    alert("Minting failed: " + error.message);
-  }
-};
-
-
-export const fetchMintedCards = async (requestId) => {
-  try {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
-
-    // Fetch tokens from contract
-    const tokens = await contract.getMintedTokensByRequest(requestId);
-
-    // Map tokens to display format
-    const cards = tokens.map((tokenId) => {
-      const id = bigInt(tokenId).toString(); // Convert BigInt to string
-      return {
-        tokenId: id,
-        image: `https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${Number(id) % 20 + 1}.png`, // Safely convert to number
-        title: `Card #${id}`,
-      };
+export const fetchMintedCards = async () => {
+  const listenForCardMinted = async (provider, contract) => {
+    return new Promise((resolve, reject) => {
+      let eventCount = 0;
+      const maxEvents = 5;
+      const mintedCards = [];
+  
+      // Set up event listener for CardMinted events
+      contract.on("CardMinted", (tokenId, owner, metadataURI) => {
+        // console.log(`CardMinted Event Received: ${tokenId}, ${owner}, ${metadataURI}`);
+        
+        // Collect minted cards
+        mintedCards.push({
+          tokenId: tokenId.toString(),
+          owner,
+          metadataURI,
+        });
+  
+        eventCount++;
+        if (eventCount >= maxEvents) {
+          console.log("Received 5 CardMinted events");
+          contract.removeAllListeners("CardMinted"); 
+          resolve(mintedCards); // Return minted cards when complete
+        }
+      });
+  
+      // Handle timeout if events are not received
+      setTimeout(() => {
+        reject("Timeout: Did not receive 5 CardMinted events.");
+        contract.removeAllListeners("CardMinted"); 
+      }, 150000); // Wait for up to 2.5 minute
     });
-
-    return cards; 
+  };
+  
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
+  
+  try {
+    const mintedCards = await listenForCardMinted(provider, contract);
+    console.log("Minted Cards:", mintedCards);
+    return mintedCards;
 
   } catch (error) {
-    console.error("Error fetching minted cards:", error);
-    return [];
+    console.error("Error waiting for CardMinted events:", error);
   }
 };

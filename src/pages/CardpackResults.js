@@ -1,37 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './CardpackResults.css';
-import { fetchMintedCards } from './fetchMintedCards';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const CardpackResults = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [mintedCards, setMintedCards] = useState([]);
-    const requestId = location.state?.requestId;
-    // console.log("frontend requestId: ", requestId)
-
-    useEffect(() => {
-        const fetchCards = async () => {
-        // console.log("fetching cards");
-
-            try {
-                // const account = props.account || (await window.ethereum.request({ method: "eth_accounts" }))[0];
-                if (requestId) {
-                const cards = await fetchMintedCards(requestId); // Fetch cards
-                if (cards.length === 0) {
-                    console.warn("No minted cards found.");
-                }
-                setMintedCards(cards); // Update state
-                } else {
-                console.error("No account connected.");
-                }
-            } catch (error) {
-                console.error("Error fetching minted cards:", error);
-                alert("Fetching failed: " + error.message);
-          }
-        };
-        fetchCards();
-      }, [requestId]);
+    const mintedCards = location.state?.mintedCards;
+    console.log("frontend mintedCards: ", mintedCards)
 
     useEffect(() => {
         console.log('minted cards list: ', mintedCards);
@@ -44,19 +19,6 @@ const CardpackResults = (props) => {
     const handleViewCollection = () => {
         navigate('/collection');
     }
-
-    // placeholderCards = [
-    //     { index: 1, image:'/cardImages/0.png', title: 'Image 1' },
-    //     { index: 2, image:'/cardImages/1.png', title: 'Image 2' },
-    //     { index: 3, image:'/cardImages/2.png', title: 'Image 3' },
-    //     { index: 4, image:'/cardImages/3.png', title: "Image 4" },
-    //     { index: 5, image:'/cardImages/4.png', title: 'Image 5' },
-    //     { index: 6, image:'/cardImages/5.png', title: 'Image 6' },
-    //     { index: 7, image:'/cardImages/0.png', title: 'Image 7' },
-    //     { index: 8, image:'/cardImages/1.png', title: 'Image 8' },
-    //     { index: 9, image:'/cardImages/2.png', title: 'Image 9' },
-    //     { index: 10, image:'/cardImages/3.png', title: "Image 10" },
-    //     ]
     
     return (
         <>
@@ -66,8 +28,8 @@ const CardpackResults = (props) => {
             {mintedCards && mintedCards.length > 0 ? (
                     mintedCards.map((listing, index) => (
                     <div className="result-card" key={index}>
-                        <img src={listing.image} className="result-card-image" alt={listing.title} />
-                        <p className="card-title">{listing.title}</p>
+                        <img src={listing.metadataURI} className="result-card-image" alt={listing.title} />
+                        <p className="card-title">{listing.tokenId}</p>
                     </div>
                     ))
                 ) : (
