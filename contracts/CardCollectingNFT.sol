@@ -4,11 +4,11 @@ pragma solidity ^0.8.20;
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "./ownable.sol";
-import "./test.sol";
+
+import "contracts/ownable.sol";
 import "contracts/safemath.sol";
 
-contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
+contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     using SafeMath for uint256;
     //Keeps track of minted NFTS
     uint256 private _tokenIds;
@@ -26,16 +26,19 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
         public s_requests; /* requestId --> requestStatus */
 
     // Chainlink VRF variables
-    uint256 public s_subscriptionId;
+
+    uint256 public s_subscriptionId = 20219316782057294748120828016829935644550368644651516612011930964418228722702;
     bytes32 public s_keyHash =
         0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
     uint32 public callbackGasLimit = 1000000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 10;
-    string public baseURI = "https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/";
+
+    string public baseURI = "ipfs://bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/";
 
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
     mapping(uint256 => uint256[]) public s_requestToRandomNumbers; // Maps requestId to random numbers
+    mapping(uint256 => uint256[]) public s_requestToMintedTokens;
     mapping(uint256 => bool) private tokenExists; // Prevent duplicate token minting
     mapping(address => uint256[]) private userMintedTokens; // Tracks tokens per user
 
@@ -44,11 +47,11 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
     event CardMinted(uint256 tokenId, address owner, string metadataURI);
 
     constructor(
-        uint256 subscriptionId
+
     )
-        VRFConsumerBaseV2Plus(0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B) 
+        ERC721("CardCollectingNFT", "CCNFT")
+        VRFConsumerBaseV2Plus(0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B) // Sepolia VRF Coordinator
     {
-        s_subscriptionId = subscriptionId;
     }
 
     // Request random numbers
@@ -87,42 +90,10 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
         emit RandomnessFulfilled(_requestId, _randomWords);
     }
 
-    // function batchMint(
-    //     uint256 _requestId
-    // ) external {
-    //     (bool fufilled, uint256[] memory _randomWords) = getRequestStatus(_requestId);
-    //     require(fufilled,"Request not fufilled");
-    //     require(_randomWords.length == 10, "Expected 10 random numbers");
 
-    //     address recipient = s_requestToSender[_requestId];
-    //     require(recipient != address(0), "Recipient address is invalid");
-
-    //     uint256[] memory mintedTokenIds = new uint256[](_randomWords.length);
-
-    //     for (uint256 i = 0; i < _randomWords.length; i++) {
-    //         uint256 cardIndex = _randomWords[i] % 20; // Determine card index
-    //         uint256 tokenId = nextTokenId;
-
-    //         // Track the minted token and increment the token ID
-    //         mintedTokenIds[i] = tokenId;
-    //         nextTokenId++;
-
-    //         // Avoid storing token metadata individually
-    //         // Metadata can be derived dynamically from the base URI
-    //         _mint(recipient, tokenId);
-
-    //         emit CardMinted(tokenId, recipient, string(abi.encodePacked(baseURI, "Card ", _uintToString(cardIndex), ".png")));
-    //     }
-
-    //     // Track minted tokens for the recipient
-    //     for (uint256 i = 0; i < mintedTokenIds.length; i++) {
-    //         userMintedTokens[recipient].push(mintedTokenIds[i]);
-    //     }
-    // }
-
-function batchMint(
+    function batchMint(
         uint256 _requestId
-    ) external {
+    ) public {
         (bool fufilled, uint256[] memory _randomWords) = getRequestStatus(_requestId);
         require(fufilled,"Request not fufilled");
         require(_randomWords.length == 10, "Expected 10 random numbers");
@@ -134,24 +105,37 @@ function batchMint(
 
         for (uint256 i = 0; i < _randomWords.length; i++) {
             uint256 cardIndex = _randomWords[i] % 20; // Determine card index
-            string memory uri = string(abi.encodePacked(baseURI, "Card ", _uintToString(cardIndex), ".png"));
+
+
+            uint256 tokenId = nextTokenId;
 
             // Track the minted token and increment the token ID
-            uint256 tokenId = createToken(uri, recipient);
             mintedTokenIds[i] = tokenId;
+            nextTokenId++;
 
-            emit CardMinted(tokenId, recipient, uri);
+            // Avoid storing token metadata individually
+            // Metadata can be derived dynamically from the base URI
+            _mint(recipient, tokenId);
+
+            emit CardMinted(tokenId, recipient, string(abi.encodePacked(baseURI, "Card ", _uintToString(cardIndex), ".png")));
         }
 
         // Track minted tokens for the recipient
         for (uint256 i = 0; i < mintedTokenIds.length; i++) {
+            s_requestToMintedTokens[_requestId].push(mintedTokenIds[i]);
             userMintedTokens[recipient].push(mintedTokenIds[i]);
         }
     }
 
+
     // Helper to fetch minted tokens for a user
     function getMintedTokens(address user) public view returns (uint256[] memory) {
         return userMintedTokens[user];
+    }
+
+        // Helper to fetch minted tokens for a user
+    function getMintedTokensByRequest(uint256 requestId) public view returns (uint256[] memory) {
+        return s_requestToMintedTokens[requestId];
     }
 
     // Update the base URI for metadata
