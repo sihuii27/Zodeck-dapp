@@ -1,4 +1,6 @@
 import { ethers } from "ethers";
+import { useNavigate } from "react-router-dom";
+import { mintNewCards } from './fetchMintedCards';
 import './Cardpack.css';
 import Swal from 'sweetalert2';
 
@@ -8,6 +10,8 @@ const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 const AMOUNT_IN_ETHER = "0.001"; // Amount to send
 
 const BuyPackButton = () => {
+    const navigate = useNavigate();
+
     const sendEtherToContract = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -51,6 +55,7 @@ const BuyPackButton = () => {
                 title: "Transaction Confirmed",
                 icon: "success",
             });
+
             
         } catch (error) {
             console.error("Error sending Ether:", error);
