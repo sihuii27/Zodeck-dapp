@@ -52,8 +52,11 @@ const NftMarketPlace = ({ tokenId, priceTag, closePopup }) => {
             // // Wait for the transaction to be mined
             // const receipt = await transactionResponse.wait();
             // console.log("Transaction mined:", receipt);
+            alert("Please wait for transaction to be confirmed."+ 'https://sepolia.etherscan.io/tx/'+ tx.hash);
+            console.log("Transaction confirmed!", tx.hash);
+            const receipt = await tx.wait();
             closePopup();
-            alert("Transaction successful!");
+            alert("Transaction approved!");
 
         } catch (error) {
             console.error("Error sending Ether:", error);
