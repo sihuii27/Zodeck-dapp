@@ -1,6 +1,7 @@
 import React from 'react';
 import './Marketplace.css';
 import config from '../abi/config.json';
+import Swal from 'sweetalert2';
 const ethers = require('ethers');
 require("dotenv").config();
 
@@ -37,7 +38,7 @@ const DeleteCard = ({ tokenId }) => {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-            
+
             // fetch all listings in marketplace
             const listings = await nftMarketplaceContract.fetchListingMarketplace();
             // find listing that matches the selected tokenId
@@ -49,12 +50,24 @@ const DeleteCard = ({ tokenId }) => {
                 gasLimit: 500000,
             });
             console.log(tx);
-            alert("Please wait for transaction to be confirmed."+ 'https://sepolia.etherscan.io/tx/'+tx.hash);
-            console.log("Transaction confirmed!", tx.hash);
+            Swal.fire({
+                title: "Please wait for transaction to be confirmed...",
+                text: "You clicked the button!",
+                icon: "info",
+                html: `
+                    <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+                    View your Transaction Id: ${tx.hash}
+                    </a>
+                `,
+            });
             const receipt = await tx.wait();
 
-            alert("Transaction approved!");
-        }catch (error) {
+            Swal.fire({
+                title: "Transaction Confirmed",
+                icon: "success",
+            });
+
+        } catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);
         }
