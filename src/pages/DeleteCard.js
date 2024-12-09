@@ -49,6 +49,11 @@ const DeleteCard = ({ tokenId }) => {
                 gasLimit: 500000,
             });
             console.log(tx);
+            alert("Please wait for transaction to be confirmed."+ 'https://sepolia.etherscan.io/tx/'+tx.hash);
+            console.log("Transaction confirmed!", tx.hash);
+            const receipt = await tx.wait();
+
+            alert("Transaction approved!");
         }catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);
