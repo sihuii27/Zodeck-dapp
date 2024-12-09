@@ -63,11 +63,18 @@ async function main() {
   // // Return the account that minted the cards
   // const account = await signer.getAddress();
   // return account;
-  // const tx = packContract.requestRandomWords(0);
-  // console.log(tx);
 
-  const withdraw = packContract.withdraw();
-  console.log(withdraw);
+  ////////////////
+
+  const native = await packContract.getNativePayment();
+  console.log(native);
+  // const tx = await packContract.setNativePayment(true);
+  const tx = await packContract.requestRandomWords();
+  console.log(tx);
+
+  // const withdraw = await packContract.withdraw();
+  // console.log(withdraw);
+
 
 }
 main();
