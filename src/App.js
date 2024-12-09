@@ -21,6 +21,9 @@ function Header({account,setAccount}) {
   const handleCollection = () => {
     navigate('/collection');
   };
+  const returnHome = () => {
+    navigate('/');
+  };
   
   //when application refreshes
   // useEffect(() => {
@@ -98,7 +101,7 @@ function Header({account,setAccount}) {
 
   const location = useLocation();
   console.log(location.pathname);
-  const hideHeaderRoutes = ['/cardpackresults','/marketplace','/collection','/cardpack']; 
+  const hideHeaderRoutes = ['/cardpackresults','/cardpack']; 
 
   if (hideHeaderRoutes.includes(location.pathname)) {
     return null;
@@ -107,7 +110,7 @@ function Header({account,setAccount}) {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <img src="/zodeck_image.png" alt="Zodeck Logo" className="logo" />
+          <img src="/zodeck_image.png" alt="Zodeck Logo" className="logo" onClick={returnHome}/>
         <span className="navbar-title">Zodeck NFT Marketplace</span>
       </div>
       <div className="navbar-right">

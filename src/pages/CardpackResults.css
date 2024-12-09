@@ -53,7 +53,7 @@
 }
 
 /* Button */
-.open-another-cardpack-btn {
+.open-another-cardpack-btn, .view-collection-btn, .home-btn {
   padding: 15px 20px;
   background-color: #333;
   color: #fff;
@@ -63,12 +63,3 @@
   font-size: 16px;
 }
 
-.view-collection-btn {
-  padding: 15px 20px;
-  background-color: #333;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}

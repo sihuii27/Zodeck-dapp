@@ -24,9 +24,8 @@ const Collection = (props) => {
 
     return (
         <>
-            <div className='login-title'>{props.account != null ? (<>Connected to: {props.account}</>) : (<><p></p></>)}</div>
-
             <div className='collections-container'>
+                <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
                 <div className='title-container'>
                     <h1 className="main-title">Collections</h1>
                 </div>

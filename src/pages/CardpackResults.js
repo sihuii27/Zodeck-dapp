@@ -19,6 +19,10 @@ const CardpackResults = (props) => {
     const handleViewCollection = () => {
         navigate('/collection');
     }
+
+    const handleHome = () => {
+        navigate('/');
+    };
     
     return (
         <>
@@ -49,6 +53,12 @@ const CardpackResults = (props) => {
                     onClick={handleViewCollection}
                 >
                     View Collection
+                </button>
+                <button 
+                    className="home-btn"
+                    onClick={handleHome}
+                >
+                    Back to Homepage
                 </button>
             </div>
             
