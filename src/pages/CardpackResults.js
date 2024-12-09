@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './CardpackResults.css';
 import { fetchMintedCards } from './fetchMintedCards';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const CardpackResults = (props) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [mintedCards, setMintedCards] = useState([]);
+    const requestId = location.state?.requestId;
+    // console.log("frontend requestId: ", requestId)
 
     useEffect(() => {
         const fetchCards = async () => {
-        console.log("fetching cards");
+        // console.log("fetching cards");
 
             try {
-                const account = props.account || (await window.ethereum.request({ method: "eth_accounts" }))[0];
-                if (account) {
-                const cards = await fetchMintedCards(account); // Fetch cards
+                // const account = props.account || (await window.ethereum.request({ method: "eth_accounts" }))[0];
+                if (requestId) {
+                const cards = await fetchMintedCards(requestId); // Fetch cards
                 if (cards.length === 0) {
                     console.warn("No minted cards found.");
                 }
@@ -28,7 +31,7 @@ const CardpackResults = (props) => {
           }
         };
         fetchCards();
-      }, [props.account]);
+      }, [requestId]);
 
     useEffect(() => {
         console.log('minted cards list: ', mintedCards);

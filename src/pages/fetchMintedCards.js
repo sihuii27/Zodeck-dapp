@@ -4,7 +4,7 @@ import bigInt from "big-integer"
 require("dotenv").config();
 const ethers = require('ethers');
 
-const CONTRACT_ADDRESS = "0xb9E0607024d751753cB3821407bB20e6c94871f1";
+const CONTRACT_ADDRESS = "0x3114dA680D054DCEF25486598a0d609aBD0C33BD";
 const CONTRACT_ABI = cardCollectingNFT.abi;
 
 const MAX_RETRIES = 2;  // Maximum retries
@@ -55,6 +55,7 @@ export const mintNewCards = async () => {
     const decodedLog = iface.decodeEventLog("RandomnessRequested", log.data, log.topics);
 
     const requestId = decodedLog.requestId.toString();
+    // console.log("Randomness request ID:", requestId);
 
     // Retry checking fulfillment
     const isFulfilled = await checkRequestFulfillment(contract, requestId);
@@ -68,8 +69,8 @@ export const mintNewCards = async () => {
     console.log("Minted new cards successfully!");
 
     // Return the account that minted the cards
-    const account = await signer.getAddress();
-    return account;
+    // const account = await signer.getAddress();
+    return requestId;
 
   } catch (error) {
     console.error("Error minting cards:", error);
@@ -78,20 +79,20 @@ export const mintNewCards = async () => {
 };
 
 
-export const fetchMintedCards = async (account) => {
+export const fetchMintedCards = async (requestId) => {
   try {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, provider);
 
     // Fetch tokens from contract
-    const tokens = await contract.getMintedTokens(account);
+    const tokens = await contract.getMintedTokensByRequest(requestId);
 
     // Map tokens to display format
     const cards = tokens.map((tokenId) => {
       const id = bigInt(tokenId).toString(); // Convert BigInt to string
       return {
         tokenId: id,
-        image: `/cardImages/${Number(tokenId) % 20}.png`, // Safely convert to number
+        image: `https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${Number(id) % 20 + 1}.png`, // Safely convert to number
         title: `Card #${id}`,
       };
     });

@@ -40,8 +40,8 @@ const BuyPackButton = () => {
             alert("Transaction successful!");
 
             // Mint new cards
-            await mintNewCards();
-            navigate("/cardpackresults");
+            const requestId = await mintNewCards();
+            navigate("/cardpackresults", { state: { requestId } });
             
         } catch (error) {
             console.error("Error sending Ether:", error);

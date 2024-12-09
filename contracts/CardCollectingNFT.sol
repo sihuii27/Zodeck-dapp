@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "./ownable.sol";
+import "contracts/ownable.sol";
 import "contracts/safemath.sol";
 
 contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
@@ -25,16 +25,17 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
         public s_requests; /* requestId --> requestStatus */
 
     // Chainlink VRF variables
-    uint256 public s_subscriptionId;
+    uint256 public s_subscriptionId = 20219316782057294748120828016829935644550368644651516612011930964418228722702;
     bytes32 public s_keyHash =
         0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
     uint32 public callbackGasLimit = 1000000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 10;
-    string public baseURI = "https://localhost:3000/Images/Images";
+    string public baseURI = "ipfs://bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/";
 
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
     mapping(uint256 => uint256[]) public s_requestToRandomNumbers; // Maps requestId to random numbers
+    mapping(uint256 => uint256[]) public s_requestToMintedTokens;
     mapping(uint256 => bool) private tokenExists; // Prevent duplicate token minting
     mapping(address => uint256[]) private userMintedTokens; // Tracks tokens per user
 
@@ -43,12 +44,10 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     event CardMinted(uint256 tokenId, address owner, string metadataURI);
 
     constructor(
-        uint256 subscriptionId
     )
         ERC721("CardCollectingNFT", "CCNFT")
         VRFConsumerBaseV2Plus(0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B) // Sepolia VRF Coordinator
     {
-        s_subscriptionId = subscriptionId;
     }
 
     // Request random numbers
@@ -89,7 +88,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
 
     function batchMint(
         uint256 _requestId
-    ) external {
+    ) public {
         (bool fufilled, uint256[] memory _randomWords) = getRequestStatus(_requestId);
         require(fufilled,"Request not fufilled");
         require(_randomWords.length == 10, "Expected 10 random numbers");
@@ -116,6 +115,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
 
         // Track minted tokens for the recipient
         for (uint256 i = 0; i < mintedTokenIds.length; i++) {
+            s_requestToMintedTokens[_requestId].push(mintedTokenIds[i]);
             userMintedTokens[recipient].push(mintedTokenIds[i]);
         }
     }
@@ -124,6 +124,11 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus {
     // Helper to fetch minted tokens for a user
     function getMintedTokens(address user) public view returns (uint256[] memory) {
         return userMintedTokens[user];
+    }
+
+        // Helper to fetch minted tokens for a user
+    function getMintedTokensByRequest(uint256 requestId) public view returns (uint256[] memory) {
+        return s_requestToMintedTokens[requestId];
     }
 
     // Update the base URI for metadata
