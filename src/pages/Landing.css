@@ -10,6 +10,7 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  margin-top: 0px;
 }
 
 .card-container:hover {
@@ -60,28 +61,36 @@ html, body {
   font-size: 14px;
 }
 
-/* Title container for heading and button */
-.title-container {
+.header-container {
   display: flex;
-  justify-content: space-between; /* Ensure button aligns to the right */
+  flex-direction: column;
+  align-items: flex-end; /* Align to the right */
+  gap: 10px; /* Reduce space between elements */
+  margin-right: 100px; /* Add spacing from the right */
+}
+
+/* Account address styling */
+.account {
+  color: #555;
+  font-size: 15px;
+  text-align: right;
+}
+
+/* Title container for heading and button */
+.pack-container {
+  display: flex;
+  justify-content: space-between;                                                              /* Ensure button aligns to the right */
   align-items: center;
   margin-bottom: 50px;
   margin-left: 20px;
 }
-
 .main-title {
-  font-size: 1.5rem;
+  font-size: 60px;
   color: #333;
   margin: 0;
   text-align: left; /* Align the title to the left */
-  margin-left: 30px;
-}
-
-.account {
-  color: #333;
-  margin: 0;
-  text-align: left; /* Align the title to the left */
-  margin-left: 30px;
+  margin-left: 100px;
+  font-weight: bold;
 }
 
 .buy-card-packs-btn {
@@ -99,7 +108,7 @@ html, body {
   display: flex;
   justify-content: space-between; /* Align title and link */
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-left: 30px;
 }
 
