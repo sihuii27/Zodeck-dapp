@@ -35,6 +35,7 @@ contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
     mapping(uint256 => bool) private tokenExists; // Prevent duplicate token minting
     mapping(address => uint256[]) private userMintedTokens; // Tracks tokens per user
+    mapping(uint256 => uint256[]) private requestIdToTokenIds; // Maps requestId to tokenIds
 
     event RandomnessRequested(uint256 requestId, address requester);
     event RandomnessFulfilled(uint256 requestId, uint256[] randomWords);
@@ -83,11 +84,11 @@ contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
     // Fulfill random numbers from VRF
     function fulfillRandomWords(uint256 _requestId, uint256[] calldata _randomWords) internal override {
         s_randomWords = _randomWords;
-        batchMint(_randomWords, s_requestToSender[_requestId]);
+        batchMint(_randomWords, s_requestToSender[_requestId], requestId);
     }
 
 function batchMint(
-        uint256[] memory _randomWords, address recipient
+        uint256[] memory _randomWords, address recipient, uint256 requestId
     ) public {
         require(_randomWords.length == numWords, "Expected X random numbers");
         require(recipient != address(0), "Recipient address is invalid");
@@ -108,12 +109,18 @@ function batchMint(
         // Track minted tokens for the recipient
         for (uint256 i = 0; i < mintedTokenIds.length; i++) {
             userMintedTokens[recipient].push(mintedTokenIds[i]);
+            requestIdToTokenIds[requestId].push(mintedTokenIds[i]);
         }
     }
 
     // Helper to fetch minted tokens for a user
     function getMintedTokens(address user) public view returns (uint256[] memory) {
         return userMintedTokens[user];
+    }
+
+    // Helper to fetch minted tokens for a request
+    function getMintedTokensFromRequest(uint256 requestId) public view returns (uint256[] memory) {
+        return requestIdToTokenIds[requestId];
     }
 
     // Update the base URI for metadata
