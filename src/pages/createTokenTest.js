@@ -23,12 +23,16 @@ const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
 async function main() {
-  const cost = await nftMarketplaceContract.getListingPrice();
-  console.log(cost);
-  const tx = await nftMarketplaceContract.createToken(uri, {
-    // value: cost, // cost to put listing
-    gasLimit: 500000,
-  });
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+
+  // fetch all listings in marketplace
+  const listings = await nftMarketplaceContract.fetchListingMarketplace();
+  // find listing that matches the selected tokenId
+  const thisListing = listings.find(result => result[0] === tokenId);
+  const priceTag = thisListing[3];
+  console.log(priceTag);
 
   // const myitems = await nftMarketplaceContract.listCard(2,ethers.parseEther(priceTag), {
   //     value: cost, // cost to put listing

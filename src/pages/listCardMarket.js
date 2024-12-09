@@ -24,7 +24,7 @@ const priceTag = "0.0005";
 // const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-const PurchaseCard = ({ tokenId }) => {
+const ListMarketplace = ({ tokenId }) => {
     const buyCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -74,8 +74,8 @@ const PurchaseCard = ({ tokenId }) => {
             alert("Transaction failed: " + error.message);
         }
     };
-    return <button className="hover-link" onClick={buyCard}>Purchase Card</button>;
+    return <button className="hover-link" onClick={buyCard}>List to Marketplace</button>;
 };
 
 
-export default PurchaseCard;
+export default ListMarketplace;
