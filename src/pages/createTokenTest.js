@@ -7,7 +7,7 @@ const config = require('../abi/config.json');
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
-const contract = require("../abi/NFTplace.json");
+const contract = require("../abi/CardMintPack.json");
 
 const uri = "https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeicgkoz5at4c2tdu7odbytswwqw4wdgmkt6h6sdocmwfatydyq4o3e/Card1.png"
 

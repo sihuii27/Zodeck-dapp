@@ -71,8 +71,10 @@ async function main() {
 
   // const withdraw = await packContract.withdraw();
   // console.log(withdraw);
-  const tx = await packContract.getCardIndexFromId(1);
-  console.log(tx);
 
+  // const tx = await packContract.batchMint([1,2,3,4,5],"0x41E213C12B77A2B265A19f20c786634Edb4F2Fdb", 2);
+  // console.log(tx);
+  const ss = await packContract.fetchMyNFTs();
+  console.log(ss);
 }
 main();

@@ -73,7 +73,7 @@ const Landing = (props) => {
                 <div className="landing-card" key={index}>
                   <img
                     className="landing-card-image"
-                    src={`https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${nft.tokenId}.png`}
+                    src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${nft.cardIndex}.png`}
                     alt={`Card ${nft.tokenId}`}
                   />
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>

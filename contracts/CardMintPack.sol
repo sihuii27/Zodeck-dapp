@@ -97,11 +97,11 @@ function batchMint(
         uint256[] memory mintedTokenIds = new uint256[](_randomWords.length);
 
         for (uint256 i = 0; i < _randomWords.length; i++) {
-            uint256 cardIndex = _randomWords[i] % 20; // Determine card index
+            uint256 cardIndex = _randomWords[i] % 48 + 1; // Determine card index
             string memory uri = string(abi.encodePacked(baseURI, "Card ", Strings.toString(cardIndex), ".png"));
 
             // Track the minted token and increment the token ID
-            uint256 tokenId = createToken(uri, recipient);
+            uint256 tokenId = createToken(uri, recipient, cardIndex);
             mintedTokenIds[i] = tokenId;
             cardIndexes[tokenId] = cardIndex;
 

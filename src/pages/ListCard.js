@@ -7,7 +7,7 @@ const cardcss = require('./Landing.css');
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
-const contract = require("../abi/NFTplace.json");
+const contract = require("../abi/CardMintPack.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
