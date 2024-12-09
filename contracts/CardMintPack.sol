@@ -84,7 +84,7 @@ contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
     // Fulfill random numbers from VRF
     function fulfillRandomWords(uint256 _requestId, uint256[] calldata _randomWords) internal override {
         s_randomWords = _randomWords;
-        batchMint(_randomWords, s_requestToSender[_requestId], requestId);
+        batchMint(_randomWords, s_requestToSender[_requestId], _requestId);
     }
 
 function batchMint(
