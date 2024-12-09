@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Marketplace.css';
+import { ethers } from 'ethers';
+import FetchAllListing from './fetchMarketplace';
+import PurchaseCard from './buyListing';
 
 const Marketplace = (props) => {
-  const {account , setAccount} = props;
+  const [alllistings, setAllListings] = useState([]);
+  const [loading, setloading] = useState(false);
+  
   return (
     <>
+      {/* if want to get the address of account {props.account} */}
       <div className="marketplace-container">
+        <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
         <div className="title-container">
-          <h1 className="main-title">Marketplace</h1>
-          <div className="filter-container">
-            <span className="filter-item active">All</span>
-            <span className="filter-item">Abstract</span>
-            <span className="filter-item">Avatar</span>
-            <span className="filter-item">Games</span>
-            <span className="filter-item">Memes</span>
-          </div>
-          {props.account}
+          <h1 className="main-title">Marketplace</h1>          
         </div>
+        
         <div className="marketplace-listings">
-            {[
+        <FetchAllListing setAllListings={setAllListings} setloading={setloading} />
+            {alllistings.length > 0 ? (
+              alllistings.map((listing, index) => (
+                <div className="marketplace-card" key={index}>
+                  <div className="marketplace-landing-card-image"></div>
+                  <p className="card-title">
+                    {`Card Title ${listing.tokenId}`}
+                  </p>
+                  <p className="card-price">
+                    {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
+                    {listing.tokenId}
+                  </p>
+                  <PurchaseCard tokenId={listing.tokenId} />
+                </div>
+              ))
+            ) : (
+              <p>No listings available</p>
+            )}
+            {/* {[
               { image:'/cardImages/0.png', price: '1.40 ETH', title: 'Your Brain social media addiction' },
               { image:'/cardImages/1.png', price: '1.50 ETH', title: 'Land damaged by me and nature' },
               { image:'/cardImages/2.png', price: '1.32 ETH', title: 'Aurora Wave Dark Purple Magma Tone' },
@@ -36,7 +54,7 @@ const Marketplace = (props) => {
                 <p className="card-title">{listing.title}</p>
                 <button className="place-bid-btn">Place Your Bid</button>
               </div>
-            ))}
+            ))} */}
           </div>
       </div>
     </>

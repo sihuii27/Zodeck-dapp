@@ -10,6 +10,7 @@ html, body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    padding: 50px 0 50px 0
   }
 
 .title-container {
@@ -26,6 +27,10 @@ color: #333;
 margin: 0;
 text-align: left;
 margin-left: 30px;
+}
+
+.login-title{
+  text-align:center;
 }
 
 /* filter container and buttons */
@@ -57,18 +62,20 @@ font-weight: bold;
 /* Marketplace Listings */
 .marketplace-listings {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+grid-template-columns: repeat(auto-fill, minmax(max(200px, 15%), 1fr));
 gap: 20px;
 overflow-y: auto;
 margin: 40px;
 flex-direction: column;
+justify-items: center;
 }
 
 .marketplace-card {
 background-color: #fff;
 padding: 10px;
 border-radius: 0px;
-height: 280px;
+width: 200px;
+height: 300px;
 flex-shrink: 0;
 border-radius: 10px;
 position: relative;
