@@ -10,6 +10,6 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY], // Replace with the private key of your account (without 0x)
       //gas: 3000000,
       //gasPrice: 1000000000,
-    }
-  }
+    },
+  },
 };
