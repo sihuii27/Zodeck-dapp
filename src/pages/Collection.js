@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Collection.css';
 import { useNavigate } from 'react-router-dom';
 import FetchMyNFT from './FetchMyNFT';
-import PurchaseCard from './buyListing';
+import ListMarketplace from './listCardMarket';
 
 const Collection = (props) => {
     const navigate = useNavigate();
@@ -34,9 +34,13 @@ const Collection = (props) => {
                     {myNFT.length > 0 ? (
                         myNFT.map((nft, index) => (
                             <div className="collections-card" key={index}>
-                                <img className="card-image"></img>
+                                <img
+                                    className="marketplace-landing-card-image"
+                                    src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${nft.cardIndex}.png`}
+                                    alt={`Card ${nft.tokenId}`}
+                                />
                                 <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
-                                <PurchaseCard tokenId={nft.tokenId} />
+                                <ListMarketplace tokenId={nft.tokenId} />
                             </div>
                         ))
                     ) : (

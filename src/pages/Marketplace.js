@@ -24,7 +24,7 @@ const Marketplace = (props) => {
                 <div className="marketplace-card" key={index}>
                   <img
                     className="marketplace-landing-card-image"
-                    src={`https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/${listing.tokenId}.png`}
+                    src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${listing.cardIndex}.png`}
                     alt={`Card ${listing.tokenId}`}
                   />
                   <p className="card-title">

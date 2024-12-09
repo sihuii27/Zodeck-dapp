@@ -10,7 +10,7 @@ const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 
 // For Hardhat 
-const contract = require("../abi/NFTplace.json");
+const contract = require("../abi/CardMintPack.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
@@ -44,7 +44,7 @@ const PurchaseCard = ({ tokenId }) => {
             const listings = await nftMarketplaceContract.fetchListingMarketplace();
             // find listing that matches the selected tokenId
             const thisListing = listings.find(result => result[0] === tokenId);
-            const priceTag = thisListing[3]; // price tag for buying the card in wei
+            const priceTag = thisListing.price; // price tag for buying the card in wei
 
             const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
                 value: priceTag, // pay price tag 
@@ -53,11 +53,11 @@ const PurchaseCard = ({ tokenId }) => {
             console.log(tx);
             Swal.fire({
                 title: "Please wait for transaction to be confirmed...",
-                text: "You clicked the button!",
                 icon: "info",
                 html: `
+                View your Transaction Id: 
                 <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
-                View your Transaction Id: ${tx.hash}
+                ${tx.hash}
                 </a>
             `,
             });
