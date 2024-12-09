@@ -6,7 +6,6 @@ import NftMarketPlace from './ListCard';
 import FetchMyListing from './FetchMyListings';
 import FetchMyNFT from './FetchMyNFT';
 import DeleteCard from './DeleteCard';
-import { Audio } from 'react-loader-spinner';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ const Landing = (props) => {
     if (props.account) {
       setAccount(props.account);
       console.log('Fetching data...');
-      <Audio height="80" width="80" radius="9" color="green" ariaLabel="loading" wrapperStyle wrapperClass/>
+      //<Audio height="80" width="80" radius="9" color="green" ariaLabel="loading" wrapperStyle wrapperClass/>
       //set it to be empty
       setMyNFT([]);
       //set it to be empty

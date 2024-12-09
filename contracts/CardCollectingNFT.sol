@@ -52,7 +52,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
     }
 
     // Request random numbers
-    function requestRandomWords() external onlyOwner returns (uint256 requestId) {
+    function requestRandomWords() external returns (uint256 requestId) {
         requestId = s_vrfCoordinator.requestRandomWords(
             VRFV2PlusClient.RandomWordsRequest({
                 keyHash: s_keyHash,
