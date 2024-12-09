@@ -101,7 +101,7 @@ function batchMint(
 
             // Track the minted token and increment the token ID
             uint256 tokenId = createToken(uri, recipient);
-            mintedTokenIds[i] = tokenId;
+            mintedTokenIds[i] = [tokenId, cardIndex];
 
             emit CardMinted(tokenId, recipient, uri);
         }
