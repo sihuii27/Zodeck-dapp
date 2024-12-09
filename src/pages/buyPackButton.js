@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import './Cardpack.css';
+import Swal from 'sweetalert2';
 
 import config from '../abi/config.json';
 
@@ -32,10 +33,25 @@ const BuyPackButton = () => {
             const transactionResponse = await signer.sendTransaction(tx);
             console.log("Transaction sent:", transactionResponse);
 
+            Swal.fire({
+                title: "Please wait for transaction to be confirmed...",
+                text: "You clicked the button!",
+                icon: "info",
+                html: `
+                <a href="https://sepolia.etherscan.io/tx/${transactionResponse.hash}" target="_blank">
+                View your Transaction Id: ${transactionResponse.hash}
+                </a>
+            `,
+            });
+
             // Wait for the transaction to be mined
             const receipt = await transactionResponse.wait();
             console.log("Transaction mined:", receipt);
-            alert("Transaction successful!");
+            Swal.fire({
+                title: "Transaction Confirmed",
+                icon: "success",
+            });
+            
         } catch (error) {
             console.error("Error sending Ether:", error);
             alert("Transaction failed: " + error.message);
