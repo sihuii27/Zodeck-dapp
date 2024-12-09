@@ -8,7 +8,7 @@ import "./ownable.sol";
 import "./test.sol";
 import "contracts/safemath.sol";
 
-contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
+contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
     using SafeMath for uint256;
     //Keeps track of minted NFTS
     uint256 private _tokenIds;
@@ -29,19 +29,26 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
     uint256 public s_subscriptionId;
     bytes32 public s_keyHash =
         0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae;
-    uint32 public callbackGasLimit = 1000000;
+    uint32 public callbackGasLimit = 2000000;
     uint16 public requestConfirmations = 3;
-    uint32 public numWords = 10;
+    uint32 public numWords = 5;
     string public baseURI = "https://apricot-cheerful-alpaca-636.mypinata.cloud/ipfs/bafybeif4wde6i453uhad2bs63ay4nip3ml2q7x3jhffmo4lkd2z52uipmi/";
 
+    // Pack supply control variables
+    uint256 public packPrice = 0.0001 ether;
+    uint256 public packsAvailable = 100;
+    uint256 public totalPacksSold = 0;
+
+
     mapping(uint256 => address) public s_requestToSender; // Maps requestId to user
-    mapping(uint256 => uint256[]) public s_requestToRandomNumbers; // Maps requestId to random numbers
     mapping(uint256 => bool) private tokenExists; // Prevent duplicate token minting
     mapping(address => uint256[]) private userMintedTokens; // Tracks tokens per user
 
     event RandomnessRequested(uint256 requestId, address requester);
     event RandomnessFulfilled(uint256 requestId, uint256[] randomWords);
     event CardMinted(uint256 tokenId, address owner, string metadataURI);
+    event PackPurchased(address indexed buyer, uint256 packId, uint256 requestId);
+
 
     constructor(
         uint256 subscriptionId
@@ -52,7 +59,9 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
     }
 
     // Request random numbers
-    function requestRandomWords() external returns (uint256 requestId) {
+    function requestRandomWords(
+        bool enableNativePayment
+    ) external returns (uint256 requestId) {
         requestId = s_vrfCoordinator.requestRandomWords(
             VRFV2PlusClient.RandomWordsRequest({
                 keyHash: s_keyHash,
@@ -61,7 +70,7 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
                 callbackGasLimit: callbackGasLimit,
                 numWords: numWords,
                 extraArgs: VRFV2PlusClient._argsToBytes(
-                    VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
+                    VRFV2PlusClient.ExtraArgsV1({nativePayment: enableNativePayment})
                 )
             })
         );
@@ -81,53 +90,13 @@ contract CardCollectingNFT is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace 
     function fulfillRandomWords(uint256 _requestId, uint256[] calldata _randomWords) internal override {
         s_randomWords = _randomWords;
         requestIds.push(_requestId);
-        s_requestToRandomNumbers[_requestId] = _randomWords;
-        s_requests[_requestId].fulfilled = true;
-        s_requests[_requestId].randomWords = _randomWords;
-        emit RandomnessFulfilled(_requestId, _randomWords);
+        batchMint(_randomWords, s_requestToSender[_requestId]);
     }
 
-    // function batchMint(
-    //     uint256 _requestId
-    // ) external {
-    //     (bool fufilled, uint256[] memory _randomWords) = getRequestStatus(_requestId);
-    //     require(fufilled,"Request not fufilled");
-    //     require(_randomWords.length == 10, "Expected 10 random numbers");
-
-    //     address recipient = s_requestToSender[_requestId];
-    //     require(recipient != address(0), "Recipient address is invalid");
-
-    //     uint256[] memory mintedTokenIds = new uint256[](_randomWords.length);
-
-    //     for (uint256 i = 0; i < _randomWords.length; i++) {
-    //         uint256 cardIndex = _randomWords[i] % 20; // Determine card index
-    //         uint256 tokenId = nextTokenId;
-
-    //         // Track the minted token and increment the token ID
-    //         mintedTokenIds[i] = tokenId;
-    //         nextTokenId++;
-
-    //         // Avoid storing token metadata individually
-    //         // Metadata can be derived dynamically from the base URI
-    //         _mint(recipient, tokenId);
-
-    //         emit CardMinted(tokenId, recipient, string(abi.encodePacked(baseURI, "Card ", _uintToString(cardIndex), ".png")));
-    //     }
-
-    //     // Track minted tokens for the recipient
-    //     for (uint256 i = 0; i < mintedTokenIds.length; i++) {
-    //         userMintedTokens[recipient].push(mintedTokenIds[i]);
-    //     }
-    // }
-
 function batchMint(
-        uint256 _requestId
-    ) external {
-        (bool fufilled, uint256[] memory _randomWords) = getRequestStatus(_requestId);
-        require(fufilled,"Request not fufilled");
-        require(_randomWords.length == 10, "Expected 10 random numbers");
-
-        address recipient = s_requestToSender[_requestId];
+        uint256[] memory _randomWords, address recipient
+    ) public {
+        require(_randomWords.length == numWords, "Expected X random numbers");
         require(recipient != address(0), "Recipient address is invalid");
 
         uint256[] memory mintedTokenIds = new uint256[](_randomWords.length);
@@ -185,5 +154,28 @@ function batchMint(
         require(s_requests[_requestId].exists, "request not found");
         RequestStatus memory request = s_requests[_requestId];
         return (request.fulfilled, request.randomWords);
+    }
+
+    function withdraw() external onlyOwner {
+        address payable _owner = payable(owner());
+        _owner.transfer(address(this).balance);
+    }
+
+    function updatePacksAvailable(uint256 newQty) external onlyOwner {
+        // reset the number of packs available
+        packsAvailable = newQty;
+    }    
+    
+    function updatePackPrice(uint256 newPrice) external onlyOwner {
+        // newPrice in wei
+        packPrice = newPrice;
+    }
+
+    function getPacksAvailable() external view returns (uint) {
+        return packsAvailable;
+    }
+
+    function getTotalPacksSold() external view returns (uint) {
+        return totalPacksSold;
     }
 }
