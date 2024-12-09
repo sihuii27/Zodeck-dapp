@@ -14,7 +14,6 @@ const contract = require("../abi/CardMintPack.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
-const priceTag = "0.0005";
 
 //console.log(JSON.stringify(contract.abi));
 
@@ -24,7 +23,7 @@ const priceTag = "0.0005";
 // const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 // Contract
 //const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
-const ListMarketplace = ({ tokenId }) => {
+const ListMarketplace = ({ tokenId, priceTag}) => {
     const buyCard = async () => {
         if (!window.ethereum) {
             alert("Please install MetaMask to interact with the dApp.");
@@ -40,14 +39,9 @@ const ListMarketplace = ({ tokenId }) => {
             const signer = await provider.getSigner();
             const nftMarketplaceContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
 
-            // fetch all listings in marketplace
-            const listings = await nftMarketplaceContract.fetchListingMarketplace();
-            // find listing that matches the selected tokenId
-            const thisListing = listings.find(result => result[0] === tokenId);
-            const priceTag = thisListing.price; // price tag for buying the card in wei
-
-            const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
-                value: priceTag, // pay price tag 
+            const cost = await nftMarketplaceContract.getListingPrice();        
+            const tx = await nftMarketplaceContract.listCard(tokenId, ethers.parseUnits(priceTag, 'ether'), {
+                value: cost, // cost to put listing
                 gasLimit: 500000,
             });
             console.log(tx);

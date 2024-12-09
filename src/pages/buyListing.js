@@ -44,7 +44,7 @@ const PurchaseCard = ({ tokenId }) => {
             const listings = await nftMarketplaceContract.fetchListingMarketplace();
             // find listing that matches the selected tokenId
             const thisListing = listings.find(result => result[0] === tokenId);
-            const priceTag = thisListing.price; // price tag for buying the card in wei
+            const priceTag = thisListing[3]; // price tag for buying the card in wei
 
             const tx = await nftMarketplaceContract.purchaseCard(tokenId, {
                 value: priceTag, // pay price tag 

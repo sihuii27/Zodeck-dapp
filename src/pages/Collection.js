@@ -3,6 +3,7 @@ import './Collection.css';
 import { useNavigate } from 'react-router-dom';
 import FetchMyNFT from './FetchMyNFT';
 import ListMarketplace from './listCardMarket';
+import { ethers } from 'ethers';
 
 const Collection = (props) => {
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Collection = (props) => {
                                     alt={`Card ${nft.tokenId}`}
                                 />
                                 <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
-                                <ListMarketplace tokenId={nft.tokenId} />
+                                <ListMarketplace tokenId={nft.tokenId} priceTag={nft.price.toString()}/>
                             </div>
                         ))
                     ) : (
