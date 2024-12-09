@@ -54,6 +54,10 @@ const BuyPackButton = () => {
             Swal.fire({
                 title: "Transaction Confirmed",
                 icon: "success",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate('/');
+                }
             });
 
             // Fetch minted cards

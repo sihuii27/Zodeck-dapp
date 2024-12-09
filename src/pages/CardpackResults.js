@@ -26,14 +26,14 @@ const CardpackResults = (props) => {
     
     return (
         <>
-        <div className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</div>
+        <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
         <div className="cardpack-results-container">
             <div className="cardpack-results-content">
             {mintedCards && mintedCards.length > 0 ? (
                     mintedCards.map((listing, index) => (
                     <div className="result-card" key={index}>
                         <img src={listing.metadataURI} className="result-card-image" alt={listing.title} />
-                        <p className="card-title">{listing.tokenId}</p>
+                        <p className="card-title">Card Title {listing.tokenId}</p>
                     </div>
                     ))
                 ) : (

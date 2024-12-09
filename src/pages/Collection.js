@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Landing.css';
+import './Collection.css';
 import FetchMyNFT from './FetchMyNFT';
 import NftMarketPlace from './ListCard';
 
@@ -34,14 +34,6 @@ const Collection = (props) => {
 
     return (
         <div className="collection-wrapper">
-            {/* Account Status */}
-            <div className="login-title">
-                {props.account ? (
-                    <>Connected to: {props.account}</>
-                ) : (
-                    <p>Please connect your account</p>
-                )}
-            </div>
 
             {props.account && (
                 <>
@@ -51,17 +43,25 @@ const Collection = (props) => {
                         account={account}
                     />
                     <div className="collections-container">
+                        {/* Account Status */}
+                        <h4 className="login-title">
+                            {props.account ? (
+                                <>Connected to: {props.account}</>
+                            ) : (
+                                <p>Please connect your account</p>
+                            )}
+                        </h4>
                         <div className="title-container">
                             <h1 className="main-title">Collections</h1>
                         </div>
 
                         {/* NFT Cards */}
-                        <div className="landing-listings">
+                        <div className="collections-content">
                             {myNFT.length > 0 ? (
                                 myNFT.map((nft, index) => (
-                                    <div className="landing-card" key={index}>
+                                    <div className="collections-card" key={index}>
                                         <img
-                                            className="landing-card-image"
+                                            className="card-image"
                                             src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${nft.cardIndex}.png`}
                                             alt={`Card ${nft.tokenId}`}
                                         />
