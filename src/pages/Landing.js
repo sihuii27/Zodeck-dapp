@@ -6,6 +6,7 @@ import NftMarketPlace from './ListCard';
 import FetchMyListing from './FetchMyListings';
 import FetchMyNFT from './FetchMyNFT';
 import DeleteCard from './DeleteCard';
+import { Audio } from 'react-loader-spinner';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -21,29 +22,30 @@ const Landing = (props) => {
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
   };
-  
+
   const handleMarketplace = () => {
     navigate('/marketplace');
   };
 
   const handlePopupClose = () => {
-    setPopupVisible(false); 
-    setEtherAmount(''); 
+    setPopupVisible(false);
+    setEtherAmount('');
   };
 
   // Fetch NFTs and listings when the account changes
   useEffect(() => {
     if (props.account) {
-      setAccount(props.account); 
+      setAccount(props.account);
       console.log('Fetching data...');
+      <Audio height="80" width="80" radius="9" color="green" ariaLabel="loading" wrapperStyle wrapperClass/>
       //set it to be empty
-      setMyNFT([]); 
+      setMyNFT([]);
       //set it to be empty
-      setListings([]); 
-      setloading(true); 
+      setListings([]);
+      setloading(true);
     }
   }, [props.account]);
-  
+
   return (
     <div className="landing-container">
       {/* {loading && <div className="loading-indicator">Loading...</div>} */}
@@ -54,13 +56,13 @@ const Landing = (props) => {
         </button>
       </div>
       <div className="title-container">
-        {props.account ? (<h4 className="account">Connected to: {props.account}</h4>):(<p></p>)}
+        {props.account ? (<h4 className="account">Connected to: {props.account}</h4>) : (<p></p>)}
       </div>
-      
+
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} account={account}/>
+          <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} account={account} />
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
@@ -71,7 +73,7 @@ const Landing = (props) => {
               myNFT.map((nft, index) => (
                 <div className="landing-card" key={index}>
                   <img className="landing-card-image "></img>
-                  
+
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
                   <button
                     className="hover-link"
@@ -83,7 +85,7 @@ const Landing = (props) => {
                   >
                     List to Marketplace
                   </button>
-                
+
                 </div>
               ))
             ) : (
@@ -94,7 +96,7 @@ const Landing = (props) => {
       ) : (
         <p className="section-no-connect">Please connect your wallet to view collection.</p>
       )}
-      
+
       {/* Popup */}
       {isPopupVisible && (
         <div className="popup-overlay">
@@ -109,8 +111,8 @@ const Landing = (props) => {
               onChange={(e) => setEtherAmount(e.target.value)}
               className="popup-input"
             />
-            <div className="popup-buttons">        
-              <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount} closePopup={handlePopupClose}/>
+            <div className="popup-buttons">
+              <NftMarketPlace tokenId={selectedCardId} priceTag={etherAmount} closePopup={handlePopupClose} />
               <button className="popup-cancel-btn" onClick={handlePopupClose}>
                 Cancel
               </button>
@@ -122,7 +124,7 @@ const Landing = (props) => {
       {props.account ? (
         <>
           {/* Pass account and setListings to FetchMyListings */}
-          <FetchMyListing setListings={setListings} setloading={setloading} account={account}/>
+          <FetchMyListing setListings={setListings} setloading={setloading} account={account} />
 
           <div className="listings-title-container">
             <h3 className="section-title">Your Listings</h3>

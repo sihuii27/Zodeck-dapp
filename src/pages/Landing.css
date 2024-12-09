@@ -158,7 +158,9 @@ html, body {
 .landing-listings {
   display: flex;
   gap: 20px;
-  overflow-x: auto;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
   margin-bottom: 40px;
   margin-left: 40px;
 }
