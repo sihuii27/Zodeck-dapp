@@ -91,6 +91,11 @@ margin-bottom: 10px;
 border-radius: 0px;
 }
 
+
+.marketplace-landing-card-image{
+  height: 85%;
+  gap: 30px;
+}
 .card-price {
 font-weight: bold;
 margin: 10px 0;

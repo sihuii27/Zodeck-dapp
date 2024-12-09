@@ -179,7 +179,7 @@ html, body {
   display: grid;
   gap: 20px;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: visible;  /* made visible because its the only place user can see their listings */
   white-space: nowrap;
   text-overflow: clip;
   margin: 20px 40px 40px 40px;
