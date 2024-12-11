@@ -84,7 +84,7 @@ const BuyPackButton = () => {
         }
     };
 
-    return <button className="open-cardpack-btn" onClick={sendEtherToContract}>Open Card Pack 0.001 Ether</button>;
+    return <button className="open-cardpack-btn" onClick={sendEtherToContract}>Open Card Pack 0.001 ETH</button>;
 };
 
 export default BuyPackButton;
