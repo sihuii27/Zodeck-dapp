@@ -82,9 +82,9 @@ contract NFTplace is ERC721URIStorage {
 
     //Marketplace
     function purchaseCard(uint256 tokenId) public payable {
-        //uint price = cardToListingItem[tokenId].price;
+        uint price = cardToListingItem[tokenId].price;
         address payable creator = cardToListingItem[tokenId].seller;
-        //require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
         //new owner/ buyer of card is msg.sender
         cardToListingItem[tokenId].owner = payable(msg.sender);
         cardToListingItem[tokenId].sold = true;
