@@ -57,7 +57,7 @@
     "crypto-browserify": "^3.12.1",
     "dotenv": "^16.4.7",
     "ethers": "6.13.4",
-    "hardhat": "2.22.16",
+    "hardhat": "^2.22.17",
     "mocha": "10.8.2",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
