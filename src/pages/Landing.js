@@ -62,11 +62,11 @@ const Landing = (props) => {
           {/* Pass account and setListings to FetchMyListings */}
           <FetchMyNFT setMyNFT={setMyNFT} setloading={setloading} account={account} />
           <div className="pack-container">
-          <p className="main-title">Zodeck, satisfy your card collecting itch here</p>
-        <button className="buy-card-packs-btn" onClick={handleBuyCardPacks}>
-          Buy Card Packs
-        </button>
-      </div>
+            <p className="main-title">Zodeck, satisfy your card collecting itch here</p>
+            <button className="buy-card-packs-btn" onClick={handleBuyCardPacks}>
+              Buy Card Packs
+            </button>
+          </div>
           <div className="listings-title-container">
             <h3 className="section-title">Your Collection</h3>
             <button className="go-marketplace-btn" onClick={handleCollection}>
@@ -83,8 +83,7 @@ const Landing = (props) => {
                     src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${nft.cardIndex}.png`}
                     alt={`Card ${nft.tokenId}`}
                   />
-                  <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
-                  <h4>{description[nft.cardIndex]}</h4>
+                  <p className="card-title">{description[nft.cardIndex].name}</p>
                   <button
                     className="hover-link"
                     onClick={() => {
@@ -151,12 +150,12 @@ const Landing = (props) => {
                     src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${listing.cardIndex}.png`}
                     alt={`Card ${listing.tokenId}`}
                   />
-                  <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
-                  <h4>{description[listing.cardIndex]}</h4>
+                  <p className="card-title">{description[listing.cardIndex].name}</p>
+                  <h4>{description[listing.cardIndex].description}</h4>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
-                    <DeleteCard tokenId={listing.tokenId} />
+                  <DeleteCard tokenId={listing.tokenId} />
                 </div>
               ))
             ) : (

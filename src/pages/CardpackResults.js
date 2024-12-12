@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './CardpackResults.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Description from './Description';
 
 const CardpackResults = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const mintedCards = location.state?.mintedCards;
+    const description = Description();
     console.log("frontend mintedCards: ", mintedCards)
 
     useEffect(() => {
@@ -32,8 +34,8 @@ const CardpackResults = (props) => {
             {mintedCards && mintedCards.length > 0 ? (
                     mintedCards.map((listing, index) => (
                     <div className="result-card" key={index}>
-                        <img src={listing.metadataURI} className="result-card-image" alt={listing.title} />
-                        <p className="card-title">Card Title {listing.tokenId}</p>
+                        <img src={description[listing.cardIndex].image} className="result-card-image" alt={description[listing.cardIndex].name} />
+                        <p className="card-title">{description[listing.cardIndex].name}</p>
                     </div>
                     ))
                 ) : (
