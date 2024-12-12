@@ -79,7 +79,7 @@ const Collection = (props) => {
                                             className="hover-link"
                                             onClick={() => {
                                                 console.log("Selected tokenId:", nft.tokenId);
-                                                setSelectedCardId(nft.tokenId);
+                                                setSelectedCardId(description[nft.cardIndex]?.description || 'Loading...');
                                                 setPopupVisible(true);
                                             }}
                                         >
@@ -100,7 +100,7 @@ const Collection = (props) => {
                 <div className="popup-overlay">
                     <div className="popup-container">
                         <h3>List Card to Marketplace</h3>
-                        <p>Card ID: {selectedCardId.toString()}</p>
+                        <p>{selectedCardId.toString()}</p>
                         <input
                             type="number"
                             min="0"
