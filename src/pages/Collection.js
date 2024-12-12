@@ -4,6 +4,7 @@ import './Collection.css';
 import FetchMyNFT from './FetchMyNFT';
 import NftMarketPlace from './ListCard';
 import Description from './Description';
+import { Tooltip, Button } from '@mui/material';
 
 const Collection = (props) => {
     const navigate = useNavigate();
@@ -68,6 +69,12 @@ const Collection = (props) => {
                                             alt={`Card ${nft.tokenId}`}
                                         />
                                         <p className="card-title">{description[nft.cardIndex]?.name || 'Loading...'}</p>
+                                        <Tooltip placement="top"
+                                            title={description[nft.cardIndex]?.description || 'Loading...'} // Display the card's description in the Tooltip
+                                            arrow
+                                        >
+                                            <Button variant="outlined" size="small" sx={{ marginBottom: '5px' }}>View Description</Button>
+                                        </Tooltip>
                                         <button
                                             className="hover-link"
                                             onClick={() => {

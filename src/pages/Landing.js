@@ -7,6 +7,7 @@ import FetchMyListing from './FetchMyListings';
 import FetchMyNFT from './FetchMyNFT';
 import DeleteCard from './DeleteCard';
 import Description from './Description';
+import { Tooltip, Button } from '@mui/material';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -84,11 +85,17 @@ const Landing = (props) => {
                     alt={`Card ${nft.tokenId}`}
                   />
                   <p className="card-title">{description[nft.cardIndex]?.name || 'Loading...'}</p>
+                  <Tooltip placement="top"
+                    title={description[nft.cardIndex]?.description || 'Loading...'} // Display the card's description in the Tooltip
+                    arrow
+                  >
+                    <Button variant="outlined" size="small" sx={{ marginBottom: '5px' }}>View Description</Button>
+                  </Tooltip>
                   <button
                     className="hover-link"
                     onClick={() => {
                       console.log("Selected tokenId:", nft.tokenId);
-                      setSelectedCardId(nft.tokenId);
+                      setSelectedCardId(description[nft.cardIndex]?.name || 'Loading...');
                       setPopupVisible(true);
                     }}
                   >
@@ -110,7 +117,7 @@ const Landing = (props) => {
         <div className="popup-overlay">
           <div className="popup-container">
             <h3>List Card to Marketplace</h3>
-            <p>Card ID: {selectedCardId.toString()}</p>
+            <p>{selectedCardId.toString()}</p>
             <input
               type="number"
               min="0"
@@ -154,6 +161,12 @@ const Landing = (props) => {
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
+                  <Tooltip placement="top"
+                    title={description[listing.cardIndex]?.description || 'Loading...'} // Display the card's description in the Tooltip
+                    arrow
+                  >
+                    <Button variant="outlined" size="small" sx={{ marginBottom: '5px' }}>View Description</Button>
+                  </Tooltip>
                   <DeleteCard tokenId={listing.tokenId} />
                 </div>
               ))

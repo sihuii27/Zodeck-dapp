@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import FetchAllListing from './fetchMarketplace';
 import PurchaseCard from './buyListing';
 import Description from './Description';
+import { Tooltip, Button } from '@mui/material';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
@@ -36,6 +37,12 @@ const Marketplace = (props) => {
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                     {listing.tokenId}
                   </p>
+                  <Tooltip placement="top"
+                    title={description[listing.cardIndex]?.description || 'Loading...'} // Display the card's description in the Tooltip
+                    arrow
+                  >
+                    <Button variant="outlined" size="small" sx={{ marginBottom: '5px' }}>View Description</Button>
+                  </Tooltip>
                   <PurchaseCard tokenId={listing.tokenId} />
                 </div>
               ))

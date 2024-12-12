@@ -171,7 +171,7 @@ html, body {
   text-overflow: clip;
   margin: 20px 40px 40px 40px;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  max-height: 400px;  /* Adjust based on card height */
+  max-height: 420px;  /* Adjust based on card height */
 }
 
 /* Marketplace Listings */
