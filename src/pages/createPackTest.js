@@ -11,6 +11,7 @@ const provider = new ethers.JsonRpcProvider(process.env.API_URL);
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 // Contract
 const packContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+const tokenUri = "https://green-manual-badger-37.mypinata.cloud/ipfs/bafkreihgqsrjemcnnekx54egf7nh5vpn5ipcqlcie6us5tfqinogm5jaqu"
 
 async function main() {
   // const checkRequestFulfillment = async (contract, requestId) => {
@@ -25,6 +26,8 @@ async function main() {
   //   }
   //   return false;
   // };
+  const tokenId = await packContract.createToken(tokenUri, signer, 1);
+  console.log(tokenId);
   // // Request randomness from Chainlink VRF
   // const tx = await packContract.requestRandomWords();
   // const receipt = await tx.wait();

@@ -1,0 +1,15 @@
+{
+    "attributes": [
+        {
+            "trait_type": "Animal",
+            "value": "Monkey"
+        },
+        {
+            "trait_type": "Element",
+            "value": "Forest"
+        }
+    ],
+    "description": "The nature's guardian, flourishing with vitality and growth combines with a playful trickster with cleverness and agility to create a truly unique presence.",
+    "image": "https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/16.png",
+    "name": "Monkey - Forest"
+}

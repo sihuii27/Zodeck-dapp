@@ -23,7 +23,7 @@ contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
     uint32 public callbackGasLimit = 2000000;
     uint16 public requestConfirmations = 3;
     uint32 public numWords = 5;
-    string public baseURI = "https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/";
+    string public baseURI = "https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeidlvgplmk5rbamco3ccmz2by4vb5pgia6htesmnybk4comh7yibv4/";
     bool enableNativePayment;
 
     // Pack supply control variables
@@ -98,7 +98,7 @@ function batchMint(
 
         for (uint256 i = 0; i < _randomWords.length; i++) {
             uint256 cardIndex = _randomWords[i] % 48 + 1; // Determine card index
-            string memory uri = string(abi.encodePacked(baseURI, Strings.toString(cardIndex), ".png"));
+            string memory uri = string(abi.encodePacked(baseURI, Strings.toString(cardIndex), ".json"));
 
             // Track the minted token and increment the token ID
             uint256 tokenId = createToken(uri, recipient, cardIndex);

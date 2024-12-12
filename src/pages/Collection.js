@@ -62,7 +62,7 @@ const Collection = (props) => {
                                     <div className="collections-card" key={index}>
                                         <img
                                             className="card-image"
-                                            src={`https://bafybeic7rl5iyq4se7g65t2dwzolfquhm2t4dwryomdcmqouet2qyvkn3u.ipfs.w3s.link/${nft.cardIndex}.png`}
+                                            src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${nft.cardIndex}.png`}
                                             alt={`Card ${nft.tokenId}`}
                                         />
                                         <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
