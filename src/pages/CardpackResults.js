@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './CardpackResults.css';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Description from './Description';
 
 const CardpackResults = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const mintedCards = location.state?.mintedCards;
-    const description = Description();
     console.log("frontend mintedCards: ", mintedCards)
+    const [cardDetails, setCardDetails] = useState([]);
 
     useEffect(() => {
         console.log('minted cards list: ', mintedCards);
+        if (mintedCards && mintedCards.length > 0) {
+            const fetchCardDetails = async () => {
+                const cardData = await Promise.all(
+                    mintedCards.map(async (listing) => {
+                        const response = await fetch(listing.metadataURI);
+                        const data = await response.json();
+                        return data;
+                    })
+                );
+                setCardDetails(cardData);
+            };
+            fetchCardDetails();
+        }
     }, [mintedCards]);
 
     const handleOpenAnotherPack = () => {
@@ -31,12 +43,16 @@ const CardpackResults = (props) => {
         <h4 className='login-title'>{props.account !=null ? (<>Connected to: {props.account}</>):(<><p></p></>)}</h4>
         <div className="cardpack-results-container">
             <div className="cardpack-results-content">
-            {mintedCards && mintedCards.length > 0 ? (
-                    mintedCards.map((listing, index) => (
-                    <div className="result-card" key={index}>
-                        <img src={description[listing.cardIndex]?.image || 'Loading...'} className="result-card-image"/>
-                        <p className="card-title">{description[listing.cardIndex]?.name || 'Loading...'}</p>
-                    </div>
+                {cardDetails && cardDetails.length > 0 ? (
+                    cardDetails.map((listing, index) => (
+                        <div className="result-card" key={index}>
+                            <img
+                                src={listing.image}
+                                className="result-card-image"
+                                alt={listing.name}
+                            />
+                            <p className="card-title">{listing.name}</p>
+                        </div>
                     ))
                 ) : (
                     <p>No cards minted yet. Please try minting!</p>
