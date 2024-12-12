@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import './Collection.css';
 import FetchMyNFT from './FetchMyNFT';
 import NftMarketPlace from './ListCard';
+import Description from './Description';
 
 const Collection = (props) => {
     const navigate = useNavigate();
+    const description = Description();
 
     // State Variables
     const [selectedCard, setSelectedCard] = useState(null);
@@ -65,7 +67,7 @@ const Collection = (props) => {
                                             src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${nft.cardIndex}.png`}
                                             alt={`Card ${nft.tokenId}`}
                                         />
-                                        <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
+                                        <p className="card-title">{description[nft.cardIndex]?.name || 'Loading...'}</p>
                                         <button
                                             className="hover-link"
                                             onClick={() => {

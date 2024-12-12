@@ -3,10 +3,12 @@ import './Marketplace.css';
 import { ethers } from 'ethers';
 import FetchAllListing from './fetchMarketplace';
 import PurchaseCard from './buyListing';
+import Description from './Description';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
   const [loading, setloading] = useState(false);
+  const description = Description();
   
   return (
     <>
@@ -28,7 +30,7 @@ const Marketplace = (props) => {
                     alt={`Card ${listing.tokenId}`}
                   />
                   <p className="card-title">
-                    {`Card Title ${listing.tokenId}`}
+                    {description[listing.cardIndex]?.name || 'Loading...'}
                   </p>
                   <p className="card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}

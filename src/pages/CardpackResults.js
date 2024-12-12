@@ -34,8 +34,8 @@ const CardpackResults = (props) => {
             {mintedCards && mintedCards.length > 0 ? (
                     mintedCards.map((listing, index) => (
                     <div className="result-card" key={index}>
-                        <img src={description[listing.cardIndex].image} className="result-card-image" alt={description[listing.cardIndex].name} />
-                        <p className="card-title">{description[listing.cardIndex].name}</p>
+                        <img src={description[listing.cardIndex]?.image || 'Loading...'} className="result-card-image"/>
+                        <p className="card-title">{description[listing.cardIndex]?.name || 'Loading...'}</p>
                     </div>
                     ))
                 ) : (

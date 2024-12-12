@@ -83,7 +83,7 @@ const Landing = (props) => {
                     src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${nft.cardIndex}.png`}
                     alt={`Card ${nft.tokenId}`}
                   />
-                  <p className="card-title">{description[nft.cardIndex].name}</p>
+                  <p className="card-title">{description[nft.cardIndex]?.name || 'Loading...'}</p>
                   <button
                     className="hover-link"
                     onClick={() => {
@@ -150,8 +150,7 @@ const Landing = (props) => {
                     src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${listing.cardIndex}.png`}
                     alt={`Card ${listing.tokenId}`}
                   />
-                  <p className="card-title">{description[listing.cardIndex].name}</p>
-                  <h4>{description[listing.cardIndex].description}</h4>
+                  <p className="card-title">{description[listing.cardIndex]?.name || 'Loading...'}</p>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>

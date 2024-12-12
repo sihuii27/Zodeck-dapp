@@ -10,11 +10,11 @@ const Descriptions = () => {
                 try {
                     const response = await fetch(`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeidlvgplmk5rbamco3ccmz2by4vb5pgia6htesmnybk4comh7yibv4/${i}.json`);
                     const data = await response.json();
-                    // Map file index to its description, name and image
+                    // Map file index to its description
                     descArray[i] = {
-                        description: data.description,
-                        name: data.name,
-                        image: data.image
+                        description: data.description,  
+                        name: data.name,              
+                        image: data.image             
                     };
                 } catch (error) {
                     console.error(`Error fetching JSON for card ${i}:`, error);
