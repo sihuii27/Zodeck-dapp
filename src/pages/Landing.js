@@ -6,6 +6,7 @@ import NftMarketPlace from './ListCard';
 import FetchMyListing from './FetchMyListings';
 import FetchMyNFT from './FetchMyNFT';
 import DeleteCard from './DeleteCard';
+import Description from './Description';
 
 const Landing = (props) => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Landing = (props) => {
   const [myNFT, setMyNFT] = useState([]);
   const [loading, setloading] = useState(false);
   const [account, setAccount] = useState(props.account);
+  const description = Description();
 
   const handleBuyCardPacks = () => {
     navigate('/cardpack');
@@ -82,6 +84,7 @@ const Landing = (props) => {
                     alt={`Card ${nft.tokenId}`}
                   />
                   <p className="card-title">{`Card Title ${nft.tokenId}`}</p>
+                  <h4>{description[nft.cardIndex]}</h4>
                   <button
                     className="hover-link"
                     onClick={() => {
@@ -149,6 +152,7 @@ const Landing = (props) => {
                     alt={`Card ${listing.tokenId}`}
                   />
                   <p className="card-title">{`Card Title ${listing.tokenId}`}</p>
+                  <h4>{description[listing.cardIndex]}</h4>
                   <p className="marketplace-landing-card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                   </p>
