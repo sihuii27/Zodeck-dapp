@@ -1,5 +1,5 @@
 import config from '../abi/config.json';
-
+import Swal from 'sweetalert2';
 const ethers = require('ethers');
 require("dotenv").config();
 const cardcss = require('./Landing.css');
@@ -7,7 +7,7 @@ const cardcss = require('./Landing.css');
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
-const contract = require("../abi/NFTplace.json");
+const contract = require("../abi/CardMintPack.json");
 
 const uri = "https://localhost:3000/Images/Images/"
 
@@ -52,11 +52,22 @@ const NftMarketPlace = ({ tokenId, priceTag, closePopup }) => {
             // // Wait for the transaction to be mined
             // const receipt = await transactionResponse.wait();
             // console.log("Transaction mined:", receipt);
-            alert("Please wait for transaction to be confirmed."+ 'https://sepolia.etherscan.io/tx/'+ tx.hash);
-            console.log("Transaction confirmed!", tx.hash);
+            Swal.fire({
+                title: "Please wait for transaction to be confirmed...",
+                text: "You clicked the button!",
+                icon: "info",
+                html: `
+                    <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank">
+                    View your Transaction Id: ${tx.hash}
+                    </a>
+                `,
+            });
             const receipt = await tx.wait();
             closePopup();
-            alert("Transaction approved!");
+            Swal.fire({
+                title: "Transaction Confirmed",
+                icon: "success",
+            });
 
         } catch (error) {
             console.error("Error sending Ether:", error);

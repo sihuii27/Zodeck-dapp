@@ -27,8 +27,8 @@ const CardPack = () => {
         }}></model-viewer>
         </div>
         <div className="cardpack-info">
-          <p>Shiny - 0.000001%</p> 
-          <p>Animal - 25%</p>
+          <p>Type: 25%</p> 
+          <p>Animal: 8.33%</p>
         </div>
       </div>
       <div className="cardpack-btn-container">

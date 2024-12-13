@@ -5,15 +5,13 @@ const config = require('../abi/config.json');
 const CONTRACT_ADDRESS = config.MINT_CONTRACT_ADDRESS;
 const contract = require("../abi/CardMintPack.json");
 
-const MAX_RETRIES = 2;  // Maximum retries
-const RETRY_INTERVAL_MS = 150000;  // Time between retries
-
 // Provider
 const provider = new ethers.JsonRpcProvider(process.env.API_URL);
 // Signer
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 // Contract
 const packContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+const tokenUri = "https://green-manual-badger-37.mypinata.cloud/ipfs/bafkreihgqsrjemcnnekx54egf7nh5vpn5ipcqlcie6us5tfqinogm5jaqu"
 
 async function main() {
   // const checkRequestFulfillment = async (contract, requestId) => {
@@ -28,6 +26,8 @@ async function main() {
   //   }
   //   return false;
   // };
+  const tokenId = await packContract.createToken(tokenUri, signer, 1);
+  console.log(tokenId);
   // // Request randomness from Chainlink VRF
   // const tx = await packContract.requestRandomWords();
   // const receipt = await tx.wait();
@@ -63,11 +63,21 @@ async function main() {
   // // Return the account that minted the cards
   // const account = await signer.getAddress();
   // return account;
-  // const tx = packContract.requestRandomWords(0);
+
+  ////////////////
+
+  // const native = await packContract.getNativePayment();
+  // console.log(native);
+  // // const tx = await packContract.setNativePayment(true);
+  // const tx = await packContract.requestRandomWords();
   // console.log(tx);
 
-  const withdraw = packContract.withdraw();
-  console.log(withdraw);
+  // const withdraw = await packContract.withdraw();
+  // console.log(withdraw);
 
+  const tx = await packContract.batchMint([8,9,10,11,12],"0x41E213C12B77A2B265A19f20c786634Edb4F2Fdb", 2);
+  console.log(tx);
+  // const ss = await packContract.fetchMyNFTs();
+  // console.log(ss);
 }
 main();

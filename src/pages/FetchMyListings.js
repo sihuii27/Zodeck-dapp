@@ -5,7 +5,7 @@ require("dotenv").config();
 
 
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
-const contract = require("../abi/NFTplace.json"); // Assuming the ABI is properly imported
+const contract = require("../abi/CardMintPack.json"); // Assuming the ABI is properly imported
 
 const FetchMyListing = ({ setListings, setloading, account }) => {
   const fetchListings = useCallback(async () => {

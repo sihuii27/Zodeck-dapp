@@ -1,0 +1,15 @@
+{
+    "attributes": [
+        {
+            "trait_type": "Animal",
+            "value": "Snake"
+        },
+        {
+            "trait_type": "Element",
+            "value": "Forest"
+        }
+    ],
+    "description": "The nature's guardian, flourishing with vitality and growth combines with a cunning strategist with a mysterious aura to create a truly unique presence.",
+    "image": "https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/23.png",
+    "name": "Snake - Forest"
+}

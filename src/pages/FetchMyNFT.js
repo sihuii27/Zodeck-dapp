@@ -10,7 +10,7 @@ require("dotenv").config();
 const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
 
 // For Hardhat 
-const contract = require("../abi/NFTplace.json");
+const contract = require("../abi/CardMintPack.json");
 
 const priceTag = "0.0005";
 

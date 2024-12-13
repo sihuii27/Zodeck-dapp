@@ -62,12 +62,13 @@ font-weight: bold;
 /* Marketplace Listings */
 .marketplace-listings {
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(max(200px, 15%), 1fr));
-gap: 20px;
+grid-template-columns: repeat(auto-fill, minmax(max(200px, 12%), 1fr));
+grid-column-gap: 40px;
+grid-row-gap: 50px;
 overflow-y: auto;
-margin: 40px;
-flex-direction: column;
+overflow-x: hidden;
 justify-items: center;
+margin: 20px 40px 20px 40px;
 }
 
 .marketplace-card {
@@ -75,7 +76,6 @@ background-color: #fff;
 padding: 10px;
 border-radius: 0px;
 width: 200px;
-height: 300px;
 flex-shrink: 0;
 border-radius: 10px;
 position: relative;
@@ -84,13 +84,18 @@ display: flex;
 }
 
 .card-image {
-width: 100%;
-height: 50%;
+width: 200px;
+height: 275px;
 background-color: #e0e0e0;
 margin-bottom: 10px;
 border-radius: 0px;
 }
 
+
+.marketplace-landing-card-image{
+  height: 85%;
+  gap: 30px;
+}
 .card-price {
 font-weight: bold;
 margin: 10px 0;

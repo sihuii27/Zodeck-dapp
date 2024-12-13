@@ -19,6 +19,7 @@ contract NFTplace is ERC721URIStorage {
         address payable owner;
         uint256 price;
         bool sold;
+        uint256 cardIndex;
     }
     event ListingCreated (
         uint256 indexed tokenId,
@@ -39,14 +40,15 @@ contract NFTplace is ERC721URIStorage {
     function getContractOwner() public view returns (address) {
         return contract_owner;
     }
-    function createToken(string memory tokenURI, address recipient) public payable returns (uint) {
+    function createToken(string memory tokenURI, address recipient, uint256 cardIndex) public payable returns (uint) {
         _tokenIds = _tokenIds.add(1);
         uint256 newTokenId = _tokenIds;
         _mint(recipient, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(recipient),0,true);
+        cardToListingItem[newTokenId] = Listing(newTokenId, payable(address(0)),payable(recipient),0,true, cardIndex);
         return newTokenId;
     }
+
     function getListingPrice() public view returns (uint256){
         return listingPrice;
     }
@@ -54,11 +56,16 @@ contract NFTplace is ERC721URIStorage {
         createListing(tokenId, price);
     }
 
+    function getSoldStatus(uint256 tokenId) public view returns (bool){
+        return cardToListingItem[tokenId].sold;
+    }
+
     //Marketplace
     function createListing(uint256 tokenId, uint256 price) private {
         require(price > 0, "Price must be at least 1 wei");
         _unsoldItemCount = _unsoldItemCount.add(1);
-        cardToListingItem[tokenId] = Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
+        uint256 cardIndex = cardToListingItem[tokenId].cardIndex;
+        cardToListingItem[tokenId] = Listing(tokenId,payable(msg.sender),payable(address(this)),price,false,cardIndex);
         _transfer(msg.sender, address(this), tokenId);
         emit ListingCreated(tokenId,msg.sender,address(this),price,false);
     }
@@ -80,9 +87,9 @@ contract NFTplace is ERC721URIStorage {
 
     //Marketplace
     function purchaseCard(uint256 tokenId) public payable {
-        //uint price = cardToListingItem[tokenId].price;
+        uint price = cardToListingItem[tokenId].price;
         address payable creator = cardToListingItem[tokenId].seller;
-        //require(msg.value == price, "Please submit the asking price in order to complete the purchase");
+        require(msg.value == price, "Please submit the asking price in order to complete the purchase");
         //new owner/ buyer of card is msg.sender
         cardToListingItem[tokenId].owner = payable(msg.sender);
         cardToListingItem[tokenId].sold = true;

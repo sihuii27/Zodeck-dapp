@@ -3,10 +3,13 @@ import './Marketplace.css';
 import { ethers } from 'ethers';
 import FetchAllListing from './fetchMarketplace';
 import PurchaseCard from './buyListing';
+import Description from './Description';
+import { Tooltip, Button } from '@mui/material';
 
 const Marketplace = (props) => {
   const [alllistings, setAllListings] = useState([]);
   const [loading, setloading] = useState(false);
+  const description = Description();
   
   return (
     <>
@@ -22,14 +25,24 @@ const Marketplace = (props) => {
             {alllistings.length > 0 ? (
               alllistings.map((listing, index) => (
                 <div className="marketplace-card" key={index}>
-                  <div className="marketplace-landing-card-image"></div>
+                  <img
+                    className="marketplace-landing-card-image"
+                    src={`https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/${listing.cardIndex}.png`}
+                    alt={`Card ${listing.tokenId}`}
+                  />
                   <p className="card-title">
-                    {`Card Title ${listing.tokenId}`}
+                    {description[listing.cardIndex]?.name || 'Loading...'}
                   </p>
                   <p className="card-price">
                     {`Price: ${ethers.formatUnits(listing.price, 'ether')} ETH`}
                     {listing.tokenId}
                   </p>
+                  <Tooltip placement="top"
+                    title={description[listing.cardIndex]?.description || 'Loading...'} // Display the card's description in the Tooltip
+                    arrow
+                  >
+                    <Button variant="outlined" size="small" sx={{ marginBottom: '5px' }}>View Description</Button>
+                  </Tooltip>
                   <PurchaseCard tokenId={listing.tokenId} />
                 </div>
               ))

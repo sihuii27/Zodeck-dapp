@@ -1,0 +1,15 @@
+{
+    "attributes": [
+        {
+            "trait_type": "Animal",
+            "value": "Rat"
+        },
+        {
+            "trait_type": "Element",
+            "value": "Fire"
+        }
+    ],
+    "description": "The fiery spirit that blazes with determination and power combines with a resourceful survivor with unmatched adaptability to create a truly unique presence.",
+    "image": "https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifd5ackizs5fyc6pe7cghazwkqf7docpk6tetuq5dfkvrrnate3be/8.png",
+    "name": "Rat - Fire"
+}

@@ -1,5 +1,5 @@
 import nfts from '../abi/NFTs.json';
-// const contract = require("../abi/NFTplace.json");
+// const contract = require("../abi/CardMintPack.json");
 const ethers = require('ethers');
 require("dotenv").config();
 
