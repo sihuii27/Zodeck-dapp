@@ -4,7 +4,7 @@ const ethers = require('ethers');
 require("dotenv").config();
 const cardcss = require('./Landing.css');
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 
 // For Hardhat 
 const contract = require("../abi/CardMintPack.json");

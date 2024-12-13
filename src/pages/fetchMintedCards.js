@@ -3,7 +3,7 @@ import config from '../abi/config.json';
 require("dotenv").config();
 const ethers = require('ethers');
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const CONTRACT_ABI = cardMintPack.abi;
 
 export const fetchMintedCards = async () => {

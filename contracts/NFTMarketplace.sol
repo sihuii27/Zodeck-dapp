@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "hardhat/console.sol";
 import "./safemath.sol";
 
-contract NFTplace is ERC721URIStorage {
+contract NFTMarketplace is ERC721URIStorage {
     uint256 private _tokenIds;
     uint256 private _unsoldItemCount;
     uint256 listingPrice = 0.0001 ether;
@@ -21,6 +21,7 @@ contract NFTplace is ERC721URIStorage {
         bool sold;
         uint256 cardIndex;
     }
+
     event ListingCreated (
         uint256 indexed tokenId,
         address seller,
@@ -29,17 +30,14 @@ contract NFTplace is ERC721URIStorage {
         bool sold
     );
 
-    event ListingRemoved (
-        uint256 indexed tokenId,
-        address seller
-    );
-    
     constructor() ERC721("Zodeck Cards", "ZDK") {
         contract_owner = payable(msg.sender);
     }
+
     function getContractOwner() public view returns (address) {
         return contract_owner;
     }
+
     function createToken(string memory tokenURI, address recipient, uint256 cardIndex) public payable returns (uint) {
         _tokenIds = _tokenIds.add(1);
         uint256 newTokenId = _tokenIds;
@@ -52,6 +50,7 @@ contract NFTplace is ERC721URIStorage {
     function getListingPrice() public view returns (uint256){
         return listingPrice;
     }
+
     function listCard(uint256 tokenId, uint256 price) public payable  {
         createListing(tokenId, price);
     }
@@ -69,21 +68,6 @@ contract NFTplace is ERC721URIStorage {
         _transfer(msg.sender, address(this), tokenId);
         emit ListingCreated(tokenId,msg.sender,address(this),price,false);
     }
-
-    //Marketplace
-    // function removeListing(uint256 tokenId, uint256 price) private {
-    //     require(owner==msg.sender, "Only owner of NFT is allowed to remove listing");
-    //     require(!cardToListingItem[tokenId].sold, "Listing cannot be removed, has been sold");
-    //     //cardToListingItem[tokenId] =  Listing(tokenId,payable(msg.sender),payable(address(this)),price,false);
-    //     _transfer(address(this), msg.sender, tokenId);
-    //     emit ListingCreated(tokenId,msg.sender,address(this),price,false);
-    // }
-
-    //Marketplace
-    // function updateListingPrice(uint _listingPrice) public payable {
-    //     require(owner == msg.sender, "Only marketplace owner can update listing price.");
-    //     listingPrice = _listingPrice;
-    // }
 
     //Marketplace
     function purchaseCard(uint256 tokenId) public payable {
@@ -166,49 +150,4 @@ contract NFTplace is ERC721URIStorage {
         }
         return items;
     }
-    
-
 }
-
-
-
-//collection of NFTs (Collection)
-    // function fetchItems(bool myNFT) public view returns (Listing[] memory) {
-    //     uint totalItemCount = _tokenIds;
-    //     uint itemCount = 0;
-    //     uint currentIndex = 0;
-    //     for (uint i = 0; i < totalItemCount; i++) {
-    //         if (myNFT){
-    //             // check if nft is mine
-    //             if (cardToListingItem[i + 1].owner == msg.sender) {
-    //                 itemCount += 1;
-    //             }
-    //         } else {
-    //             //msg.sender who call this function eg lister of card (Marketplace)
-    //             if (cardToListingItem[i + 1].seller == msg.sender) {
-    //                 itemCount += 1;
-    //             }
-    //         }
-    //     }
-    //     Listing[] memory items = new Listing[](itemCount);
-    //     for (uint i = 0; i < totalItemCount; i++) {
-    //         if (myNFT){
-    //             // check if nft is mine
-    //             if (cardToListingItem[i + 1].owner == msg.sender) {
-    //                 uint currentId = i + 1;
-    //                 Listing storage currentItem = cardToListingItem[currentId];
-    //                 items[currentIndex] = currentItem;
-    //                 currentIndex += 1;
-    //             }
-    //         } else {
-    //             //msg.sender who call this function eg lister of card (Marketplace)
-    //             if (cardToListingItem[i + 1].seller == msg.sender) {
-    //                 uint currentId = i + 1;
-    //                 Listing storage currentItem = cardToListingItem[currentId];
-    //                 items[currentIndex] = currentItem;
-    //                 currentIndex += 1;
-    //             }
-    //         }
-    //     }
-    //     return items;
-    // }

@@ -4,7 +4,7 @@ const ethers = require('ethers');
 require("dotenv").config();
 
 
-const CONTRACT_ADDRESS = config.NFTPLACE_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const contract = require("../abi/CardMintPack.json"); // Assuming the ABI is properly imported
 
 const FetchMyListing = ({ setListings, setloading, account }) => {

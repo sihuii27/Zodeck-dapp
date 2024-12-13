@@ -6,10 +6,10 @@ import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/V
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./ownable.sol";
-import "./test.sol";
+import "./NFTMarketplace.sol";
 import "contracts/safemath.sol";
 
-contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTplace {
+contract CardMintPack is ERC721URIStorage, VRFConsumerBaseV2Plus, NFTMarketplace {
     using SafeMath for uint256;
     //Keeps track of minted NFTS
     uint256 private _tokenIds;

@@ -2,7 +2,7 @@ const ethers = require('ethers');
 require("dotenv").config();
 
 const config = require('../abi/config.json');
-const CONTRACT_ADDRESS = config.MINT_CONTRACT_ADDRESS;
+const CONTRACT_ADDRESS = config.CONTRACT_ADDRESS;
 const contract = require("../abi/CardMintPack.json");
 
 // Provider
