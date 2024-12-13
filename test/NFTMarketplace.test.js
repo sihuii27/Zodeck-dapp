@@ -116,7 +116,6 @@ describe("CardMintPack", function () {
       const addr2NFT = await nftMarketplace.connect(addr2).fetchMyNFTs();
       expect(addr2NFT.length).to.equal(1);
       expect(addr2NFT[0].owner).to.equal(addr2.address);
-      expect(addr2NFT[0].owner).to.equal(addr2.address);
       console.log("My NFTs after purchase:",addr2NFT);
       //await purchase.wait();
     });
