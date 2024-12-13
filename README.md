@@ -1,8 +1,8 @@
 # Zodeck NFT
 <div style="display: flex; justify-content: space-around;">
-  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeieekyeswj6zymcmwzcn7kyiysffsj3dxwfmnd74iul3fty5wa5lfi" width="300" height="400">
-  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifcl3rimhqleeqslsl6xiqe27vnauzetim2jyhsmojuu56qtujj6y" width="300" height="400">
-  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeiex2j22icov5osf54fptui733zgmwlx6i3ui6uawyuubt5tpyvbye" width="300" height="400">
+  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeieekyeswj6zymcmwzcn7kyiysffsj3dxwfmnd74iul3fty5wa5lfi" width="250" height="300">
+  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeifcl3rimhqleeqslsl6xiqe27vnauzetim2jyhsmojuu56qtujj6y" width="250" height="300">
+  <img src="https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeiex2j22icov5osf54fptui733zgmwlx6i3ui6uawyuubt5tpyvbye" width="250" height="300">
 </div>
 
 # Project Background
