@@ -53,6 +53,7 @@ contract NFTplace is ERC721URIStorage {
         return listingPrice;
     }
     function listCard(uint256 tokenId, uint256 price) public payable  {
+        require(msg.value == listingPrice, "Please submit the listing price in order to list a card");
         createListing(tokenId, price);
     }
 
