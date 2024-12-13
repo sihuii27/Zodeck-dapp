@@ -21,6 +21,7 @@ describe("CardMintPack Contract", function () {
       expect(numWords).to.equal(5);
       expect(baseUri).to.equal(
         "https://green-manual-badger-37.mypinata.cloud/ipfs/bafybeidlvgplmk5rbamco3ccmz2by4vb5pgia6htesmnybk4comh7yibv4/"
+
       );
     });
   });
@@ -31,6 +32,7 @@ describe("CardMintPack Contract", function () {
       const tx = await cardMintPack
         .connect(user)
         .batchMint(randomWords, user.address, 1);
+
       const receipt = await tx.wait();
 
       // Verify ownership and metadata for each token
@@ -41,6 +43,7 @@ describe("CardMintPack Contract", function () {
 
         expect(tokenOwner).to.equal(user.address);
         expect(tokenMetadataURI).to.include(`${randomWords[i] + 1}.json`);
+
       }
     });
 
@@ -56,6 +59,7 @@ describe("CardMintPack Contract", function () {
 
       // Verify ownership and metadata for each token
       expected_tokenIds = [25 + 1, 40 + 1, 45 + 1, 0 + 1, 38 + 1]; // Calculated by randomWords % 48 +1
+
       for (let i = 5; i < 10; i++) {
         const tokenId = i + 1;
         const tokenOwner = await cardMintPack.ownerOf(tokenId);
@@ -63,6 +67,7 @@ describe("CardMintPack Contract", function () {
 
         expect(tokenOwner).to.equal(user.address);
         expect(tokenMetadataURI).to.include(`${expected_tokenIds[i - 5]}.json`);
+
       }
     });
 
@@ -81,6 +86,7 @@ describe("CardMintPack Contract", function () {
       const randomWords = [1, 2, 3, 4, 5];
       await expect(
         cardMintPack.connect(user).batchMint(randomWords, user.address, 4)
+
       ).to.emit(cardMintPack, "CardMinted");
     });
   });
