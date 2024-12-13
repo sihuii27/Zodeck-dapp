@@ -111,7 +111,7 @@ function Header({account,setAccount}) {
     <div className="navbar">
       <div className="navbar-left">
           <img src="/zodeck_image.png" alt="Zodeck Logo" className="logo" onClick={returnHome}/>
-        <span className="navbar-title">Zodeck NFT Marketplace</span>
+        <span className="navbar-title">Zodeck NFT</span>
       </div>
       <div className="navbar-right">
         <button className="go-marketplace-btn" onClick= {handleMarketplace}>Marketplace</button>
