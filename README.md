@@ -43,8 +43,10 @@ Demo video can be viewed <a href="https://www.youtube.com/watch?v=c_6BCVGJVcA">h
 # Credits
 Our project uses these frameworks and services to develop our application
  <ul>
-    <li>React JS</li>
-    <li>Ether.js</li>
-    <li>Python</li>
-    <li>Solidity</li>
+    <li><img src="https://www.fullstackpython.com/img/logos/react.png" height="40"></li>
+    <li><img src="https://codesandbox.io/api/v1/sandboxes/ih4moo/screenshot.png" height="40"></li>
+    <li><img src="https://1000logos.net/wp-content/uploads/2020/08/Python-Logo.png" height="50"></li>
+    <li><img src="https://developers.moralis.com/wp-content/uploads/2021/06/Blog-Solidity-Logo.png" height="40"></li>
+    <li><img src="https://hardhat.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhardhat-logo.5c5f687b.svg&w=384&q=75" height="30"></li>
+    <li><img src="https://mintlify.s3-us-west-1.amazonaws.com/pinata/logo/light.svg" height="40"></li>
   </ul>
