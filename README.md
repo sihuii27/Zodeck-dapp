@@ -41,7 +41,7 @@ Ensure the following are installed before running the dApp:
 Demo video can be viewed <a href="https://www.youtube.com/watch?v=c_6BCVGJVcA">here</a>
 
 # Credits
-Our project uses these frameworks and services to develop our application
+Our project uses these frameworks and services to develop our application.
  <ul>
     <li><img src="https://www.fullstackpython.com/img/logos/react.png" height="40"></li>
     <li><img src="https://codesandbox.io/api/v1/sandboxes/ih4moo/screenshot.png" height="40"></li>
